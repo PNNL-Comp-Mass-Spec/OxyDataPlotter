@@ -1,0 +1,26 @@
+CWSpectrumDLL Change Log
+
+Version 2.42.2215; January 24, 2006
+	- Added ability to set the plot window's caption via code (SetSpectrumFormWindowCaption)
+
+Version 2.42.2104; October 5, 2005
+	- Switched to using SharedVBNetRoutines.dll
+	- Fixed several bugs relating to copy and paste of data into and out of the plot
+	- Added copyright and open source notices
+	- Updated the assembly version of CWSpectrumDLLNET.dll to match the DLL Version listed in Spectrum.vb
+
+Version 1.21.2039; August 1, 2005
+	- Expanded graph functionality, including adding ability to plot values vs. date & time
+	- In the Peak Detection class, switched from using the eols.dll least squares fitting routine to using a local VB.NET function
+
+Version 1.21.1778; November 13, 2004
+	- Converted many of the string handling functions from VB6 notation to VB.NET notation
+
+Version 1.21.1473; January 13, 2004
+	- Updated the CopyToClipboardAsPicture() and SaveToDiskAsPicture() functions 
+
+Version 1.21.1437; December 8, 2003
+	- Expanded the Spectrum Options form
+
+Version 1.21.1385; October 17, 2003
+	- Ported from VB6 to VB.NET
