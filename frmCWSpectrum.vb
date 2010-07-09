@@ -447,7 +447,7 @@ Friend Class frmCWSpectrum
             objGraphPicture = ctlCWGraph.GetControlImage()
 
             Dim objClipboardMFHelper As New ClipboardMetaFileHelper
-            objClipboardMFHelper.PutEnhMetafileOnClipboard(Me.Handle, objGraphPicture)
+            ClipboardMetaFileHelper.PutEnhMetafileOnClipboard(Me.Handle, objGraphPicture)
 
             ' The following two .SetDataObject() calls do not work
             'Clipboard.SetDataObject(VB6.IPictureDispToImage(objGraphPicture))
@@ -538,7 +538,7 @@ Friend Class frmCWSpectrum
         Dim lngSrcIndex As Integer
         Dim blnShowProgress As Boolean
         Dim FillStringArray() As String
-        Dim FillStringCumulative As String
+        Dim FillStringCumulative As String = String.Empty
 
         Dim objProgress As ProgressFormNET.frmProgress
 
@@ -591,24 +591,24 @@ Friend Class frmCWSpectrum
             End If
         End Try
 
-        FlattenStringArray = FillStringCumulative
+        Return FillStringCumulative
 
     End Function
 
     Public Function GetActiveSeriesNumber() As Short
-        GetActiveSeriesNumber = mActiveSeriesNumber
+        Return mActiveSeriesNumber
     End Function
 
-    Public Function StoreAutoLabelPeaksOptionsInModule() As Object
+    Public Sub StoreAutoLabelPeaksOptionsInModule()
         AutoLabelOptionsStore(mAutoLabelPeaksOptions)
-    End Function
+    End Sub
 
     Public Function GetNormalizeOnLoadOrPaste() As Boolean
-        GetNormalizeOnLoadOrPaste = mNormalizeOnLoadOrPaste
+        Return mNormalizeOnLoadOrPaste
     End Function
 
     Public Function GetNormalizationConstant() As Double
-        GetNormalizationConstant = mNormalizationConstant
+        Return mNormalizationConstant
     End Function
 
     Public Sub GetWindowPos(ByRef intTop As Integer, ByRef intLeft As Integer, ByRef intHeight As Integer, ByRef intWidth As Integer)
@@ -634,7 +634,7 @@ Friend Class frmCWSpectrum
         Dim blnUserWarnedReplaceExistingData As Boolean
         Dim blnAutoHideCaptionsSaved As Boolean
         Dim blnSkippedParentIon As Boolean
-        Dim strParentIonInfo As String
+        Dim strParentIonInfo As String = String.Empty
 
         Dim strLineIn As String
         Dim lngBytesLoaded, lngLinesRead As Integer
@@ -1614,7 +1614,7 @@ PasteDataFromClipboardErrorHandler:
         Dim intIndex As Integer
         Dim blnFirstAnnotationFound As Boolean
 
-        Dim strCaption As String
+        Dim strCaption As String = String.Empty
         Dim intSeriesNumberForAnnotation As Short
         Dim dblXPos, dblYPos As Double
         Dim lngCaptionAngle As Integer
@@ -1882,7 +1882,6 @@ SaveDataToDiskExitSub:
 
     Private Function SelectFile(ByVal strDialogCaption As String, Optional ByRef strStartPath As String = "", Optional ByRef blnSaveFile As Boolean = False, Optional ByRef strDefaultFileName As String = "", Optional ByVal strFileFilterCodes As String = "All Files (*.*)|*.*|Text Files (*.txt)|*.txt", Optional ByRef intFilterIndexDefault As Short = 1, Optional ByRef blnFileMustExistOnOpen As Boolean = True) As String
 
-        Dim ioFolder As System.IO.Directory
         Dim dlgSelectFile As System.Windows.Forms.FileDialog
 
         If blnSaveFile Then
@@ -2084,7 +2083,6 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
         Dim dblXStart, dblXEnd As Double
         Dim dblYStart, dblYEnd As Double
-        Dim intClickStatus As Short
 
         Dim objSetZoomRangeForm As New frmSetZoomRange
 
@@ -2133,7 +2131,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
         '  32E+48Text       Returns 32E+48 and intNumLength = 6         (must have blnAllowESymbol = True)
 
         Dim strTestChar As String
-        Dim strFoundNum As String
+        Dim strFoundNum As String = String.Empty
         Dim intIndex, intDecPtCount As Integer
         Dim blnNumberFound, blnESymbolFound As Boolean
 
@@ -2171,7 +2169,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
             Do While intIndex <= Len(strWork)
                 strTestChar = Mid(strWork, intIndex, 1)
                 If IsNumeric(strTestChar) Then
-                    strFoundNum = strFoundNum & strTestChar
+                    strFoundNum &= strTestChar
                 ElseIf strTestChar = strDecimalPointSymbol Then
                     intDecPtCount = intDecPtCount + 1
                     If intDecPtCount = 1 Then
@@ -2256,6 +2254,13 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End With
     End Sub
 
+    ''' <summary>
+    ''' Handles shortcuts where the user has pressed the Control key
+    ''' Note that menu item "Add Sample Data" will appear in the Edit menu when you press the control key
+    ''' </summary>
+    ''' <param name="eventSender"></param>
+    ''' <param name="eventArgs"></param>
+    ''' <remarks></remarks>
     Private Sub frmCWSpectrum_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
         Dim intSeriesNumber As Short
 

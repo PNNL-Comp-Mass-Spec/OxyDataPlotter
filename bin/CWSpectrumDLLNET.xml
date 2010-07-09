@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+CWSpectrumDLLNET
+</name>
+</assembly>
+<members>
+<member name="M:CWSpectrumDLLNET.frmCWSpectrum.frmCWSpectrum_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+	<summary>
+ Handles shortcuts where the user has pressed the Control key
+ Note that menu item "Add Sample Data" will appear in the Edit menu when you press the control key
+ </summary>
+	<param name="eventSender"></param>
+	<param name="eventArgs"></param>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

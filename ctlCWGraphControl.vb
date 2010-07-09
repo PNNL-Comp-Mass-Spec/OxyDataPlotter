@@ -1716,7 +1716,7 @@ AutoLabelPeaksSortPeaksErrorHandler:
         ' When blnBindToPoint = True, then returns the coordinates of the nearest point
         ' When blnBindToPoint = False, then returns the cooridnates of the caption itself
 
-        Dim strCaption As String
+        Dim strCaption As String = String.Empty
         Dim dblDistance As Double
         Dim intPointNumber As Integer
 
@@ -3299,18 +3299,18 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     Public Sub SetDataYOnly(ByRef intSeriesNumber As Short, ByRef YDataZeroBased1DArray() As Double, ByVal YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strLegendCaption As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
 
-        '''Dim DataToPlot As Object
-        '''Dim intIndex As Integer
+        ''Dim DataToPlot As Object
+        ''Dim intIndex As Integer
 
-        '''If YDataCount < 1 Then Exit Sub
-        '''AssureValidSeriesNumber(intSeriesNumber)
+        ''If YDataCount < 1 Then Exit Sub
+        ''AssureValidSeriesNumber(intSeriesNumber)
 
-        '''ReDim DataToPlot(YDataCount - 1)
+        ''ReDim DataToPlot(YDataCount - 1)
 
-        '''For intIndex = 0 To YDataCount - 1
-        '''    'UPGRADE_WARNING: Couldn't resolve default property of object DataToPlot(). Click for more: 'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="vbup1037"'
-        '''    DataToPlot(intIndex) = YDataZeroBased1DArray(intIndex)
-        '''Next intIndex
+        ''For intIndex = 0 To YDataCount - 1
+        ''    'UPGRADE_WARNING: Couldn't resolve default property of object DataToPlot(). Click for more: 'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="vbup1037"'
+        ''    DataToPlot(intIndex) = YDataZeroBased1DArray(intIndex)
+        ''Next intIndex
 
         Dim DataToPlot() As Double
         Dim intIndex As Integer
@@ -4285,7 +4285,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
             CWGraph.Axes.Item(2).Minimum = .YMinimum
             CWGraph.Axes.Item(2).Maximum = .YMaximum
         End With
-        CWGraph.CtlRefresh()
+        CWGraph.Refresh
 
         ' Shift the history values down by one
         For intIndex = 0 To MAX_HISTORY_COUNT - 2

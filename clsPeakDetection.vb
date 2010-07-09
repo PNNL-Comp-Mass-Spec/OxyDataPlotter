@@ -686,8 +686,8 @@ Friend Class clsPeakDetection
     '    ByVal iSaveStateFlag As Integer, _
     '    ByRef handle As Integer) As Integer
 
-    '''The following is only needed when using eolsrt.dll; used for real-time least squares fitting, utilizing data buffering
-    '''Private Declare Sub EoLeastSquaresFitClose Lib "eolsrt.dll" (ByRef handle As Long)
+    ''The following is only needed when using eolsrt.dll; used for real-time least squares fitting, utilizing data buffering
+    ''Private Declare Sub EoLeastSquaresFitClose Lib "eolsrt.dll" (ByRef handle As Long)
 
     'Private Sub LeastSquaresFitEolsDll(ByVal dblXVals() As Double, ByVal dblYVals() As Double, ByRef dblCoefficients() As Double, ByVal intPolynomialOrder As Integer)
     '    ' Uses the EoLeastSquaresFit function in the eols.dll file to compute a least squares fit on the portion of the data between intIndexStart and intIndexEnd

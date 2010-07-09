@@ -1,5 +1,8 @@
 CWSpectrumDLL Change Log
 
+Version 2.42.3841; July 8, 2008
+	- Updated to Visual Studio 2008 (Microsoft.NET 2.0)
+
 Version 2.42.2215; January 24, 2006
 	- Added ability to set the plot window's caption via code (SetSpectrumFormWindowCaption)
 

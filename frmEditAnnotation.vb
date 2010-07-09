@@ -666,9 +666,9 @@ InitializeFormErrorHandler:
             cboAnnotationSnapMode.SelectedIndex = .SnapMode
             If .PointNumberToBind >= 0 Then
                 txtPointToBindTo.Text = CStr(.PointNumberToBind)
-                '''            ShowHidePointNumberControls True
+                ''            ShowHidePointNumberControls True
             Else
-                '''            ShowHidePointNumberControls False
+                ''            ShowHidePointNumberControls False
             End If
 
             ' Yes, we need to update txtCaption twice
