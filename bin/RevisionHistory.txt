@@ -1,5 +1,11 @@
 CWSpectrumDLL Change Log
 
+Version 2.42.4626; August 31, 2012
+	- Updated to .NET 4.0
+
+Version 2.42.4462; March 20, 2012
+	- Updated to Visual Studio 2010 (Microsoft.NET 2.0)
+
 Version 2.42.3841; July 8, 2008
 	- Updated to Visual Studio 2008 (Microsoft.NET 2.0)
 
