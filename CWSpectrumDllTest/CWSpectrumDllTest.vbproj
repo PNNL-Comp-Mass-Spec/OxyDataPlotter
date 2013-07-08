@@ -24,7 +24,7 @@
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>Off</OptionStrict>
     <RootNamespace>CWSpectrumDllTest</RootNamespace>
-    <StartupObject>CWSpectrumDllTest.frmTestCWSpectrum</StartupObject>
+    <StartupObject>CWSpectrumDllTest.frmTestOxyPlot</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
@@ -118,8 +118,17 @@
     <Compile Include="frmTestCWSpectrum.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTestOxyPlot.Designer.vb">
+      <DependentUpon>frmTestOxyPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTestOxyPlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="frmTestCWSpectrum.resx">
       <DependentUpon>frmTestCWSpectrum.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTestOxyPlot.resx">
+      <DependentUpon>frmTestOxyPlot.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

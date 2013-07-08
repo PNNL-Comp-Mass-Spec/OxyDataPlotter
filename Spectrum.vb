@@ -25,7 +25,7 @@ Option Explicit On
 
 <System.Runtime.InteropServices.ProgId("Spectrum_NET.Spectrum")> Public Class Spectrum
 
-    Private Const SPECTRUM_DLL_DATE As String = "January 24, 2006"
+	Private Const SPECTRUM_DLL_DATE As String = "January 24, 2006"
 
     ''Public Enum pmPlotModeConstants
     ''	pmLines = 0
@@ -260,9 +260,9 @@ Option Explicit On
         GetDataXvsY = SpectrumForm.ctlCWGraph.GetDataXvsY(intSeriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, DataCount)
     End Function
 
-    Public Function GetDefaulSeriesColor(ByVal intSeriesNumber As Short) As System.Drawing.Color
-        GetDefaulSeriesColor = SpectrumForm.ctlCWGraph.GetDefaulSeriesColor(intSeriesNumber)
-    End Function
+	Public Function GetDefaultSeriesColor(ByVal intSeriesNumber As Short) As System.Drawing.Color
+		GetDefaultSeriesColor = SpectrumForm.ctlCWGraph.GetDefaultSeriesColor(intSeriesNumber)
+	End Function
 
     Public Function GetDisplayPrecisionX() As Double
         GetDisplayPrecisionX = SpectrumForm.ctlCWGraph.GetDisplayPrecisionX()

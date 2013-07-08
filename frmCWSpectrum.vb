@@ -356,24 +356,24 @@ Friend Class frmCWSpectrum
         ctlCWGraph.SetSeriesCount(3)
 
         ctlCWGraph.GenerateSineWave(1, True)
-        ctlCWGraph.SetSeriesColor(1, ctlCWGraph.GetDefaulSeriesColor(1))
+		ctlCWGraph.SetSeriesColor(1, ctlCWGraph.GetDefaultSeriesColor(1))
 
-        ctlCWGraph.GenerateSineWave(2, False)
-        ctlCWGraph.SetSeriesColor(2, ctlCWGraph.GetDefaulSeriesColor(2))
+		ctlCWGraph.GenerateSineWave(2, False)
+		ctlCWGraph.SetSeriesColor(2, ctlCWGraph.GetDefaultSeriesColor(2))
 
-        ReDim dblXVals(DATA_COUNT - 1)
-        ReDim dblYVals(DATA_COUNT - 1)
+		ReDim dblXVals(DATA_COUNT - 1)
+		ReDim dblYVals(DATA_COUNT - 1)
 
-        For intIndex = 0 To DATA_COUNT - 1
-            dblXVals(intIndex) = System.Math.Abs(22 - objRandom.Next(0, 15) * System.Math.Tan(intIndex / 100.0#) * 2)
-            dblYVals(intIndex) = System.Math.Abs(objRandom.Next(0, 22) * System.Math.Sin(intIndex / 100.0#) * 15)
-        Next intIndex
+		For intIndex = 0 To DATA_COUNT - 1
+			dblXVals(intIndex) = System.Math.Abs(22 - objRandom.Next(0, 15) * System.Math.Tan(intIndex / 100.0#) * 2)
+			dblYVals(intIndex) = System.Math.Abs(objRandom.Next(0, 22) * System.Math.Sin(intIndex / 100.0#) * 15)
+		Next intIndex
 
-        FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
+		FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
 
-        ctlCWGraph.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, "", dblOriginalMaximumValue)
-        ctlCWGraph.SetSeriesPlotMode(3, CWGraphControl.pmPlotModeConstants.pmSticksToZero)
-        ctlCWGraph.SetSeriesColor(3, ctlCWGraph.GetDefaulSeriesColor(3))
+		ctlCWGraph.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, "", dblOriginalMaximumValue)
+		ctlCWGraph.SetSeriesPlotMode(3, CWGraphControl.pmPlotModeConstants.pmSticksToZero)
+		ctlCWGraph.SetSeriesColor(3, ctlCWGraph.GetDefaultSeriesColor(3))
 
         SetCurrentSeriesNumber(3)
 

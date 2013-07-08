@@ -87,9 +87,18 @@
     <DebugType>none</DebugType>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic.Compatibility">
       <Name>Microsoft.VisualBasic.Compatibility</Name>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>lib\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.WindowsForms">
+      <HintPath>lib\OxyPlot.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="ProgressFormNET">
       <HintPath>lib\ProgressFormNET.dll</HintPath>
@@ -150,6 +159,7 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +173,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ctlCWGraphControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlOxyPlotControl.Designer.vb">
+      <DependentUpon>ctlOxyPlotControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ctlOxyPlotControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CWSpectrum.vb">
@@ -180,6 +196,12 @@
     <Compile Include="frmEditAnnotation.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmOxySpectrum.Designer.vb">
+      <DependentUpon>frmOxySpectrum.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOxySpectrum.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSetZoomRange.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -189,17 +211,24 @@
     <EmbeddedResource Include="ctlCWGraphControl.resX">
       <DependentUpon>ctlCWGraphControl.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ctlOxyPlotControl.resx">
+      <DependentUpon>ctlOxyPlotControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAutoLabelPeaks.resX">
       <DependentUpon>frmAutoLabelPeaks.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCWSpectrum.resX">
       <DependentUpon>frmCWSpectrum.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCWSpectrumOptions.resX">
       <DependentUpon>frmCWSpectrumOptions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEditAnnotation.resX">
       <DependentUpon>frmEditAnnotation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOxySpectrum.resx">
+      <DependentUpon>frmOxySpectrum.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSetZoomRange.resX">
       <DependentUpon>frmSetZoomRange.vb</DependentUpon>
@@ -234,6 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

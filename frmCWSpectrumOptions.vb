@@ -1821,23 +1821,23 @@ PopulateComboBoxesErrorHandler:
                 .PlotMode = CWGraphControl.pmPlotModeConstants.pmLines
                 .LineStyle = CWUIControlsLib.CWLineStyles.cwLineSolid
                 .LineWidth = 1
-                .LineColor = mSpectrumForm.ctlCWGraph.GetDefaulSeriesColor(1)
-                .LineToBaseColor = .LineColor
-                .BarFillColor = .LineColor
-                .PointStyle = CWUIControlsLib.CWPointStyles.cwPointNone
-                .PointColor = .LineColor
-                .AnnotationFontColor = System.Drawing.Color.Black
-                .AnnotationFontName = DEFAULT_FONT_NAME
-                .AnnotationFontSize = DEFAULT_ANNOTATION_FONT_SIZE
-            End With
+				.LineColor = mSpectrumForm.ctlCWGraph.GetDefaultSeriesColor(1)
+				.LineToBaseColor = .LineColor
+				.BarFillColor = .LineColor
+				.PointStyle = CWUIControlsLib.CWPointStyles.cwPointNone
+				.PointColor = .LineColor
+				.AnnotationFontColor = System.Drawing.Color.Black
+				.AnnotationFontName = DEFAULT_FONT_NAME
+				.AnnotationFontSize = DEFAULT_ANNOTATION_FONT_SIZE
+			End With
 
-            For intSeriesIndex = 2 To .SeriesCount
-                .SeriesOptions(intSeriesIndex) = .SeriesOptions(1)
-                .SeriesOptions(intSeriesIndex).LineColor = mSpectrumForm.ctlCWGraph.GetDefaulSeriesColor(intSeriesIndex)
-                .SeriesOptions(intSeriesIndex).LineToBaseColor = .SeriesOptions(intSeriesIndex).LineColor
-                .SeriesOptions(intSeriesIndex).BarFillColor = .SeriesOptions(intSeriesIndex).LineColor
-                .SeriesOptions(intSeriesIndex).PointColor = .SeriesOptions(intSeriesIndex).LineColor
-            Next
+			For intSeriesIndex = 2 To .SeriesCount
+				.SeriesOptions(intSeriesIndex) = .SeriesOptions(1)
+				.SeriesOptions(intSeriesIndex).LineColor = mSpectrumForm.ctlCWGraph.GetDefaultSeriesColor(intSeriesIndex)
+				.SeriesOptions(intSeriesIndex).LineToBaseColor = .SeriesOptions(intSeriesIndex).LineColor
+				.SeriesOptions(intSeriesIndex).BarFillColor = .SeriesOptions(intSeriesIndex).LineColor
+				.SeriesOptions(intSeriesIndex).PointColor = .SeriesOptions(intSeriesIndex).LineColor
+			Next
         End With
 
         If cboSeriesNumber.SelectedIndex >= 0 Then
