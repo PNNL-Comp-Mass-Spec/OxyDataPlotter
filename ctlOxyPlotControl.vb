@@ -2,6 +2,7 @@
 Option Explicit On
 
 Imports OxyPlot.Series
+Imports OxyPlot.WindowsForms
 
 Public Class ctlOxyPlotControl
 
@@ -26,10 +27,13 @@ Public Class ctlOxyPlotControl
 
 #Region "Member variables"
 
-    Protected mDefaultPlotMode As pmPlotModeConstants
+    Private mDefaultPlotMode As pmPlotModeConstants
 
     ' 0-based array
-    Protected mSeriesPlotMode(MAX_SERIES_COUNT) As pmPlotModeConstants
+    Private ReadOnly mSeriesPlotMode(MAX_SERIES_COUNT) As pmPlotModeConstants
+
+    Private mXAxis As OxyPlot.Axes.Axis
+    Private mYAxis As OxyPlot.Axes.Axis
 
 #End Region
 
@@ -85,7 +89,7 @@ Public Class ctlOxyPlotControl
 
         Dim intSeriesIndex As Integer = intSeriesNumber - 1
 
-        If intSeriesNumber < 0 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If intSeriesNumber < 1 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
             Return 0
         Else
             Select Case mSeriesPlotMode(intSeriesIndex)
@@ -120,7 +124,7 @@ Public Class ctlOxyPlotControl
     ''' <param name="strTitle"></param>
     ''' <returns></returns>
     ''' <remarks>Will be an empty series without any data points</remarks>
-    Protected Function GetNewBarSeries(strTitle As String) As BarSeries
+    Private Function GetNewBarSeries(strTitle As String) As BarSeries
 
         Return GetNewBarSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
 
@@ -133,7 +137,7 @@ Public Class ctlOxyPlotControl
     ''' <param name="lstData">Data points (only the Y values will be used for the bar heights)</param>
     ''' <returns></returns>
     ''' <remarks>Will be an empty series without any data points</remarks>
-    Protected Function GetNewBarSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As BarSeries
+    Private Function GetNewBarSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As BarSeries
 
         Dim oSeries As BarSeries
         oSeries = New BarSeries()
@@ -155,7 +159,7 @@ Public Class ctlOxyPlotControl
     ''' <param name="strTitle"></param>
     ''' <returns></returns>
     ''' <remarks>Will be an empty series without any data points</remarks>
-    Protected Function GetNewLineSeries(strTitle As String) As LineSeries
+    Private Function GetNewLineSeries(strTitle As String) As LineSeries
         Return GetNewLineSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
     End Function
 
@@ -166,7 +170,7 @@ Public Class ctlOxyPlotControl
     ''' <param name="lstData">Data points for the new series</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Protected Function GetNewLineSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As LineSeries
+    Private Function GetNewLineSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As LineSeries
 
         Dim oSeries As LineSeries
         oSeries = New LineSeries()
@@ -186,7 +190,7 @@ Public Class ctlOxyPlotControl
     ''' <param name="strTitle"></param>
     ''' <returns></returns>
     ''' <remarks>Will be an empty series without any data points</remarks>
-    Protected Function GetNewStemSeries(strTitle As String) As StemSeries
+    Private Function GetNewStemSeries(strTitle As String) As StemSeries
 
         Return GetNewStemSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
 
@@ -254,7 +258,7 @@ Public Class ctlOxyPlotControl
     ''' <param name="strTitle"></param>
     ''' <returns></returns>
     ''' <remarks>Will be an empty series without any data points</remarks>
-    Protected Function GetNewStemSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As StemSeries
+    Private Function GetNewStemSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As StemSeries
 
         Dim oSeries As StemSeries
         oSeries = New StemSeries()
@@ -268,22 +272,24 @@ Public Class ctlOxyPlotControl
 
     End Function
 
-    Protected Sub InitializePlotModel()
+    Private Sub InitializePlotModel()
 
         Dim oNewModel = New OxyPlot.PlotModel()
 
-        Dim oXAxis As OxyPlot.Axes.Axis = New OxyPlot.Axes.LinearAxis()
-        oXAxis.Position = OxyPlot.Axes.AxisPosition.Bottom
-        oXAxis.Title = "X-axis"
+        mXAxis = New OxyPlot.Axes.LinearAxis()
+        mXAxis.Position = OxyPlot.Axes.AxisPosition.Bottom
+        mXAxis.Title = "X-axis"
 
-        Dim oYAxis As OxyPlot.Axes.Axis = New OxyPlot.Axes.LinearAxis()
-        oXAxis.Position = OxyPlot.Axes.AxisPosition.Left
-        oXAxis.Title = "Y-axis"
+        mYAxis = New OxyPlot.Axes.LinearAxis()
+        mYAxis.Position = OxyPlot.Axes.AxisPosition.Left
+        mYAxis.Title = "Y-axis"
 
-        oNewModel.Axes.Add(oXAxis)
-        oNewModel.Axes.Add(oYAxis)
+        oNewModel.Axes.Add(mXAxis)
+        oNewModel.Axes.Add(mYAxis)
 
         ctlOxyPlot.Model = oNewModel
+
+        ctlOxyPlot.Invalidate()
     End Sub
 
     Public Sub SetDataXvsY(ByRef intSeriesNumber As Integer, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, DataCount As Integer, Optional ByVal strSeriesTitle As String = "")
@@ -317,6 +323,8 @@ Public Class ctlOxyPlotControl
             Case Else
                 ' Leave the plot mode unchanged
         End Select
+
+        ZoomOutFull()
 
         ' ToDo: RecordZoomRange(True)
 
@@ -547,7 +555,6 @@ Public Class ctlOxyPlotControl
             mSeriesPlotMode(intSeriesIndex) = eNewPlotMode
         End If
 
-
         Select Case mSeriesPlotMode(intSeriesIndex)
             Case pmPlotModeConstants.pmBar
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
@@ -590,14 +597,14 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
-    Protected Sub ShowMessage(strMessage As String, Optional ByVal strCaption As String = "Info")
+    Private Sub ShowMessage(strMessage As String, Optional ByVal strCaption As String = "Info")
         System.Windows.Forms.MessageBox.Show(strMessage, strCaption, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
     Public Sub ZoomOutFull(Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnAllowFixMinimumYAtZero As Boolean = True)
-        ctlOxyPlot.ActualModel.DefaultXAxis.Reset()
-        ctlOxyPlot.ActualModel.DefaultYAxis.Reset()
-        ctlOxyPlot.Invalidate()
+        mXAxis.Reset()
+        mYAxis.Reset()
+        ctlOxyPlot.InvalidatePlot(True)
     End Sub
 
     Public Sub New()
