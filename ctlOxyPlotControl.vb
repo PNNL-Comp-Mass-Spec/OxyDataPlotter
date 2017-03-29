@@ -15,9 +15,8 @@ Public Class ctlOxyPlotControl
     Public Enum pmPlotModeConstants
         pmLines = 0                 ' LineSeries
         pmSticksToZero = 1          ' StemSeries
-        pmBar = 2                   ' BarSeries
-        pmPoints = 3                ' LineSeries
-        pmPointsAndLines = 4        ' LineSeries
+        pmPoints = 2                ' LineSeries
+        pmPointsAndLines = 3        ' LineSeries
     End Enum
 #End Region
 
@@ -93,9 +92,6 @@ Public Class ctlOxyPlotControl
             Return 0
         Else
             Select Case mSeriesPlotMode(intSeriesIndex)
-                Case pmPlotModeConstants.pmBar
-                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-                    Return oSeries.Items.Count
                 Case pmPlotModeConstants.pmSticksToZero
                     Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                     Return oSeries.Points.Count
@@ -214,10 +210,6 @@ Public Class ctlOxyPlotControl
         Dim intSeriesIndex = intSeriesNumber - 1
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                ' Bar plots do not have markers
-                Return ColorToOxyColor(Color.Black)
-
             Case pmPlotModeConstants.pmSticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                 Return oSeries.MarkerFill
@@ -238,9 +230,6 @@ Public Class ctlOxyPlotControl
         Dim intSeriesIndex = intSeriesNumber - 1
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                ' Bar plots do not have markers
-                Return OxyPlot.MarkerType.None
             Case pmPlotModeConstants.pmSticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                 Return oSeries.MarkerType
@@ -316,8 +305,6 @@ Public Class ctlOxyPlotControl
         SetSeriesVisible(intSeriesNumber, True)
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
             Case pmPlotModeConstants.pmSticksToZero
                 mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
             Case Else
@@ -373,10 +360,6 @@ Public Class ctlOxyPlotControl
         Dim intSeriesIndex As Integer = intSeriesNumber - 1
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-                oSeries.FillColor = newOxyColor
-                oSeries.StrokeColor = newOxyColor
             Case pmPlotModeConstants.pmSticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                 oSeries.Color = newOxyColor
@@ -406,8 +389,6 @@ Public Class ctlOxyPlotControl
             Select Case mDefaultPlotMode
                 Case pmPlotModeConstants.pmSticksToZero
                     ctlOxyPlot.Model.Series.Add(GetNewStemSeries(strSeriesTitle))
-                Case pmPlotModeConstants.pmBar
-                    ctlOxyPlot.Model.Series.Add(GetNewBarSeries(strSeriesTitle))
                 Case Else
                     ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle))
             End Select
@@ -431,10 +412,6 @@ Public Class ctlOxyPlotControl
         Dim intSeriesIndex = intSeriesNumber - 1
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                ' Bar plots do not have markers
-                ' Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-
             Case pmPlotModeConstants.pmSticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                 oSeries.MarkerFill = ColorToOxyColor(cNewColor)
@@ -455,10 +432,6 @@ Public Class ctlOxyPlotControl
         Dim intSeriesIndex = intSeriesNumber - 1
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                ' Bar plots do not have markers
-                ' Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-
             Case pmPlotModeConstants.pmSticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                 oSeries.MarkerType = ePointStyle
@@ -504,12 +477,10 @@ Public Class ctlOxyPlotControl
 
         Dim eCurrentPlotMode As pmPlotModeConstants
 
-        If TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.BarSeries Then
-            eCurrentPlotMode = pmPlotModeConstants.pmBar
-        ElseIf TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.StemSeries Then
+        If TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.StemSeries Then
             eCurrentPlotMode = pmPlotModeConstants.pmSticksToZero
         ElseIf TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.LineSeries Then
-            If mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmBar OrElse mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmSticksToZero Then
+            If mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmSticksToZero Then
                 mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
             Else
                 eCurrentPlotMode = mSeriesPlotMode(intSeriesIndex)
@@ -522,12 +493,6 @@ Public Class ctlOxyPlotControl
             Dim strTitle As String
 
             Select Case eCurrentPlotMode
-                Case pmPlotModeConstants.pmBar
-                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-                    strTitle = oSeries.Title
-                    For intIndex = 0 To oSeries.Items.Count - 1
-                        lstData.Add(New OxyPlot.DataPoint(intIndex + 1, oSeries.Items(intIndex).Value))
-                    Next
                 Case pmPlotModeConstants.pmSticksToZero
                     Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                     strTitle = oSeries.Title
@@ -544,8 +509,6 @@ Public Class ctlOxyPlotControl
             End Select
 
             Select Case eNewPlotMode
-                Case pmPlotModeConstants.pmBar
-                    ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewBarSeries(strTitle, lstData)
                 Case pmPlotModeConstants.pmSticksToZero
                     ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewStemSeries(strTitle, lstData)
                 Case Else
@@ -556,13 +519,6 @@ Public Class ctlOxyPlotControl
         End If
 
         Select Case mSeriesPlotMode(intSeriesIndex)
-            Case pmPlotModeConstants.pmBar
-                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-
-                With oSeries
-                    If .BarWidth < 1 Then .BarWidth = 1
-                End With
-
             Case pmPlotModeConstants.pmSticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
                 With oSeries

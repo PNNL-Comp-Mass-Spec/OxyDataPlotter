@@ -27,14 +27,6 @@ Public Class Spectrum
 
     Private Const SPECTRUM_DLL_DATE As String = "March 29, 2017"
 
-    ''Public Enum pmPlotModeConstants
-    ''	pmLines = 0
-    ''	pmStickToZero = 1
-    ''	pmBar = 2
-    ''	pmPoints = 3
-    ''	pmPointsAndLines = 4
-    ''End Enum
-
     ''Public Enum asmAnnotationSnapModeConstants
     ''	asmFixedToAnyPoint = 0
     ''	asmFixedToSingleDataPoint = 1
