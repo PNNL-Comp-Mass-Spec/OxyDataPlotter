@@ -55,6 +55,10 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
+    Private Function ColorToOxyColor(eColor As Color) As OxyPlot.OxyColor
+        Return OxyPlot.OxyColor.FromArgb(eColor.A, eColor.R, eColor.G, eColor.B)
+    End Function
+
     Public Sub GenerateSineWave(intSeriesNumber As Integer, blnXAxisLogBased As Boolean)
 
         Const DATA_COUNT As Short = 1021
@@ -192,6 +196,58 @@ Public Class ctlOxyPlotControl
         Return ctlOxyPlot.Model.Series.Count
     End Function
 
+    Public Function GetSeriesPointColor(intSeriesNumber As Integer) As Color
+        Dim eColor = GetSeriesPointOxyColor(intSeriesNumber)
+        Return eColor.ToColor()
+    End Function
+
+    Public Function GetSeriesPointOxyColor(intSeriesNumber As Integer) As OxyPlot.OxyColor
+
+        If intSeriesNumber < 1 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(intSeriesNumber))
+        End If
+
+        Dim intSeriesIndex = intSeriesNumber - 1
+
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                ' Bar plots do not have markers
+                Return ColorToOxyColor(Color.Black)
+
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                Return oSeries.MarkerFill
+
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+                Return oSeries.MarkerFill
+        End Select
+
+    End Function
+
+    Public Function GetSeriesPointStyle(intSeriesNumber As Integer) As OxyPlot.MarkerType
+
+        If intSeriesNumber < 1 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(intSeriesNumber))
+        End If
+
+        Dim intSeriesIndex = intSeriesNumber - 1
+
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                ' Bar plots do not have markers
+                Return OxyPlot.MarkerType.None
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                Return oSeries.MarkerType
+
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+                Return oSeries.MarkerType
+        End Select
+
+    End Function
+
     ''' <summary>
     ''' Creates a new stem series
     ''' </summary>
@@ -300,7 +356,7 @@ Public Class ctlOxyPlotControl
     End Sub
 
     Public Sub SetSeriesColor(intSeriesNumber As Integer, cNewColor As Color)
-        SetSeriesColor(intSeriesNumber, OxyPlot.OxyColor.FromArgb(cNewColor.A, cNewColor.R, cNewColor.G, cNewColor.B))
+        SetSeriesColor(intSeriesNumber, ColorToOxyColor(cNewColor))
     End Sub
 
     Public Sub SetSeriesColor(intSeriesNumber As Integer, newOxyColor As OxyPlot.OxyColor)
@@ -355,6 +411,63 @@ Public Class ctlOxyPlotControl
         AssureValidSeriesNumber(intSeriesNumber)
 
         ctlOxyPlot.Model.Series(intSeriesNumber - 1).Title = strSeriesTitle
+
+    End Sub
+
+    Public Sub SetSeriesPointColor(intSeriesNumber As Integer, cNewColor As Color)
+
+        If intSeriesNumber < 1 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(intSeriesNumber))
+        End If
+
+        Dim intSeriesIndex = intSeriesNumber - 1
+
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                ' Bar plots do not have markers
+                ' Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
+
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                oSeries.MarkerFill = ColorToOxyColor(cNewColor)
+
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+                oSeries.MarkerFill = ColorToOxyColor(cNewColor)
+        End Select
+
+    End Sub
+
+    Public Sub SetSeriesPointStyle(intSeriesNumber As Integer, ePointStyle As OxyPlot.MarkerType)
+
+        If intSeriesNumber < 1 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(intSeriesNumber))
+        End If
+
+        Dim intSeriesIndex = intSeriesNumber - 1
+
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                ' Bar plots do not have markers
+                ' Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
+
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                oSeries.MarkerType = ePointStyle
+
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+
+                Select Case mSeriesPlotMode(intSeriesIndex)
+                    Case pmPlotModeConstants.pmLines
+                        oSeries.MarkerType = ePointStyle
+                    Case pmPlotModeConstants.pmPoints
+                        oSeries.MarkerType = ePointStyle
+                    Case pmPlotModeConstants.pmPointsAndLines
+                        oSeries.MarkerType = ePointStyle
+                End Select
+
+        End Select
 
     End Sub
 

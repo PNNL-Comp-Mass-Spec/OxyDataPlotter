@@ -429,14 +429,12 @@ Public Class Spectrum
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetSeriesPlotMode(intSeriesNumber)
     End Function
 
-    Public Function GetSeriesPointColor(intSeriesNumber As Short) As Color
-        Throw New NotImplementedException
-        ' ToDo: Return SpectrumForm.ctlOxyPlot.GetSeriesPointColor(intSeriesNumber)
+    Public Function GetSeriesPointColor(intSeriesNumber As Integer) As Color
+        Return SpectrumForm.ctlOxyPlot.GetSeriesPointColor(intSeriesNumber)
     End Function
 
-    Public Function GetSeriesPointStyle(intSeriesNumber As Short) As OxyPlot.MarkerType
-        Throw New NotImplementedException
-        ' ToDo: Return SpectrumForm.ctlOxyPlot.GetSeriesPointStyle(intSeriesNumber)
+    Public Function GetSeriesPointStyle(intSeriesNumber As Integer) As OxyPlot.MarkerType
+        Return SpectrumForm.ctlOxyPlot.GetSeriesPointStyle(intSeriesNumber)
     End Function
 
     Public Function GetSpectrumFormActiveSeriesNumber() As Short
@@ -757,14 +755,12 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.SetSeriesPlotMode(intSeriesNumber, ePlotMode, blnMakeDefault)
     End Sub
 
-    Public Sub SetSeriesPointColor(intSeriesNumber As Short, cNewColor As Color)
-        Throw New NotImplementedException
-        ' ToDo: SpectrumForm.ctlOxyPlot.SetSeriesPointColor(intSeriesNumber, cNewColor)
+    Public Sub SetSeriesPointColor(intSeriesNumber As Integer, cNewColor As Color)
+        SpectrumForm.ctlOxyPlot.SetSeriesPointColor(intSeriesNumber, cNewColor)
     End Sub
 
-    Public Sub SetSeriesPointStyle(intSeriesNumber As Short, ePointStyle As OxyPlot.MarkerType)
-        Throw New NotImplementedException
-        ' ToDo: SpectrumForm.ctlOxyPlot.SetSeriesPointStyle(intSeriesNumber, ePointStyle)
+    Public Sub SetSeriesPointStyle(intSeriesNumber As Integer, ePointStyle As OxyPlot.MarkerType)
+        SpectrumForm.ctlOxyPlot.SetSeriesPointStyle(intSeriesNumber, ePointStyle)
     End Sub
 
     Public Sub SetSeriesStartAndIncrement(intSeriesNumber As Short, dblXFirst As Double, dblIncrement As Double)
