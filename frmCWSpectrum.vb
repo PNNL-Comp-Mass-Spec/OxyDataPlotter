@@ -1,5 +1,5 @@
 Option Strict On
-Option Explicit On 
+Option Explicit On
 
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
@@ -71,41 +71,41 @@ Friend Class frmCWSpectrum
     Friend WithEvents ctlCWGraph As CWSpectrumDLLNET.CWGraphControl
     Public WithEvents mnuFileSaveToDiskAsPicture As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.mnuEditCurrentSeriesSelected = New Microsoft.VisualBasic.Compatibility.VB6.MenuItemArray(Me.components)
-        Me._mnuEditCurrentSeriesSelected_1 = New System.Windows.Forms.MenuItem
-        Me.MainMenu1 = New System.Windows.Forms.MainMenu
-        Me.mnuFile = New System.Windows.Forms.MenuItem
-        Me.mnuFileOpen = New System.Windows.Forms.MenuItem
-        Me.mnuFileSave = New System.Windows.Forms.MenuItem
-        Me.mnuFileSep1 = New System.Windows.Forms.MenuItem
-        Me.mnuFileSaveToDiskAsPicture = New System.Windows.Forms.MenuItem
-        Me.mnuFileSep2 = New System.Windows.Forms.MenuItem
-        Me.mnuFileClose = New System.Windows.Forms.MenuItem
-        Me.mnuEdit = New System.Windows.Forms.MenuItem
-        Me.mnuEditCopyAsPicture = New System.Windows.Forms.MenuItem
-        Me.mnuEditSep1 = New System.Windows.Forms.MenuItem
-        Me.mnuEditCopyCurrentData = New System.Windows.Forms.MenuItem
-        Me.mnuEditPasteData = New System.Windows.Forms.MenuItem
-        Me.mnuEditDeleteData = New System.Windows.Forms.MenuItem
-        Me.mnuEditSep2 = New System.Windows.Forms.MenuItem
-        Me.mnuEditCurrentSeries = New System.Windows.Forms.MenuItem
-        Me.mnuEditSetSeriesCount = New System.Windows.Forms.MenuItem
-        Me.mnuEditSep3 = New System.Windows.Forms.MenuItem
-        Me.mnuSetZoomRange = New System.Windows.Forms.MenuItem
-        Me.mnuEditAutoLabelPoints = New System.Windows.Forms.MenuItem
-        Me.mnuEditSep4 = New System.Windows.Forms.MenuItem
-        Me.mnuEditRemoveAnnotationsCurrentSeries = New System.Windows.Forms.MenuItem
-        Me.mnuRemoveAllAnnotations = New System.Windows.Forms.MenuItem
-        Me.mnuEditRemoveAllData = New System.Windows.Forms.MenuItem
-        Me.mnuEditSep5 = New System.Windows.Forms.MenuItem
-        Me.mnuEditPlotStyles = New System.Windows.Forms.MenuItem
-        Me.mnuResetGraphToDefaults = New System.Windows.Forms.MenuItem
-        Me.mnuEditAddSampleData = New System.Windows.Forms.MenuItem
-        Me.mnuAbout = New System.Windows.Forms.MenuItem
-        Me.mnuAboutSoftware = New System.Windows.Forms.MenuItem
-        Me.ctlCWGraph = New CWSpectrumDLLNET.CWGraphControl
+        Me._mnuEditCurrentSeriesSelected_1 = New System.Windows.Forms.MenuItem()
+        Me.MainMenu1 = New System.Windows.Forms.MainMenu(Me.components)
+        Me.mnuFile = New System.Windows.Forms.MenuItem()
+        Me.mnuFileOpen = New System.Windows.Forms.MenuItem()
+        Me.mnuFileSave = New System.Windows.Forms.MenuItem()
+        Me.mnuFileSep1 = New System.Windows.Forms.MenuItem()
+        Me.mnuFileSaveToDiskAsPicture = New System.Windows.Forms.MenuItem()
+        Me.mnuFileSep2 = New System.Windows.Forms.MenuItem()
+        Me.mnuFileClose = New System.Windows.Forms.MenuItem()
+        Me.mnuEdit = New System.Windows.Forms.MenuItem()
+        Me.mnuEditCopyAsPicture = New System.Windows.Forms.MenuItem()
+        Me.mnuEditSep1 = New System.Windows.Forms.MenuItem()
+        Me.mnuEditCopyCurrentData = New System.Windows.Forms.MenuItem()
+        Me.mnuEditPasteData = New System.Windows.Forms.MenuItem()
+        Me.mnuEditDeleteData = New System.Windows.Forms.MenuItem()
+        Me.mnuEditSep2 = New System.Windows.Forms.MenuItem()
+        Me.mnuEditCurrentSeries = New System.Windows.Forms.MenuItem()
+        Me.mnuEditSetSeriesCount = New System.Windows.Forms.MenuItem()
+        Me.mnuEditSep3 = New System.Windows.Forms.MenuItem()
+        Me.mnuSetZoomRange = New System.Windows.Forms.MenuItem()
+        Me.mnuEditAutoLabelPoints = New System.Windows.Forms.MenuItem()
+        Me.mnuEditSep4 = New System.Windows.Forms.MenuItem()
+        Me.mnuEditRemoveAnnotationsCurrentSeries = New System.Windows.Forms.MenuItem()
+        Me.mnuRemoveAllAnnotations = New System.Windows.Forms.MenuItem()
+        Me.mnuEditRemoveAllData = New System.Windows.Forms.MenuItem()
+        Me.mnuEditSep5 = New System.Windows.Forms.MenuItem()
+        Me.mnuEditPlotStyles = New System.Windows.Forms.MenuItem()
+        Me.mnuResetGraphToDefaults = New System.Windows.Forms.MenuItem()
+        Me.mnuEditAddSampleData = New System.Windows.Forms.MenuItem()
+        Me.mnuAbout = New System.Windows.Forms.MenuItem()
+        Me.mnuAboutSoftware = New System.Windows.Forms.MenuItem()
+        Me.ctlCWGraph = New CWSpectrumDLLNET.CWGraphControl()
         CType(Me.mnuEditCurrentSeriesSelected, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -283,19 +283,21 @@ Friend Class frmCWSpectrum
         'ctlCWGraph
         '
         Me.ctlCWGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlCWGraph.DateModeXAxis = False
+        Me.ctlCWGraph.DateModeXAxisShowTime = False
         Me.ctlCWGraph.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ctlCWGraph.Location = New System.Drawing.Point(8, 8)
+        Me.ctlCWGraph.Location = New System.Drawing.Point(10, 10)
         Me.ctlCWGraph.Name = "ctlCWGraph"
-        Me.ctlCWGraph.Size = New System.Drawing.Size(640, 432)
+        Me.ctlCWGraph.Size = New System.Drawing.Size(715, 430)
         Me.ctlCWGraph.TabIndex = 0
         '
         'frmCWSpectrum
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
+        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 16)
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(660, 444)
+        Me.ClientSize = New System.Drawing.Size(739, 444)
         Me.Controls.Add(Me.ctlCWGraph)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -356,24 +358,24 @@ Friend Class frmCWSpectrum
         ctlCWGraph.SetSeriesCount(3)
 
         ctlCWGraph.GenerateSineWave(1, True)
-		ctlCWGraph.SetSeriesColor(1, ctlCWGraph.GetDefaultSeriesColor(1))
+        ctlCWGraph.SetSeriesColor(1, ctlCWGraph.GetDefaultSeriesColor(1))
 
-		ctlCWGraph.GenerateSineWave(2, False)
-		ctlCWGraph.SetSeriesColor(2, ctlCWGraph.GetDefaultSeriesColor(2))
+        ctlCWGraph.GenerateSineWave(2, False)
+        ctlCWGraph.SetSeriesColor(2, ctlCWGraph.GetDefaultSeriesColor(2))
 
-		ReDim dblXVals(DATA_COUNT - 1)
-		ReDim dblYVals(DATA_COUNT - 1)
+        ReDim dblXVals(DATA_COUNT - 1)
+        ReDim dblYVals(DATA_COUNT - 1)
 
-		For intIndex = 0 To DATA_COUNT - 1
-			dblXVals(intIndex) = System.Math.Abs(22 - objRandom.Next(0, 15) * System.Math.Tan(intIndex / 100.0#) * 2)
-			dblYVals(intIndex) = System.Math.Abs(objRandom.Next(0, 22) * System.Math.Sin(intIndex / 100.0#) * 15)
-		Next intIndex
+        For intIndex = 0 To DATA_COUNT - 1
+            dblXVals(intIndex) = System.Math.Abs(22 - objRandom.Next(0, 15) * System.Math.Tan(intIndex / 100.0#) * 2)
+            dblYVals(intIndex) = System.Math.Abs(objRandom.Next(0, 22) * System.Math.Sin(intIndex / 100.0#) * 15)
+        Next intIndex
 
-		FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
+        FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
 
-		ctlCWGraph.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, "", dblOriginalMaximumValue)
-		ctlCWGraph.SetSeriesPlotMode(3, CWGraphControl.pmPlotModeConstants.pmSticksToZero)
-		ctlCWGraph.SetSeriesColor(3, ctlCWGraph.GetDefaultSeriesColor(3))
+        ctlCWGraph.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, "", dblOriginalMaximumValue)
+        ctlCWGraph.SetSeriesPlotMode(3, CWGraphControl.pmPlotModeConstants.pmSticksToZero)
+        ctlCWGraph.SetSeriesColor(3, ctlCWGraph.GetDefaultSeriesColor(3))
 
         SetCurrentSeriesNumber(3)
 
@@ -381,11 +383,11 @@ Friend Class frmCWSpectrum
 
     End Sub
 
-    Private Function ConvertColorNameToColorObject(ByVal strColorName As String) As System.Drawing.Color
+    Private Function ConvertColorNameToColorObject(strColorName As String) As Color
         ' Removes "Color [" and "]" from strColorName
 
         Dim strCleanName As String
-        Dim cNewColor As System.Drawing.Color
+        Dim cNewColor As Color
 
         If Not strColorName Is Nothing Then
             strCleanName = strColorName
@@ -394,13 +396,13 @@ Friend Class frmCWSpectrum
                 strCleanName = strCleanName.Remove(strCleanName.Length - 1, 1)
             End If
 
-            cNewColor = System.Drawing.Color.FromName(strCleanName)
+            cNewColor = Color.FromName(strCleanName)
 
             Debug.Assert(cNewColor.ToString = strColorName)
 
             ConvertColorNameToColorObject = cNewColor
         Else
-            ConvertColorNameToColorObject = System.Drawing.Color.Black
+            ConvertColorNameToColorObject = Color.Black
         End If
 
     End Function
@@ -540,7 +542,7 @@ Friend Class frmCWSpectrum
         Dim FillStringArray() As String
         Dim FillStringCumulative As String = String.Empty
 
-        Dim objProgress As ProgressFormNET.frmProgress
+        Dim objProgress As ProgressFormNET.frmProgress = Nothing
 
         Try
             lngFillStringMaxIndex = -1
@@ -562,8 +564,8 @@ Friend Class frmCWSpectrum
                     End If
 
                     If blnShowProgress Then
-                        objProgress.UpdateProgressBar(lngSrcIndex)
-                        If objProgress.KeyPressAbortProcess Then Exit For
+                        objProgress?.UpdateProgressBar(lngSrcIndex)
+                        If objProgress?.KeyPressAbortProcess Then Exit For
                         System.Windows.Forms.Application.DoEvents()
                     End If
                 End If
@@ -586,8 +588,7 @@ Friend Class frmCWSpectrum
             FillStringCumulative = FillStringCumulative
         Finally
             If blnShowProgress Then
-                objProgress.HideForm()
-                objProgress = Nothing
+                objProgress?.HideForm()
             End If
         End Try
 
@@ -677,7 +678,7 @@ Friend Class frmCWSpectrum
 
         Dim blnMatched As Boolean
 
-        Dim objProgress As ProgressFormNET.frmProgress
+        Dim objProgress As ProgressFormNET.frmProgress = Nothing
 
         Dim srInFile As System.IO.StreamReader
 
@@ -761,7 +762,7 @@ Friend Class frmCWSpectrum
                 lngBytesLoaded = lngBytesLoaded + Len(strLineIn) + 2
                 lngLinesRead = lngLinesRead + 1
                 If blnShowProgressForm And lngLinesRead Mod 50 = 0 Then
-                    objProgress.UpdateProgressBar(lngBytesLoaded)
+                    objProgress?.UpdateProgressBar(lngBytesLoaded)
                 End If
 
                 strLineIn = strLineIn.Trim
@@ -817,21 +818,27 @@ Friend Class frmCWSpectrum
                             intSeriesIndex = intNewSeriesIndex
                         End If
                         eParsingDataMode = pfmParsingFileModeConstants.pfmData
-                        If blnShowProgressForm Then objProgress.UpdateCurrentSubTask("Loading data for series " & intSeriesIndex.ToString.Trim)
+                        If blnShowProgressForm Then
+                            objProgress?.UpdateCurrentSubTask("Loading data for series " & intSeriesIndex.ToString.Trim)
+                        End If
 
                     ElseIf strLineIn.StartsWith("PLOTOPTIONS") Then
                         If intNewSeriesIndex > 0 Then
                             intSeriesOptionsSeriesIndex = intNewSeriesIndex
                         End If
                         eParsingDataMode = pfmParsingFileModeConstants.pfmOptions
-                        If blnShowProgressForm Then objProgress.UpdateCurrentSubTask("Loading options for series " & intSeriesIndex.ToString.Trim)
+                        If blnShowProgressForm Then
+                            objProgress?.UpdateCurrentSubTask("Loading options for series " & intSeriesIndex.ToString.Trim)
+                        End If
 
                     ElseIf strLineIn.StartsWith("ANNOTATIONS") Then
                         intAnnotationSeriesIndex = intNewSeriesIndex
                         ' Remove any existing annotations for this series
                         ctlCWGraph.RemoveAnnotationsForSeries(intAnnotationSeriesIndex)
                         eParsingDataMode = pfmParsingFileModeConstants.pfmAnnotations
-                        If blnShowProgressForm Then objProgress.UpdateCurrentSubTask("Loading annotations for series " & intSeriesIndex.ToString.Trim)
+                        If blnShowProgressForm Then
+                            objProgress?.UpdateCurrentSubTask("Loading annotations for series " & intSeriesIndex.ToString.Trim)
+                        End If
 
                     ElseIf strLineIn.StartsWith("GLOBALPLOTOPTIONS") Then
                         eParsingDataMode = pfmParsingFileModeConstants.pfmOptions
@@ -1157,7 +1164,9 @@ Friend Class frmCWSpectrum
                 End If
             Loop
 
-            If blnShowProgressForm Then objProgress.UpdateCurrentSubTask("Formatting graph")
+            If blnShowProgressForm Then
+                objProgress?.UpdateCurrentSubTask("Formatting graph")
+            End If
 
             ' Copy data from dblXData() and dblYData() to the graph if not done yet
             If Not LoadDataFromDiskUpdateSeries(intSeriesIndex, dblXData, dblYData, intDataCount, blnShowMessages, blnUserWarnedReplaceExistingData, blnNormalizeData) Then
@@ -1186,9 +1195,9 @@ Friend Class frmCWSpectrum
 
         Catch ex As Exception
             If blnShowMessages Then
-                MsgBox("Error saving data to disk:" & vbCrLf & ex.message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OKOnly, "Error")
+                MsgBox("Error saving data to disk:" & vbCrLf & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             Else
-                System.Diagnostics.Debug.WriteLine("Error saving data to disk (frmCWSpectrum.LoadDataToDisk):" & ex.message)
+                System.Diagnostics.Debug.WriteLine("Error saving data to disk (frmCWSpectrum.LoadDataToDisk):" & ex.Message)
             End If
         Finally
             If Not srInFile Is Nothing Then
@@ -1203,7 +1212,7 @@ Friend Class frmCWSpectrum
             ctlCWGraph.SetAnnotationDensityAutoHideCaptions(blnAutoHideCaptions)
 
             If blnShowProgressForm Then
-                objProgress.HideForm()
+                objProgress?.HideForm()
                 objProgress = Nothing
             End If
 
@@ -1292,7 +1301,7 @@ FindMaximumAndNormalizeDataErrorHandler:
 
     End Function
 
-    Public Function ParseStringFindCrlfIndex(ByVal strWork As String, ByRef intDelimeterLength As Short) As Integer
+    Public Function ParseStringFindCrlfIndex(strWork As String, ByRef intDelimeterLength As Short) As Integer
         ' First looks for vbCrLf in strWork
         ' Returns index if found, setting intDelimeterLength to 2
         ' If not found, uses ParseStringFindNextDelimeter to search for just CR or just LF,
@@ -1312,7 +1321,7 @@ FindMaximumAndNormalizeDataErrorHandler:
         ParseStringFindCrlfIndex = lngCrLfLoc
     End Function
 
-    Private Function ParseStringFindNextDelimeter(ByVal strWork As String, ByRef strFieldDelimeter As String, Optional ByRef boolMatchWholeDelimeter As Boolean = True, Optional ByRef boolCombineConsecutiveDelimeters As Boolean = False) As Integer
+    Private Function ParseStringFindNextDelimeter(strWork As String, ByRef strFieldDelimeter As String, Optional ByRef boolMatchWholeDelimeter As Boolean = True, Optional ByRef boolCombineConsecutiveDelimeters As Boolean = False) As Integer
         ' Scans strWork, looking for next delimeter (token)
         ' strFieldDelimeter may be 1 or more characters long.  If multiple characters, use
         '   boolMatchWholeDelimeter = True to treat strFieldDelimeter as just one delimeter
@@ -1376,7 +1385,7 @@ FindMaximumAndNormalizeDataErrorHandler:
 
     End Function
 
-    Private Function ParseStringValuesDbl(ByVal strWork As String, ByVal intMaxValuesToReturn As Integer, ByVal chFieldDelimeters As Char()) As Double()
+    Private Function ParseStringValuesDbl(strWork As String, intMaxValuesToReturn As Integer, chFieldDelimeters As Char()) As Double()
 
         Dim dblValues() As Double
         Dim strValues() As String
@@ -1484,8 +1493,8 @@ FindMaximumAndNormalizeDataErrorHandler:
             lngValuesToPopulate = 0
             For intIndex = 1 To Len(strDataList)
                 If intIndex Mod 500 = 0 Then
-                    objProgress.UpdateProgressBar(intIndex)
-                    If objProgress.KeyPressAbortProcess Then Exit For
+                    objProgress?.UpdateProgressBar(intIndex)
+                    If objProgress?.KeyPressAbortProcess Then Exit For
                 End If
 
                 If Mid(strDataList, intIndex, 1) = strDelimeter Then
@@ -1493,10 +1502,10 @@ FindMaximumAndNormalizeDataErrorHandler:
                 End If
             Next intIndex
 
-            If lngValuesToPopulate > 1 And Not objProgress.KeyPressAbortProcess Then
+            If lngValuesToPopulate > 1 And Not objProgress?.KeyPressAbortProcess Then
                 ' Update objProgress to use the correct progress bar size
-                objProgress.InitializeProgressForm("Pasting Data From Clipboard", 0, lngValuesToPopulate)
-                objProgress.UpdateCurrentSubTask("Parsing List")
+                objProgress?.InitializeProgressForm("Pasting Data From Clipboard", 0, lngValuesToPopulate)
+                objProgress?.UpdateCurrentSubTask("Parsing List")
             End If
 
             ' Initialize IonMatchList
@@ -1513,8 +1522,8 @@ FindMaximumAndNormalizeDataErrorHandler:
                 lngStartIndex = 1
                 For intIndex = 1 To Len(strDataList)
                     If intIndex Mod 100 = 0 Then
-                        objProgress.UpdateProgressBar(lngPointsLoaded)
-                        If objProgress.KeyPressAbortProcess Then Exit For
+                        objProgress?.UpdateProgressBar(lngPointsLoaded)
+                        If objProgress?.KeyPressAbortProcess Then Exit For
                     End If
 
                     If Mid(strDataList, intIndex, 1) = strDelimeter Then
@@ -1564,14 +1573,14 @@ FindMaximumAndNormalizeDataErrorHandler:
 
         End If
 
-        objProgress.HideForm()
+        objProgress?.HideForm()
         objProgress = Nothing
 
         Exit Sub
 
 PasteDataFromClipboardErrorHandler:
         If blnShowMessages Then
-            MsgBox("Error occurred while pasting the data: " & vbCrLf & Err.Description, MsgBoxStyle.Exclamation Or MsgBoxStyle.OKOnly, "Error")
+            MsgBox("Error occurred while pasting the data: " & vbCrLf & Err.Description, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
         Else
             System.Diagnostics.Debug.WriteLine("Error occurred in frmCWSpectrum.PasteDataFromClipboard(): " & Err.Description)
         End If
@@ -1608,8 +1617,8 @@ PasteDataFromClipboardErrorHandler:
         Const DATA_COUNT_THRESHOLD_TO_SHOW_PROGRESS_FORM As Short = 10000
         Dim intSeriesIndex As Short
 
-        Dim dblXData() As Double
-        Dim dblYData() As Double
+        Dim dblXData() As Double = Nothing
+        Dim dblYData() As Double = Nothing
         Dim intDataCount As Integer
         Dim intIndex As Integer
         Dim blnFirstAnnotationFound As Boolean
@@ -1626,13 +1635,11 @@ PasteDataFromClipboardErrorHandler:
         Dim lngDataPointCountToSave As Integer
         Dim blnShowProgressForm As Boolean
 
-        Dim objProgress As ProgressFormNET.frmProgress
-
-        Dim swOutFile As System.IO.StreamWriter
+        Dim objProgress As ProgressFormNET.frmProgress = Nothing
 
         Try
             If ctlCWGraph.GetSeriesCount < 1 And blnShowMessages Then
-                MsgBox("The graph does not contain any data.", MsgBoxStyle.Information Or MsgBoxStyle.OKOnly, "Nothing to Copy")
+                MsgBox("The graph does not contain any data.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Nothing to Copy")
                 Exit Sub
             End If
 
@@ -1651,170 +1658,170 @@ PasteDataFromClipboardErrorHandler:
             mLastPath = System.IO.Path.GetDirectoryName(strOutputFilePath)
             mLastFileName = System.IO.Path.GetFileName(strOutputFilePath)
 
+            Dim appendToFile As Boolean
             If blnOptionsOnly And blnAppendOptionsToFile Then
-                swOutFile = New System.IO.StreamWriter(strOutputFilePath, True)
+                appendToFile = True
             Else
-                swOutFile = New System.IO.StreamWriter(strOutputFilePath, False)
+                appendToFile = False
             End If
 
-            If Not blnOptionsOnly Then
-                lngDataPointCountToSave = 0
-                For intSeriesIndex = 1 To ctlCWGraph.GetSeriesCount()
-                    lngDataPointCountToSave = lngDataPointCountToSave + ctlCWGraph.GetDataCount(intSeriesIndex)
-                Next intSeriesIndex
+            Using swOutFile = New System.IO.StreamWriter(strOutputFilePath, appendToFile)
 
-                If lngDataPointCountToSave > DATA_COUNT_THRESHOLD_TO_SHOW_PROGRESS_FORM Then
-                    blnShowProgressForm = True
-                End If
-            End If
-
-            If blnShowProgressForm Then
-                objProgress = New ProgressFormNET.frmProgress
-                objProgress.InitializeProgressForm("Saving data", 1, ctlCWGraph.GetSeriesCount(), False, True, True)
-                objProgress.ToggleAlwaysOnTop(True)
-                objProgress.MoveToBottomCenter()
-            End If
-
-            For intSeriesIndex = 1 To ctlCWGraph.GetSeriesCount()
                 If Not blnOptionsOnly Then
-                    ' Write the data points for this series
-                    If ctlCWGraph.GetDataXvsY(intSeriesIndex, dblXData, dblYData, intDataCount) Then
-                        If blnShowProgressForm Then objProgress.InitializeSubtask("Series " & intSeriesIndex.ToString.Trim, 0, intDataCount)
-                        swOutFile.WriteLine("[Data_Series" & intSeriesIndex.ToString.Trim & "]")
-                        For intIndex = 0 To intDataCount - 1
-                            swOutFile.WriteLine(dblXData(intIndex) & strDelim & dblYData(intIndex))
-                            If blnShowProgressForm And intIndex Mod 500 = 0 Then
-                                objProgress.UpdateSubtaskProgressBar(intIndex)
-                            End If
-                        Next intIndex
+                    lngDataPointCountToSave = 0
+                    For intSeriesIndex = 1 To ctlCWGraph.GetSeriesCount()
+                        lngDataPointCountToSave = lngDataPointCountToSave + ctlCWGraph.GetDataCount(intSeriesIndex)
+                    Next intSeriesIndex
+
+                    If lngDataPointCountToSave > DATA_COUNT_THRESHOLD_TO_SHOW_PROGRESS_FORM Then
+                        blnShowProgressForm = True
                     End If
                 End If
 
-                ' Write the options for this series
-                swOutFile.WriteLine("[PlotOptions_Series" & intSeriesIndex.ToString.Trim & "]")
-                swOutFile.WriteLine("SeriesPlotMode=" & ctlCWGraph.GetSeriesPlotMode(intSeriesIndex))
-                swOutFile.WriteLine("SeriesLineStyle=" & ctlCWGraph.GetSeriesLineStyle(intSeriesIndex))
-                swOutFile.WriteLine("SeriesLineWidth=" & ctlCWGraph.GetSeriesLineWidth(intSeriesIndex))
-                swOutFile.WriteLine("SeriesLineColor=" & ctlCWGraph.GetSeriesLineColor(intSeriesIndex).ToString)
-                swOutFile.WriteLine("SeriesLineToBaseColor=" & ctlCWGraph.GetSeriesLineToBaseColor(intSeriesIndex).ToString)
-                swOutFile.WriteLine("SeriesBarFillColor=" & ctlCWGraph.GetSeriesBarFillColor(intSeriesIndex).ToString)
-                swOutFile.WriteLine("SeriesPointStyle=" & ctlCWGraph.GetSeriesPointStyle(intSeriesIndex))
-                swOutFile.WriteLine("SeriesPointColor=" & ctlCWGraph.GetSeriesPointColor(intSeriesIndex).ToString)
-                swOutFile.WriteLine("AnnotationFontName=" & ctlCWGraph.GetAnnotationFontName(intSeriesIndex))
-                swOutFile.WriteLine("AnnotationFontSize=" & ctlCWGraph.GetAnnotationFontSize(intSeriesIndex))
-                swOutFile.WriteLine("AnnotationFontColor=" & ctlCWGraph.GetAnnotationFontColor(intSeriesIndex).ToString)
-
-                If Not blnOptionsOnly Then
-                    ' Write the series caption and original maximum intensity
-                    swOutFile.WriteLine("SeriesLegendCaption=" & ctlCWGraph.GetSeriesLegendCaption(intSeriesIndex))
-                    swOutFile.WriteLine("SeriesOriginalIntensityMaximum=" & ctlCWGraph.GetSeriesOriginalIntensityMaximum(intSeriesIndex))
-
-                    ' Write the annotations for this series
-                    blnFirstAnnotationFound = False
-                    For intIndex = 1 To ctlCWGraph.GetAnnotationCount
-                        If ctlCWGraph.GetAnnotationByIndex(intIndex, dblXPos, dblYPos, strCaption, lngCaptionAngle, intSeriesNumberForAnnotation, eAnnotationSnapMode, lngPointNumberToBind, blnAnnotationShowsNearestPointX, blnAnnotationShowsNearestPointY, blnIncludeArrow, blnHideInDenseRegions) Then
-                            If intSeriesNumberForAnnotation = intSeriesIndex Then
-                                If Not blnFirstAnnotationFound Then
-                                    swOutFile.WriteLine("[Annotations_Series" & intSeriesIndex.ToString.Trim & "]")
-                                    blnFirstAnnotationFound = True
-                                End If
-                                Select Case eAnnotationSnapMode
-                                    Case CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToAnyPoint
-                                        strAnnotationOptionCodes = "\FA" & lngPointNumberToBind.ToString.Trim
-                                    Case CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint
-                                        strAnnotationOptionCodes = "\FS" & lngPointNumberToBind.ToString.Trim
-                                    Case CWGraphControl.asmAnnotationSnapModeConstants.asmFloating
-                                        strAnnotationOptionCodes = "\FL" & lngPointNumberToBind.ToString.Trim
-                                    Case Else
-                                        ' This shouldn't happen
-                                        System.Diagnostics.Debug.Assert(False, "")
-                                        strAnnotationOptionCodes = ""
-                                End Select
-
-                                If blnAnnotationShowsNearestPointX Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\X"
-                                If blnAnnotationShowsNearestPointY Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\Y"
-                                If blnIncludeArrow Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\A"
-                                If blnHideInDenseRegions Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\H"
-
-                                swOutFile.WriteLine(dblXPos.ToString.Trim & strDelim & dblYPos.ToString.Trim & strDelim & lngCaptionAngle.ToString.Trim & strDelim & strAnnotationOptionCodes & strDelim & strCaption)
-                            End If
-                        End If
-                    Next intIndex
+                If blnShowProgressForm Then
+                    objProgress = New ProgressFormNET.frmProgress
+                    objProgress.InitializeProgressForm("Saving data", 1, ctlCWGraph.GetSeriesCount(), False, True, True)
+                    objProgress.ToggleAlwaysOnTop(True)
+                    objProgress.MoveToBottomCenter()
                 End If
-                If blnShowProgressForm Then objProgress.UpdateProgressBar(intSeriesIndex)
-            Next intSeriesIndex
 
-            ' Write the general plot options
-            swOutFile.WriteLine("[GlobalPlotOptions]")
-            swOutFile.WriteLine("Title=" & ctlCWGraph.GetLabelTitle())
-            swOutFile.WriteLine("Subtitle=" & ctlCWGraph.GetLabelSubtitle())
-            swOutFile.WriteLine("XAxis=" & ctlCWGraph.GetLabelXAxis())
-            swOutFile.WriteLine("YAxis=" & ctlCWGraph.GetLabelYAxis())
-            swOutFile.WriteLine("LabelFontName=" & ctlCWGraph.GetLabelFontName())
-            swOutFile.WriteLine("LabelFontSize=" & ctlCWGraph.GetLabelFontName())
-            swOutFile.WriteLine("LabelFontColor=" & ctlCWGraph.GetLabelFontColor().ToString)
-            swOutFile.WriteLine("PlotBackgroundColor=" & ctlCWGraph.GetPlotBackgroundColor().ToString)
-            swOutFile.WriteLine("NormalizeOnLoadOrPaste=" & GetNormalizeOnLoadOrPaste())
-            swOutFile.WriteLine("NormalizationConstant=" & GetNormalizationConstant())
+                For intSeriesIndex = 1 To ctlCWGraph.GetSeriesCount()
+                    If Not blnOptionsOnly Then
+                        ' Write the data points for this series
+                        If ctlCWGraph.GetDataXvsY(intSeriesIndex, dblXData, dblYData, intDataCount) Then
+                            If blnShowProgressForm Then objProgress.InitializeSubtask("Series " & intSeriesIndex.ToString.Trim, 0, intDataCount)
+                            swOutFile.WriteLine("[Data_Series" & intSeriesIndex.ToString.Trim & "]")
+                            For intIndex = 0 To intDataCount - 1
+                                swOutFile.WriteLine(dblXData(intIndex) & strDelim & dblYData(intIndex))
+                                If blnShowProgressForm And intIndex Mod 500 = 0 Then
+                                    objProgress?.UpdateSubtaskProgressBar(intIndex)
+                                End If
+                            Next intIndex
+                        End If
+                    End If
 
-            swOutFile.WriteLine("GridLinesXColorMajor=" & ctlCWGraph.GetGridLinesXColor(True).ToString)
-            swOutFile.WriteLine("GridLinesXColorMinor=" & ctlCWGraph.GetGridLinesXColor(False).ToString)
-            swOutFile.WriteLine("GridLinesYColorMajor=" & ctlCWGraph.GetGridLinesYColor(True).ToString)
-            swOutFile.WriteLine("GridLinesYColorMinor=" & ctlCWGraph.GetGridLinesYColor(False).ToString)
+                    ' Write the options for this series
+                    swOutFile.WriteLine("[PlotOptions_Series" & intSeriesIndex.ToString.Trim & "]")
+                    swOutFile.WriteLine("SeriesPlotMode=" & ctlCWGraph.GetSeriesPlotMode(intSeriesIndex))
+                    swOutFile.WriteLine("SeriesLineStyle=" & ctlCWGraph.GetSeriesLineStyle(intSeriesIndex))
+                    swOutFile.WriteLine("SeriesLineWidth=" & ctlCWGraph.GetSeriesLineWidth(intSeriesIndex))
+                    swOutFile.WriteLine("SeriesLineColor=" & ctlCWGraph.GetSeriesLineColor(intSeriesIndex).ToString)
+                    swOutFile.WriteLine("SeriesLineToBaseColor=" & ctlCWGraph.GetSeriesLineToBaseColor(intSeriesIndex).ToString)
+                    swOutFile.WriteLine("SeriesBarFillColor=" & ctlCWGraph.GetSeriesBarFillColor(intSeriesIndex).ToString)
+                    swOutFile.WriteLine("SeriesPointStyle=" & ctlCWGraph.GetSeriesPointStyle(intSeriesIndex))
+                    swOutFile.WriteLine("SeriesPointColor=" & ctlCWGraph.GetSeriesPointColor(intSeriesIndex).ToString)
+                    swOutFile.WriteLine("AnnotationFontName=" & ctlCWGraph.GetAnnotationFontName(intSeriesIndex))
+                    swOutFile.WriteLine("AnnotationFontSize=" & ctlCWGraph.GetAnnotationFontSize(intSeriesIndex))
+                    swOutFile.WriteLine("AnnotationFontColor=" & ctlCWGraph.GetAnnotationFontColor(intSeriesIndex).ToString)
 
-            swOutFile.WriteLine("GridLinesXVisibleMajor=" & ctlCWGraph.GetGridLinesXVisible(True))
-            swOutFile.WriteLine("GridLinesXVisibleMinor=" & ctlCWGraph.GetGridLinesXVisible(False))
-            swOutFile.WriteLine("GridLinesYVisibleMajor=" & ctlCWGraph.GetGridlinesYVisible(True))
-            swOutFile.WriteLine("GridLinesYVisibleMinor=" & ctlCWGraph.GetGridlinesYVisible(False))
+                    If Not blnOptionsOnly Then
+                        ' Write the series caption and original maximum intensity
+                        swOutFile.WriteLine("SeriesLegendCaption=" & ctlCWGraph.GetSeriesLegendCaption(intSeriesIndex))
+                        swOutFile.WriteLine("SeriesOriginalIntensityMaximum=" & ctlCWGraph.GetSeriesOriginalIntensityMaximum(intSeriesIndex))
 
-            swOutFile.WriteLine("AnnotationDensityAutoHideCaptions=" & ctlCWGraph.GetAnnotationDensityAutoHideCaptions())
-            swOutFile.WriteLine("AnnotationDensityToleranceAutoAdjust=" & ctlCWGraph.GetAnnotationDensityToleranceAutoAdjust())
-            swOutFile.WriteLine("AnnotationDensityToleranceX=" & ctlCWGraph.GetAnnotationDensityToleranceX())
-            swOutFile.WriteLine("AnnotationDensityToleranceY=" & ctlCWGraph.GetAnnotationDensityToleranceY())
+                        ' Write the annotations for this series
+                        blnFirstAnnotationFound = False
+                        For intIndex = 1 To ctlCWGraph.GetAnnotationCount
+                            If ctlCWGraph.GetAnnotationByIndex(intIndex, dblXPos, dblYPos, strCaption, lngCaptionAngle, intSeriesNumberForAnnotation, eAnnotationSnapMode, lngPointNumberToBind, blnAnnotationShowsNearestPointX, blnAnnotationShowsNearestPointY, blnIncludeArrow, blnHideInDenseRegions) Then
+                                If intSeriesNumberForAnnotation = intSeriesIndex Then
+                                    If Not blnFirstAnnotationFound Then
+                                        swOutFile.WriteLine("[Annotations_Series" & intSeriesIndex.ToString.Trim & "]")
+                                        blnFirstAnnotationFound = True
+                                    End If
+                                    Select Case eAnnotationSnapMode
+                                        Case CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToAnyPoint
+                                            strAnnotationOptionCodes = "\FA" & lngPointNumberToBind.ToString.Trim
+                                        Case CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint
+                                            strAnnotationOptionCodes = "\FS" & lngPointNumberToBind.ToString.Trim
+                                        Case CWGraphControl.asmAnnotationSnapModeConstants.asmFloating
+                                            strAnnotationOptionCodes = "\FL" & lngPointNumberToBind.ToString.Trim
+                                        Case Else
+                                            ' This shouldn't happen
+                                            System.Diagnostics.Debug.Assert(False, "")
+                                            strAnnotationOptionCodes = ""
+                                    End Select
 
-            swOutFile.WriteLine("AutoScaleVisibleY=" & ctlCWGraph.GetAutoscaleVisibleY())
-            swOutFile.WriteLine("FixMinimumYAtZero=" & ctlCWGraph.GetFixMinimumYAtZero())
-            swOutFile.WriteLine("AutoAdjustScalingToIncludeCaptions=" & ctlCWGraph.GetAutoAdjustScalingToIncludeCaptions())
-            swOutFile.WriteLine("PrecisionX=" & ctlCWGraph.GetDisplayPrecisionX())
-            swOutFile.WriteLine("PrecisionY=" & ctlCWGraph.GetDisplayPrecisionY())
+                                    If blnAnnotationShowsNearestPointX Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\X"
+                                    If blnAnnotationShowsNearestPointY Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\Y"
+                                    If blnIncludeArrow Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\A"
+                                    If blnHideInDenseRegions Then strAnnotationOptionCodes = strAnnotationOptionCodes & "\H"
 
-            swOutFile.WriteLine("Cursor1Visible=" & ctlCWGraph.GetCursorVisibility(1))
-            swOutFile.WriteLine("Cursor2Visible=" & ctlCWGraph.GetCursorVisibility(2))
-            swOutFile.WriteLine("CursorSnapToData=" & ctlCWGraph.GetCursorSnapToDataPointModeEnabled())
-            swOutFile.WriteLine("Cursor1Color=" & ctlCWGraph.GetCursorColor(1).ToString)
-            swOutFile.WriteLine("Cursor2Color=" & ctlCWGraph.GetCursorColor(2).ToString)
-            ctlCWGraph.GetCursorPosition(dblXPos, dblYPos, 1)
-            swOutFile.WriteLine("CursorPositionX=" & dblXPos.ToString.Trim)
-            swOutFile.WriteLine("CursorPositionY=" & dblYPos.ToString.Trim)
+                                    swOutFile.WriteLine(dblXPos.ToString.Trim & strDelim & dblYPos.ToString.Trim & strDelim & lngCaptionAngle.ToString.Trim & strDelim & strAnnotationOptionCodes & strDelim & strCaption)
+                                End If
+                            End If
+                        Next intIndex
+                    End If
+                    If blnShowProgressForm Then objProgress?.UpdateProgressBar(intSeriesIndex)
+                Next intSeriesIndex
 
-            swOutFile.WriteLine("AutoLabelPeaksDisplayXPosition=" & mAutoLabelPeaksOptions.DisplayXPos)
-            swOutFile.WriteLine("AutoLabelPeaksDisplayYPosition=" & mAutoLabelPeaksOptions.DisplayYPos)
-            swOutFile.WriteLine("AutoLabelPeaksIncludeArrow=" & mAutoLabelPeaksOptions.IncludeArrow)
-            swOutFile.WriteLine("AutoLabelPeaksHideInDenseRegions=" & mAutoLabelPeaksOptions.HideInDenseRegions)
-            swOutFile.WriteLine("AutoLabelPeaksCaptionAngle=" & mAutoLabelPeaksOptions.CaptionAngle)
-            swOutFile.WriteLine("AutoLabelPeaksIntensityThresholdMinimum=" & mAutoLabelPeaksOptions.IntensityThresholdMinimum)
-            swOutFile.WriteLine("AutoLabelPeaksMinimumIntensityPercentageOfMaximum=" & mAutoLabelPeaksOptions.MinimumIntensityPercentageOfMaximum)
-            swOutFile.WriteLine("AutoLabelPeaksPeakWidthMinimumPoints=" & mAutoLabelPeaksOptions.PeakWidthMinimumPoints)
-            swOutFile.WriteLine("AutoLabelPeaksLabelCountMaximum=" & mAutoLabelPeaksOptions.PeakLabelCountMaximum)
+                ' Write the general plot options
+                swOutFile.WriteLine("[GlobalPlotOptions]")
+                swOutFile.WriteLine("Title=" & ctlCWGraph.GetLabelTitle())
+                swOutFile.WriteLine("Subtitle=" & ctlCWGraph.GetLabelSubtitle())
+                swOutFile.WriteLine("XAxis=" & ctlCWGraph.GetLabelXAxis())
+                swOutFile.WriteLine("YAxis=" & ctlCWGraph.GetLabelYAxis())
+                swOutFile.WriteLine("LabelFontName=" & ctlCWGraph.GetLabelFontName())
+                swOutFile.WriteLine("LabelFontSize=" & ctlCWGraph.GetLabelFontName())
+                swOutFile.WriteLine("LabelFontColor=" & ctlCWGraph.GetLabelFontColor().ToString)
+                swOutFile.WriteLine("PlotBackgroundColor=" & ctlCWGraph.GetPlotBackgroundColor().ToString)
+                swOutFile.WriteLine("NormalizeOnLoadOrPaste=" & GetNormalizeOnLoadOrPaste())
+                swOutFile.WriteLine("NormalizationConstant=" & GetNormalizationConstant())
 
+                swOutFile.WriteLine("GridLinesXColorMajor=" & ctlCWGraph.GetGridLinesXColor(True).ToString)
+                swOutFile.WriteLine("GridLinesXColorMinor=" & ctlCWGraph.GetGridLinesXColor(False).ToString)
+                swOutFile.WriteLine("GridLinesYColorMajor=" & ctlCWGraph.GetGridLinesYColor(True).ToString)
+                swOutFile.WriteLine("GridLinesYColorMinor=" & ctlCWGraph.GetGridLinesYColor(False).ToString)
+
+                swOutFile.WriteLine("GridLinesXVisibleMajor=" & ctlCWGraph.GetGridLinesXVisible(True))
+                swOutFile.WriteLine("GridLinesXVisibleMinor=" & ctlCWGraph.GetGridLinesXVisible(False))
+                swOutFile.WriteLine("GridLinesYVisibleMajor=" & ctlCWGraph.GetGridlinesYVisible(True))
+                swOutFile.WriteLine("GridLinesYVisibleMinor=" & ctlCWGraph.GetGridlinesYVisible(False))
+
+                swOutFile.WriteLine("AnnotationDensityAutoHideCaptions=" & ctlCWGraph.GetAnnotationDensityAutoHideCaptions())
+                swOutFile.WriteLine("AnnotationDensityToleranceAutoAdjust=" & ctlCWGraph.GetAnnotationDensityToleranceAutoAdjust())
+                swOutFile.WriteLine("AnnotationDensityToleranceX=" & ctlCWGraph.GetAnnotationDensityToleranceX())
+                swOutFile.WriteLine("AnnotationDensityToleranceY=" & ctlCWGraph.GetAnnotationDensityToleranceY())
+
+                swOutFile.WriteLine("AutoScaleVisibleY=" & ctlCWGraph.GetAutoscaleVisibleY())
+                swOutFile.WriteLine("FixMinimumYAtZero=" & ctlCWGraph.GetFixMinimumYAtZero())
+                swOutFile.WriteLine("AutoAdjustScalingToIncludeCaptions=" & ctlCWGraph.GetAutoAdjustScalingToIncludeCaptions())
+                swOutFile.WriteLine("PrecisionX=" & ctlCWGraph.GetDisplayPrecisionX())
+                swOutFile.WriteLine("PrecisionY=" & ctlCWGraph.GetDisplayPrecisionY())
+
+                swOutFile.WriteLine("Cursor1Visible=" & ctlCWGraph.GetCursorVisibility(1))
+                swOutFile.WriteLine("Cursor2Visible=" & ctlCWGraph.GetCursorVisibility(2))
+                swOutFile.WriteLine("CursorSnapToData=" & ctlCWGraph.GetCursorSnapToDataPointModeEnabled())
+                swOutFile.WriteLine("Cursor1Color=" & ctlCWGraph.GetCursorColor(1).ToString)
+                swOutFile.WriteLine("Cursor2Color=" & ctlCWGraph.GetCursorColor(2).ToString)
+                ctlCWGraph.GetCursorPosition(dblXPos, dblYPos, 1)
+                swOutFile.WriteLine("CursorPositionX=" & dblXPos.ToString.Trim)
+                swOutFile.WriteLine("CursorPositionY=" & dblYPos.ToString.Trim)
+
+                swOutFile.WriteLine("AutoLabelPeaksDisplayXPosition=" & mAutoLabelPeaksOptions.DisplayXPos)
+                swOutFile.WriteLine("AutoLabelPeaksDisplayYPosition=" & mAutoLabelPeaksOptions.DisplayYPos)
+                swOutFile.WriteLine("AutoLabelPeaksIncludeArrow=" & mAutoLabelPeaksOptions.IncludeArrow)
+                swOutFile.WriteLine("AutoLabelPeaksHideInDenseRegions=" & mAutoLabelPeaksOptions.HideInDenseRegions)
+                swOutFile.WriteLine("AutoLabelPeaksCaptionAngle=" & mAutoLabelPeaksOptions.CaptionAngle)
+                swOutFile.WriteLine("AutoLabelPeaksIntensityThresholdMinimum=" & mAutoLabelPeaksOptions.IntensityThresholdMinimum)
+                swOutFile.WriteLine("AutoLabelPeaksMinimumIntensityPercentageOfMaximum=" & mAutoLabelPeaksOptions.MinimumIntensityPercentageOfMaximum)
+                swOutFile.WriteLine("AutoLabelPeaksPeakWidthMinimumPoints=" & mAutoLabelPeaksOptions.PeakWidthMinimumPoints)
+                swOutFile.WriteLine("AutoLabelPeaksLabelCountMaximum=" & mAutoLabelPeaksOptions.PeakLabelCountMaximum)
+
+            End Using
 
         Catch ex As Exception
             If blnShowMessages Then
-                MsgBox("Error saving data to disk:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation Or MsgBoxStyle.OKOnly, "Error")
+                MsgBox("Error saving data to disk:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             Else
                 System.Diagnostics.Debug.WriteLine("Error saving data to disk (frmCWSpectrum.SaveDataToDisk):" & Err.Description)
             End If
 
-        Finally
-            If Not swOutFile Is Nothing Then
-                swOutFile.Close()
-            End If
         End Try
 
 SaveDataToDiskExitSub:
 
         If blnShowProgressForm Then
-            objProgress.HideForm()
+            objProgress?.HideForm()
             objProgress = Nothing
         End If
 
@@ -1868,7 +1875,7 @@ SaveDataToDiskExitSub:
 
         Catch ex As Exception
             If blnShowMessages Then
-                MsgBox("Error while trying to save:" & vbCrLf & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OKOnly, "Error")
+                MsgBox("Error while trying to save:" & vbCrLf & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             Else
                 System.Diagnostics.Debug.WriteLine("Error occurred in frmCWSpectrum.SaveToDiskAsPicture:" & ex.Message)
             End If
@@ -1880,7 +1887,7 @@ SaveDataToDiskExitSub:
         AutoLabelOptionsRetrieve(mAutoLabelPeaksOptions)
     End Sub
 
-    Private Function SelectFile(ByVal strDialogCaption As String, Optional ByRef strStartPath As String = "", Optional ByRef blnSaveFile As Boolean = False, Optional ByRef strDefaultFileName As String = "", Optional ByVal strFileFilterCodes As String = "All Files (*.*)|*.*|Text Files (*.txt)|*.txt", Optional ByRef intFilterIndexDefault As Short = 1, Optional ByRef blnFileMustExistOnOpen As Boolean = True) As String
+    Private Function SelectFile(strDialogCaption As String, Optional ByRef strStartPath As String = "", Optional ByRef blnSaveFile As Boolean = False, Optional ByRef strDefaultFileName As String = "", Optional ByVal strFileFilterCodes As String = "All Files (*.*)|*.*|Text Files (*.txt)|*.txt", Optional ByRef intFilterIndexDefault As Short = 1, Optional ByRef blnFileMustExistOnOpen As Boolean = True) As String
 
         Dim dlgSelectFile As System.Windows.Forms.FileDialog
 
@@ -1969,7 +1976,7 @@ SetCurrentSeriesNumberErrorHandler:
 
     End Sub
 
-    Public Sub SetWindowCaption(ByVal strCaption As String)
+    Public Sub SetWindowCaption(strCaption As String)
         Me.Text = strCaption
     End Sub
 
@@ -2106,7 +2113,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
     End Sub
 
-    Private Function StringToNumber(ByVal strWork As String, Optional ByRef intNumLength As Integer = 0, Optional ByRef intErrorCode As Short = 0, Optional ByRef blnAllowMinusSign As Boolean = False, Optional ByRef blnAllowPlusSign As Boolean = False, Optional ByRef blnAllowESymbol As Boolean = False, Optional ByRef blnMultipleDecimalPointIsError As Boolean = True, Optional ByVal strDecimalPointSymbol As String = ".") As Double
+    Private Function StringToNumber(strWork As String, Optional ByRef intNumLength As Integer = 0, Optional ByRef intErrorCode As Short = 0, Optional ByRef blnAllowMinusSign As Boolean = False, Optional ByRef blnAllowPlusSign As Boolean = False, Optional ByRef blnAllowESymbol As Boolean = False, Optional ByRef blnMultipleDecimalPointIsError As Boolean = True, Optional ByVal strDecimalPointSymbol As String = ".") As Double
         ' Looks for a number at the start of strWork and returns it if found
         ' strWork can contain non-numeric characters after the number; only the number will be returned
         ' intNumLength returns the length of the number, including the decimal point and any negative sign or E symbol
@@ -2245,7 +2252,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
     End Function
 
-    Private Sub frmCWSpectrum_Deactivate(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Deactivate
+    Private Sub frmCWSpectrum_Deactivate(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Deactivate
         With mSpectrumWindowPos
             .PosTop = Me.Top
             .Height = Me.Height
@@ -2261,7 +2268,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
     ''' <param name="eventSender"></param>
     ''' <param name="eventArgs"></param>
     ''' <remarks></remarks>
-    Private Sub frmCWSpectrum_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
+    Private Sub frmCWSpectrum_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
         Dim intSeriesNumber As Short
 
         If eventArgs.Modifiers = Keys.Control Then
@@ -2282,13 +2289,13 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End If
     End Sub
 
-    Private Sub frmCWSpectrum_KeyUp(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyUp
+    Private Sub frmCWSpectrum_KeyUp(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyUp
         If eventArgs.Modifiers = Keys.Control Then
             mnuEditAddSampleData.Visible = False
         End If
     End Sub
 
-    Private Sub frmCWSpectrum_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    Private Sub frmCWSpectrum_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
 
         mSeriesNumberMenuLoadedCount = 1
         mActiveSeriesNumber = 1
@@ -2322,58 +2329,58 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
     End Sub
 
-    Private Sub frmCWSpectrum_Closing(ByVal eventSender As System.Object, ByVal eventArgs As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+    Private Sub frmCWSpectrum_Closing(eventSender As System.Object, eventArgs As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         If Not mAutoLabelPeaksForm Is Nothing Then
             mAutoLabelPeaksForm.Close()
         End If
     End Sub
 
-    Public Sub mnuAboutSoftware_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuAboutSoftware.Click
+    Public Sub mnuAboutSoftware_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuAboutSoftware.Click
         ShowAboutBox()
     End Sub
 
-    Public Sub mnuEdit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEdit.Click
+    Public Sub mnuEdit_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEdit.Click
         ShowHideSeriesNumberMenus()
     End Sub
 
-    Public Sub mnuEditAddSampleData_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditAddSampleData.Click
+    Public Sub mnuEditAddSampleData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditAddSampleData.Click
         AddSampleData()
     End Sub
 
-    Public Sub mnuEditAutoLabelPoints_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditAutoLabelPoints.Click
+    Public Sub mnuEditAutoLabelPoints_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditAutoLabelPoints.Click
         ShowAutoLabelPeaksDialog()
     End Sub
 
-    Public Sub mnuEditCopyAsPicture_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditCopyAsPicture.Click
+    Public Sub mnuEditCopyAsPicture_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditCopyAsPicture.Click
         CopyToClipboardAsPicture()
     End Sub
 
-    Public Sub mnuEditCopyCurrentData_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditCopyCurrentData.Click
+    Public Sub mnuEditCopyCurrentData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditCopyCurrentData.Click
         CopyDataPointsToClipboardOrToString(mActiveSeriesNumber)
     End Sub
 
-    Public Sub mnuEditCurrentSeriesSelected_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditCurrentSeriesSelected.Click
+    Public Sub mnuEditCurrentSeriesSelected_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditCurrentSeriesSelected.Click
         Dim Index As Short = mnuEditCurrentSeriesSelected.GetIndex(CType(eventSender, System.Windows.Forms.MenuItem))
         SetCurrentSeriesNumber(Index)
     End Sub
 
-    Public Sub mnuEditDeleteData_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditDeleteData.Click
+    Public Sub mnuEditDeleteData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditDeleteData.Click
         DeleteDataActiveSeries(True)
     End Sub
 
-    Public Sub mnuEditPasteData_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditPasteData.Click
+    Public Sub mnuEditPasteData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditPasteData.Click
         PasteDataFromClipboard()
     End Sub
 
-    Public Sub mnuEditPlotStyles_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditPlotStyles.Click
+    Public Sub mnuEditPlotStyles_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditPlotStyles.Click
         EditPlotStyles()
     End Sub
 
-    Public Sub mnuEditRemoveAllData_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditRemoveAllData.Click
+    Public Sub mnuEditRemoveAllData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditRemoveAllData.Click
         DeleteDataForAllSeries(True)
     End Sub
 
-    Public Sub mnuEditRemoveAnnotationsCurrentSeries_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditRemoveAnnotationsCurrentSeries.Click
+    Public Sub mnuEditRemoveAnnotationsCurrentSeries_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditRemoveAnnotationsCurrentSeries.Click
         Dim eResponse As MsgBoxResult
 
         eResponse = MsgBox("Do you really want to remove the annotations for series " & mActiveSeriesNumber.ToString.Trim & "?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel Or MsgBoxStyle.DefaultButton3, "Remove Annotations")
@@ -2382,7 +2389,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End If
     End Sub
 
-    Public Sub mnuEditSetSeriesCount_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuEditSetSeriesCount.Click
+    Public Sub mnuEditSetSeriesCount_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditSetSeriesCount.Click
         Dim strNewSeriesCount As String
         Dim intNewSeriesCount As Short
 
@@ -2395,24 +2402,24 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
     End Sub
 
-    Public Sub mnuFileClose_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuFileClose.Click
+    Public Sub mnuFileClose_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileClose.Click
         ' Raising this event will prompt the SpectrumInitiator to raise a SpectrumFormRequestCloseEvent
         RaiseEvent SpectrumFormRequestClose()
     End Sub
 
-    Public Sub mnuFileOpen_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuFileOpen.Click
+    Public Sub mnuFileOpen_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileOpen.Click
         LoadDataFromDisk()
     End Sub
 
-    Public Sub mnuFileSave_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuFileSave.Click
+    Public Sub mnuFileSave_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileSave.Click
         SaveDataToDisk()
     End Sub
 
-    Public Sub mnuFileSaveToDiskAsPicture_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuFileSaveToDiskAsPicture.Click
+    Public Sub mnuFileSaveToDiskAsPicture_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileSaveToDiskAsPicture.Click
         SaveToDiskAsPicture()
     End Sub
 
-    Public Sub mnuRemoveAllAnnotations_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuRemoveAllAnnotations.Click
+    Public Sub mnuRemoveAllAnnotations_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuRemoveAllAnnotations.Click
         Dim eResponse As MsgBoxResult
 
         eResponse = MsgBox("Do you really want to remove all of the annotations (for all series)?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel Or MsgBoxStyle.DefaultButton3, "Remove Annotations")
@@ -2421,11 +2428,11 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End If
     End Sub
 
-    Public Sub mnuResetGraphToDefaults_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuResetGraphToDefaults.Click
+    Public Sub mnuResetGraphToDefaults_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuResetGraphToDefaults.Click
         ResetGraphToDefaults()
     End Sub
 
-    Public Sub mnuSetZoomRange_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuSetZoomRange.Click
+    Public Sub mnuSetZoomRange_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuSetZoomRange.Click
         ShowZoomRangeDialog()
     End Sub
 

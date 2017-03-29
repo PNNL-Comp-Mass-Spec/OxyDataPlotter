@@ -24,20 +24,20 @@ Option Explicit On
 ' this computer software.
 
 Module modCWSpectrum
-	
-	Public Structure udtWindowPosType
+
+    Public Structure udtWindowPosType
         Dim PosTop As Integer           ' Position, in pixels
         Dim PosLeft As Integer
         Dim Height As Integer
         Dim Width As Integer
-	End Structure
-	
-	Public Enum dmDataModeConstants
-		dmDiscrete = 0
-		dmContinuous = 1
-	End Enum
-	
-	Public Structure udtAutoLabelPeaksOptionsInternalType
+    End Structure
+
+    Public Enum dmDataModeConstants
+        dmDiscrete = 0
+        dmContinuous = 1
+    End Enum
+
+    Public Structure udtAutoLabelPeaksOptionsInternalType
         Public DataMode As dmDataModeConstants
         Public DisplayXPos As Boolean
         Public DisplayYPos As Boolean
@@ -48,7 +48,7 @@ Module modCWSpectrum
         Public MinimumIntensityPercentageOfMaximum As Integer
         Public PeakWidthMinimumPoints As Integer
         Public PeakLabelCountMaximum As Integer
-	End Structure
+    End Structure
 
     ' Constants for Centering Windows
     Public Enum wpcWindowPosContants As Integer
@@ -102,7 +102,7 @@ Module modCWSpectrum
         End With
     End Sub
 
-    Public Function CBoolSafe(ByVal strValue As String) As Boolean
+    Public Function CBoolSafe(strValue As String) As Boolean
         Try
             Return Boolean.Parse(strValue)
         Catch ex As Exception
@@ -110,7 +110,7 @@ Module modCWSpectrum
         End Try
     End Function
 
-    Public Function CShortSafe(ByVal strValue As String) As Short
+    Public Function CShortSafe(strValue As String) As Short
         Try
             Return CShort(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
         Catch ex As Exception
@@ -118,7 +118,7 @@ Module modCWSpectrum
         End Try
     End Function
 
-    Public Function FormatNumberAsString(ByVal dblNumber As Double, Optional ByVal intMaxLength As Integer = 10, Optional ByVal intMaxDigitsOfPrecision As Integer = 8, Optional ByVal blnUseScientificWhenTooLong As Boolean = True) As String
+    Public Function FormatNumberAsString(dblNumber As Double, Optional ByVal intMaxLength As Integer = 10, Optional ByVal intMaxDigitsOfPrecision As Integer = 8, Optional ByVal blnUseScientificWhenTooLong As Boolean = True) As String
 
         Dim strNumberAsText As String
         Dim strZeroes As String

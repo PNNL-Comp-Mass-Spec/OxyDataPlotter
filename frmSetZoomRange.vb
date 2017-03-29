@@ -248,58 +248,58 @@ Friend Class frmSetZoomRange
         dblYStart = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtYStart.Text)
         dblYEnd = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtYEnd.Text)
 	End Sub
-	
-	Public Sub SetValues(ByVal dblXStart As Double, ByVal dblXEnd As Double, ByVal dblYStart As Double, ByVal dblYEnd As Double)
-		txtXStart.Text = FormatNumberAsString(dblXStart, 12)
-		txtXEnd.Text = FormatNumberAsString(dblXEnd, 12)
-		
-		txtYStart.Text = FormatNumberAsString(dblYStart, 12)
-		txtYEnd.Text = FormatNumberAsString(dblYEnd, 12)
-	End Sub
-	
-	Private Sub cmdCancel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCancel.Click
+
+    Public Sub SetValues(dblXStart As Double, dblXEnd As Double, dblYStart As Double, dblYEnd As Double)
+        txtXStart.Text = FormatNumberAsString(dblXStart, 12)
+        txtXEnd.Text = FormatNumberAsString(dblXEnd, 12)
+
+        txtYStart.Text = FormatNumberAsString(dblYStart, 12)
+        txtYEnd.Text = FormatNumberAsString(dblYEnd, 12)
+    End Sub
+
+    Private Sub cmdCancel_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdCancel.Click
         Me.DialogResult = DialogResult.Cancel
-		Me.Hide()
-	End Sub
-	
-	Private Sub cmdSet_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSet.Click
+        Me.Hide()
+    End Sub
+
+    Private Sub cmdSet_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdSet.Click
         Me.DialogResult = DialogResult.OK
-		Me.Hide()
-	End Sub
-	
-    Private Sub frmSetZoomRange_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+        Me.Hide()
+    End Sub
+
+    Private Sub frmSetZoomRange_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
         SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.UpperThird, 300, 150)
     End Sub
 
-    Private Sub txtXEnd_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtXEnd.Enter
+    Private Sub txtXEnd_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXEnd.Enter
         TextBoxGotFocusHandler(txtXEnd)
     End Sub
 
-    Private Sub txtXEnd_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXEnd.KeyPress
+    Private Sub txtXEnd_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXEnd.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtXEnd, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 
-    Private Sub txtXStart_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtXStart.Enter
+    Private Sub txtXStart_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXStart.Enter
         TextBoxGotFocusHandler(txtXStart)
     End Sub
 
-    Private Sub txtXStart_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXStart.KeyPress
+    Private Sub txtXStart_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXStart.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtXStart, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 
-    Private Sub txtYEnd_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtYEnd.Enter
+    Private Sub txtYEnd_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYEnd.Enter
         TextBoxGotFocusHandler(txtYEnd)
     End Sub
 
-    Private Sub txtYEnd_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYEnd.KeyPress
+    Private Sub txtYEnd_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYEnd.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtYEnd, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 
-    Private Sub txtYStart_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtYStart.Enter
+    Private Sub txtYStart_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYStart.Enter
         TextBoxGotFocusHandler(txtYStart)
     End Sub
 
-    Private Sub txtYStart_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYStart.KeyPress
+    Private Sub txtYStart_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYStart.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtYStart, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 End Class

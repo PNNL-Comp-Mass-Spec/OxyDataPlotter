@@ -713,88 +713,88 @@ InitializeFormErrorHandler:
 
     End Sub
 
-    Private Sub cboDataMode_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboDataMode.SelectedIndexChanged
+    Private Sub cboDataMode_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboDataMode.SelectedIndexChanged
         ShowHideOptions()
     End Sub
 
-    Private Sub cboSeriesNumber_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboSeriesNumber.SelectedIndexChanged
+    Private Sub cboSeriesNumber_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboSeriesNumber.SelectedIndexChanged
         UpdateDataMode()
     End Sub
 
-    Private Sub cmdAutoLabel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdAutoLabel.Click
+    Private Sub cmdAutoLabel_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdAutoLabel.Click
         AutoLabelPeaks()
     End Sub
 
-    Private Sub cmdClose_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdClose.Click
+    Private Sub cmdClose_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdClose.Click
         UpdateCurrentSettings()
         Me.Hide()
     End Sub
 
-    Private Sub frmAutoLabelPeaks_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    Private Sub frmAutoLabelPeaks_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
         SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.UpperThird, 370, 440)
     End Sub
 
-    Private Sub frmAutoLabelPeaks_Closed(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Closed
+    Private Sub frmAutoLabelPeaks_Closed(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Closed
         mCWGraphControl = Nothing
     End Sub
 
-    Private Sub txtCaptionAngle_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtCaptionAngle.Enter
+    Private Sub txtCaptionAngle_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaptionAngle.Enter
         TextBoxGotFocusHandler(txtCaptionAngle)
     End Sub
 
-    Private Sub txtCaptionAngle_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCaptionAngle.KeyPress
+    Private Sub txtCaptionAngle_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCaptionAngle.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtCaptionAngle, eventArgs, True, False)
     End Sub
 
-    Private Sub txtCaptionAngle_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtCaptionAngle.Leave
+    Private Sub txtCaptionAngle_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaptionAngle.Leave
         SharedVBNetRoutines.VBNetRoutines.ValidateTextboxInt(txtCaptionAngle, 0, 360, 0)
     End Sub
 
-    Private Sub txtMaximumPeaksToLabel_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMaximumPeaksToLabel.Enter
+    Private Sub txtMaximumPeaksToLabel_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtMaximumPeaksToLabel.Enter
         TextBoxGotFocusHandler(txtMaximumPeaksToLabel)
     End Sub
 
-    Private Sub txtMaximumPeaksToLabel_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMaximumPeaksToLabel.KeyPress
+    Private Sub txtMaximumPeaksToLabel_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMaximumPeaksToLabel.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtMaximumPeaksToLabel, eventArgs, True, False)
     End Sub
 
-    Private Sub txtMaximumPeaksToLabel_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMaximumPeaksToLabel.Leave
+    Private Sub txtMaximumPeaksToLabel_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtMaximumPeaksToLabel.Leave
         SharedVBNetRoutines.VBNetRoutines.ValidateTextboxInt(txtMaximumPeaksToLabel, 0, 100000, 1000)
     End Sub
 
-    Private Sub txtMinimumIntensityPercentageOfMaximum_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMinimumIntensityPercentageOfMaximum.Enter
+    Private Sub txtMinimumIntensityPercentageOfMaximum_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtMinimumIntensityPercentageOfMaximum.Enter
         TextBoxGotFocusHandler(txtMinimumIntensityPercentageOfMaximum)
     End Sub
 
-    Private Sub txtMinimumIntensityPercentageOfMaximum_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMinimumIntensityPercentageOfMaximum.KeyPress
+    Private Sub txtMinimumIntensityPercentageOfMaximum_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtMinimumIntensityPercentageOfMaximum.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtMinimumIntensityPercentageOfMaximum, eventArgs, True, False)
     End Sub
 
-    Private Sub txtMinimumIntensityPercentageOfMaximum_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtMinimumIntensityPercentageOfMaximum.Leave
+    Private Sub txtMinimumIntensityPercentageOfMaximum_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtMinimumIntensityPercentageOfMaximum.Leave
         SharedVBNetRoutines.VBNetRoutines.ValidateTextboxInt(txtMinimumIntensityPercentageOfMaximum, 0, 100, 0)
     End Sub
 
-    Private Sub txtPeakWidthMinimum_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPeakWidthMinimum.Enter
+    Private Sub txtPeakWidthMinimum_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPeakWidthMinimum.Enter
         TextBoxGotFocusHandler(txtPeakWidthMinimum)
     End Sub
 
-    Private Sub txtPeakWidthMinimum_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPeakWidthMinimum.KeyPress
+    Private Sub txtPeakWidthMinimum_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPeakWidthMinimum.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtPeakWidthMinimum, eventArgs, True, False)
     End Sub
 
-    Private Sub txtPeakWidthMinimum_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPeakWidthMinimum.Leave
+    Private Sub txtPeakWidthMinimum_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPeakWidthMinimum.Leave
         SharedVBNetRoutines.VBNetRoutines.ValidateTextboxSng(txtPeakWidthMinimum, 0, 100000000.0#, 5)
     End Sub
 
-    Private Sub txtThresholdMinimum_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtThresholdMinimum.Enter
+    Private Sub txtThresholdMinimum_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtThresholdMinimum.Enter
         TextBoxGotFocusHandler(txtThresholdMinimum)
     End Sub
 
-    Private Sub txtThresholdMinimum_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtThresholdMinimum.KeyPress
+    Private Sub txtThresholdMinimum_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtThresholdMinimum.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtThresholdMinimum, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
-    Private Sub txtThresholdMinimum_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtThresholdMinimum.Leave
+    Private Sub txtThresholdMinimum_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtThresholdMinimum.Leave
         SharedVBNetRoutines.VBNetRoutines.ValidateTextboxSng(txtThresholdMinimum, -1.0E+38, 1.0E+38, 0)
     End Sub
 End Class

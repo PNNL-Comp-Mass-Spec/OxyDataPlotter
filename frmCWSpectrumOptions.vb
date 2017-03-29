@@ -206,7 +206,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblAnnotationColorSelection
         '
-        Me.lblAnnotationColorSelection.BackColor = System.Drawing.Color.Black
+        Me.lblAnnotationColorSelection.BackColor = Color.Black
         Me.lblAnnotationColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblAnnotationColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblAnnotationColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -220,11 +220,11 @@ Friend Class frmCWSpectrumOptions
         '
         'lblGridLinesMajorColorSelection
         '
-        Me.lblGridLinesMajorColorSelection.BackColor = System.Drawing.Color.Black
+        Me.lblGridLinesMajorColorSelection.BackColor = Color.Black
         Me.lblGridLinesMajorColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblGridLinesMajorColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblGridLinesMajorColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGridLinesMajorColorSelection.ForeColor = System.Drawing.Color.Black
+        Me.lblGridLinesMajorColorSelection.ForeColor = Color.Black
         Me.lblGridLinesMajorColorSelection.Location = New System.Drawing.Point(376, 196)
         Me.lblGridLinesMajorColorSelection.Name = "lblGridLinesMajorColorSelection"
         Me.lblGridLinesMajorColorSelection.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -234,7 +234,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblGridLinesMinorColorSelection
         '
-        Me.lblGridLinesMinorColorSelection.BackColor = System.Drawing.Color.Black
+        Me.lblGridLinesMinorColorSelection.BackColor = Color.Black
         Me.lblGridLinesMinorColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblGridLinesMinorColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblGridLinesMinorColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -248,7 +248,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblCursor1ColorSelection
         '
-        Me.lblCursor1ColorSelection.BackColor = System.Drawing.Color.Black
+        Me.lblCursor1ColorSelection.BackColor = Color.Black
         Me.lblCursor1ColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblCursor1ColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblCursor1ColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -262,7 +262,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblLabelFontColorSelection
         '
-        Me.lblLabelFontColorSelection.BackColor = System.Drawing.Color.White
+        Me.lblLabelFontColorSelection.BackColor = Color.White
         Me.lblLabelFontColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblLabelFontColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblLabelFontColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -276,11 +276,11 @@ Friend Class frmCWSpectrumOptions
         '
         'lblPlotBackgroundColorSelection
         '
-        Me.lblPlotBackgroundColorSelection.BackColor = System.Drawing.Color.White
+        Me.lblPlotBackgroundColorSelection.BackColor = Color.White
         Me.lblPlotBackgroundColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblPlotBackgroundColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblPlotBackgroundColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPlotBackgroundColorSelection.ForeColor = System.Drawing.Color.Black
+        Me.lblPlotBackgroundColorSelection.ForeColor = Color.Black
         Me.lblPlotBackgroundColorSelection.Location = New System.Drawing.Point(240, 168)
         Me.lblPlotBackgroundColorSelection.Name = "lblPlotBackgroundColorSelection"
         Me.lblPlotBackgroundColorSelection.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -290,7 +290,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblPointColorSelection
         '
-        Me.lblPointColorSelection.BackColor = System.Drawing.Color.Red
+        Me.lblPointColorSelection.BackColor = Color.Red
         Me.lblPointColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblPointColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblPointColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -304,7 +304,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblBarFillColorSelection
         '
-        Me.lblBarFillColorSelection.BackColor = System.Drawing.Color.Red
+        Me.lblBarFillColorSelection.BackColor = Color.Red
         Me.lblBarFillColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblBarFillColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblBarFillColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -318,7 +318,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblLineToBaseColorSelection
         '
-        Me.lblLineToBaseColorSelection.BackColor = System.Drawing.Color.Red
+        Me.lblLineToBaseColorSelection.BackColor = Color.Red
         Me.lblLineToBaseColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblLineToBaseColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblLineToBaseColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -332,7 +332,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblLineColorSelection
         '
-        Me.lblLineColorSelection.BackColor = System.Drawing.Color.Red
+        Me.lblLineColorSelection.BackColor = Color.Red
         Me.lblLineColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblLineColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblLineColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -346,7 +346,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblCursor2ColorSelection
         '
-        Me.lblCursor2ColorSelection.BackColor = System.Drawing.Color.DimGray
+        Me.lblCursor2ColorSelection.BackColor = Color.DimGray
         Me.lblCursor2ColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblCursor2ColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblCursor2ColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -360,7 +360,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblFrameBorderColorSelection
         '
-        Me.lblFrameBorderColorSelection.BackColor = System.Drawing.Color.Black
+        Me.lblFrameBorderColorSelection.BackColor = Color.Black
         Me.lblFrameBorderColorSelection.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblFrameBorderColorSelection.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblFrameBorderColorSelection.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -451,7 +451,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblAnnotationColor
         '
-        Me.lblAnnotationColor.BackColor = System.Drawing.Color.Transparent
+        Me.lblAnnotationColor.BackColor = Color.Transparent
         Me.lblAnnotationColor.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblAnnotationColor.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAnnotationColor.ForeColor = System.Drawing.SystemColors.ControlText
@@ -562,7 +562,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblCursor2Color
         '
-        Me.lblCursor2Color.BackColor = System.Drawing.Color.Transparent
+        Me.lblCursor2Color.BackColor = Color.Transparent
         Me.lblCursor2Color.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblCursor2Color.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCursor2Color.ForeColor = System.Drawing.SystemColors.ControlText
@@ -575,7 +575,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblFrameBorderColor
         '
-        Me.lblFrameBorderColor.BackColor = System.Drawing.Color.Transparent
+        Me.lblFrameBorderColor.BackColor = Color.Transparent
         Me.lblFrameBorderColor.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblFrameBorderColor.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFrameBorderColor.ForeColor = System.Drawing.SystemColors.ControlText
@@ -770,7 +770,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_6
         '
-        Me._lblColor_6.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_6.BackColor = Color.Transparent
         Me._lblColor_6.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_6.ForeColor = System.Drawing.SystemColors.ControlText
@@ -783,7 +783,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_7
         '
-        Me._lblColor_7.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_7.BackColor = Color.Transparent
         Me._lblColor_7.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_7.ForeColor = System.Drawing.SystemColors.ControlText
@@ -796,7 +796,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblCursor1Color
         '
-        Me.lblCursor1Color.BackColor = System.Drawing.Color.Transparent
+        Me.lblCursor1Color.BackColor = Color.Transparent
         Me.lblCursor1Color.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblCursor1Color.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCursor1Color.ForeColor = System.Drawing.SystemColors.ControlText
@@ -809,7 +809,7 @@ Friend Class frmCWSpectrumOptions
         '
         'lblLabelFontColor
         '
-        Me.lblLabelFontColor.BackColor = System.Drawing.Color.Transparent
+        Me.lblLabelFontColor.BackColor = Color.Transparent
         Me.lblLabelFontColor.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblLabelFontColor.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblLabelFontColor.ForeColor = System.Drawing.SystemColors.ControlText
@@ -900,7 +900,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_4
         '
-        Me._lblColor_4.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_4.BackColor = Color.Transparent
         Me._lblColor_4.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_4.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_4.ForeColor = System.Drawing.SystemColors.ControlText
@@ -1155,7 +1155,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_3
         '
-        Me._lblColor_3.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_3.BackColor = Color.Transparent
         Me._lblColor_3.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_3.ForeColor = System.Drawing.SystemColors.ControlText
@@ -1236,7 +1236,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_2
         '
-        Me._lblColor_2.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_2.BackColor = Color.Transparent
         Me._lblColor_2.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_2.ForeColor = System.Drawing.SystemColors.ControlText
@@ -1249,7 +1249,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_1
         '
-        Me._lblColor_1.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_1.BackColor = Color.Transparent
         Me._lblColor_1.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_1.ForeColor = System.Drawing.SystemColors.ControlText
@@ -1262,7 +1262,7 @@ Friend Class frmCWSpectrumOptions
         '
         '_lblColor_0
         '
-        Me._lblColor_0.BackColor = System.Drawing.Color.Transparent
+        Me._lblColor_0.BackColor = Color.Transparent
         Me._lblColor_0.Cursor = System.Windows.Forms.Cursors.Default
         Me._lblColor_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._lblColor_0.ForeColor = System.Drawing.SystemColors.ControlText
@@ -1349,23 +1349,23 @@ Friend Class frmCWSpectrumOptions
         Me.ResumeLayout(False)
 
     End Sub
-#End Region 
+#End Region
 
-	Private Const MAX_SERIES_COUNT As Short = 32
-	Private Const OK_BUTTON_CAPTION As String = "&OK"
-	Private Const CLOSE_BUTTON_CAPTION As String = "Cl&ose"
-	
-	Private Const DEFAULT_FONT_NAME As String = "Arial"
-	Private Const DEFAULT_FONT_SIZE As Short = 11
-	Private Const DEFAULT_ANNOTATION_FONT_SIZE As Short = 10
-	
+    Private Const MAX_SERIES_COUNT As Short = 32
+    Private Const OK_BUTTON_CAPTION As String = "&OK"
+    Private Const CLOSE_BUTTON_CAPTION As String = "Cl&ose"
+
+    Private Const DEFAULT_FONT_NAME As String = "Arial"
+    Private Const DEFAULT_FONT_SIZE As Short = 11
+    Private Const DEFAULT_ANNOTATION_FONT_SIZE As Short = 10
+
     Private Structure udtGridlinesOptionsSavedType
         Dim ShowMajorX As Boolean
         Dim ShowMajorY As Boolean
         Dim ShowMinorX As Boolean
         Dim ShowMinorY As Boolean
-        Dim GridlinesMajorColor As System.Drawing.Color
-        Dim GridlinesMinorColor As System.Drawing.Color
+        Dim GridlinesMajorColor As Color
+        Dim GridlinesMinorColor As Color
     End Structure
 
     Private Structure udtPlotOptionsSavedType
@@ -1373,14 +1373,14 @@ Friend Class frmCWSpectrumOptions
         Dim SubTitle As String
         Dim XAxisLabel As String
         Dim YAxisLabel As String
-        Dim FontColor As System.Drawing.Color
+        Dim FontColor As Color
         Dim FontName As String
         Dim FontSize As Short
         Dim GridLines As udtGridlinesOptionsSavedType
-        Dim Cursor1Color As System.Drawing.Color
-        Dim Cursor2Color As System.Drawing.Color
-        Dim BackgroundColor As System.Drawing.Color
-        Dim FrameBorderColor As System.Drawing.Color
+        Dim Cursor1Color As Color
+        Dim Cursor2Color As Color
+        Dim BackgroundColor As Color
+        Dim FrameBorderColor As Color
         Dim FrameStyle3D As Boolean
         Dim NormalizeOnLoadOrPaste As Boolean
         Dim NormalizationConstant As Double
@@ -1391,12 +1391,12 @@ Friend Class frmCWSpectrumOptions
         Dim PlotMode As CWGraphControl.pmPlotModeConstants
         Dim LineStyle As CWUIControlsLib.CWLineStyles
         Dim LineWidth As Short
-        Dim LineColor As System.Drawing.Color
-        Dim LineToBaseColor As System.Drawing.Color
-        Dim BarFillColor As System.Drawing.Color
+        Dim LineColor As Color
+        Dim LineToBaseColor As Color
+        Dim BarFillColor As Color
         Dim PointStyle As CWUIControlsLib.CWPointStyles
-        Dim PointColor As System.Drawing.Color
-        Dim AnnotationFontColor As System.Drawing.Color
+        Dim PointColor As Color
+        Dim AnnotationFontColor As Color
         Dim AnnotationFontName As String
         Dim AnnotationFontSize As Short
     End Structure
@@ -1792,22 +1792,22 @@ PopulateComboBoxesErrorHandler:
 
         With udtOptionsNew
             With .PlotOptions
-                .FontColor = System.Drawing.Color.Black
+                .FontColor = Color.Black
                 .FontName = DEFAULT_FONT_NAME
                 .FontSize = DEFAULT_FONT_SIZE
                 With .GridLines
-                    .GridlinesMajorColor = System.Drawing.Color.Black
-                    .GridlinesMinorColor = System.Drawing.Color.DimGray
+                    .GridlinesMajorColor = Color.Black
+                    .GridlinesMinorColor = Color.DimGray
                     .ShowMajorX = False
                     .ShowMajorY = False
                     .ShowMinorX = False
                     .ShowMinorY = False
                 End With
-                .Cursor1Color = System.Drawing.Color.Black
-                .Cursor2Color = System.Drawing.Color.DimGray
-                .BackgroundColor = System.Drawing.Color.White
+                .Cursor1Color = Color.Black
+                .Cursor2Color = Color.DimGray
+                .BackgroundColor = Color.White
 
-                .FrameBorderColor = System.Drawing.Color.FromArgb(236, 233, 216)       ' This is a very light gray color
+                .FrameBorderColor = Color.FromArgb(236, 233, 216)       ' This is a very light gray color
                 .FrameStyle3D = True
 
                 .NormalizeOnLoadOrPaste = True
@@ -1821,23 +1821,23 @@ PopulateComboBoxesErrorHandler:
                 .PlotMode = CWGraphControl.pmPlotModeConstants.pmLines
                 .LineStyle = CWUIControlsLib.CWLineStyles.cwLineSolid
                 .LineWidth = 1
-				.LineColor = mSpectrumForm.ctlCWGraph.GetDefaultSeriesColor(1)
-				.LineToBaseColor = .LineColor
-				.BarFillColor = .LineColor
-				.PointStyle = CWUIControlsLib.CWPointStyles.cwPointNone
-				.PointColor = .LineColor
-				.AnnotationFontColor = System.Drawing.Color.Black
-				.AnnotationFontName = DEFAULT_FONT_NAME
-				.AnnotationFontSize = DEFAULT_ANNOTATION_FONT_SIZE
-			End With
+                .LineColor = mSpectrumForm.ctlCWGraph.GetDefaultSeriesColor(1)
+                .LineToBaseColor = .LineColor
+                .BarFillColor = .LineColor
+                .PointStyle = CWUIControlsLib.CWPointStyles.cwPointNone
+                .PointColor = .LineColor
+                .AnnotationFontColor = Color.Black
+                .AnnotationFontName = DEFAULT_FONT_NAME
+                .AnnotationFontSize = DEFAULT_ANNOTATION_FONT_SIZE
+            End With
 
-			For intSeriesIndex = 2 To .SeriesCount
-				.SeriesOptions(intSeriesIndex) = .SeriesOptions(1)
-				.SeriesOptions(intSeriesIndex).LineColor = mSpectrumForm.ctlCWGraph.GetDefaultSeriesColor(intSeriesIndex)
-				.SeriesOptions(intSeriesIndex).LineToBaseColor = .SeriesOptions(intSeriesIndex).LineColor
-				.SeriesOptions(intSeriesIndex).BarFillColor = .SeriesOptions(intSeriesIndex).LineColor
-				.SeriesOptions(intSeriesIndex).PointColor = .SeriesOptions(intSeriesIndex).LineColor
-			Next
+            For intSeriesIndex = 2 To .SeriesCount
+                .SeriesOptions(intSeriesIndex) = .SeriesOptions(1)
+                .SeriesOptions(intSeriesIndex).LineColor = mSpectrumForm.ctlCWGraph.GetDefaultSeriesColor(intSeriesIndex)
+                .SeriesOptions(intSeriesIndex).LineToBaseColor = .SeriesOptions(intSeriesIndex).LineColor
+                .SeriesOptions(intSeriesIndex).BarFillColor = .SeriesOptions(intSeriesIndex).LineColor
+                .SeriesOptions(intSeriesIndex).PointColor = .SeriesOptions(intSeriesIndex).LineColor
+            Next
         End With
 
         If cboSeriesNumber.SelectedIndex >= 0 Then
@@ -1953,12 +1953,12 @@ PopulateComboBoxesErrorHandler:
         Exit Sub
 
 ShowOptionsForSeriesErrorHandler:
-        MsgBox("Error in sub frmCWSpectrumOptions.ShowOptionsForSeries:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation + MsgBoxStyle.OKOnly, "Error")
+        MsgBox("Error in sub frmCWSpectrumOptions.ShowOptionsForSeries:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Error")
         mUpdatingControls = False
 
     End Sub
 
-    Private Sub SynchronizeLineColors(ByVal cNewColor As System.Drawing.Color)
+    Private Sub SynchronizeLineColors(cNewColor As Color)
         Static blnSynchronizing As Boolean
 
         If blnSynchronizing Then Exit Sub
@@ -1977,7 +1977,7 @@ ShowOptionsForSeriesErrorHandler:
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub SynchronizePointColorWithLineColor(ByRef cNewColor As System.Drawing.Color)
+    Private Sub SynchronizePointColorWithLineColor(ByRef cNewColor As Color)
         Static blnSynchronizing As Boolean
 
         If blnSynchronizing Then Exit Sub
@@ -2044,12 +2044,12 @@ ShowOptionsForSeriesErrorHandler:
                     Case CWGraphControl.pmPlotModeConstants.pmSticksToZero
                         If cboLineStyle.SelectedIndex <> CWUIControlsLib.CWLineStyles.cwLineNone Then cboLineStyle.SelectedIndex = CWUIControlsLib.CWLineStyles.cwLineNone
                         If cboPointStyle.SelectedIndex <> CWUIControlsLib.CWPointStyles.cwPointNone Then cboPointStyle.SelectedIndex = CWUIControlsLib.CWPointStyles.cwPointNone
-                        If lblLineToBaseColorSelection.BackColor.Equals(System.Drawing.Color.Black) Then lblLineToBaseColorSelection.BackColor = System.Drawing.Color.White
+                        If lblLineToBaseColorSelection.BackColor.Equals(Color.Black) Then lblLineToBaseColorSelection.BackColor = Color.White
                     Case CWGraphControl.pmPlotModeConstants.pmBar
                         If cboLineStyle.SelectedIndex <> CWUIControlsLib.CWLineStyles.cwLineStepXY Then cboLineStyle.SelectedIndex = CWUIControlsLib.CWLineStyles.cwLineStepXY
                         If cboPointStyle.SelectedIndex <> CWUIControlsLib.CWPointStyles.cwPointNone Then cboPointStyle.SelectedIndex = CWUIControlsLib.CWPointStyles.cwPointNone
-                        If lblLineToBaseColorSelection.BackColor.Equals(System.Drawing.Color.Black) Then lblLineToBaseColorSelection.BackColor = System.Drawing.Color.White
-                        If lblBarFillColorSelection.BackColor.Equals(System.Drawing.Color.Black) Then lblBarFillColorSelection.BackColor = System.Drawing.Color.White
+                        If lblLineToBaseColorSelection.BackColor.Equals(Color.Black) Then lblLineToBaseColorSelection.BackColor = Color.White
+                        If lblBarFillColorSelection.BackColor.Equals(Color.Black) Then lblBarFillColorSelection.BackColor = Color.White
                     Case CWGraphControl.pmPlotModeConstants.pmPoints
                         If cboLineStyle.SelectedIndex <> CWUIControlsLib.CWLineStyles.cwLineNone Then cboLineStyle.SelectedIndex = CWUIControlsLib.CWLineStyles.cwLineNone
                         If cboPointStyle.SelectedIndex = CWUIControlsLib.CWPointStyles.cwPointNone Then cboPointStyle.SelectedIndex = CWUIControlsLib.CWPointStyles.cwPointSolidSquare
@@ -2082,80 +2082,80 @@ ShowOptionsForSeriesErrorHandler:
 
     End Sub
 
-    Private Sub cboAnnotationFontName_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboAnnotationFontName.SelectedIndexChanged
+    Private Sub cboAnnotationFontName_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboAnnotationFontName.SelectedIndexChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboAnnotationFontSize_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboAnnotationFontSize.SelectedIndexChanged
+    Private Sub cboAnnotationFontSize_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboAnnotationFontSize.SelectedIndexChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboLabelFontName_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboLabelFontName.SelectedIndexChanged
+    Private Sub cboLabelFontName_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboLabelFontName.SelectedIndexChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboLabelFontSize_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboLabelFontSize.SelectedIndexChanged
+    Private Sub cboLabelFontSize_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboLabelFontSize.SelectedIndexChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboLineStyle_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboLineStyle.SelectedIndexChanged
+    Private Sub cboLineStyle_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboLineStyle.SelectedIndexChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboPlotMode_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboPlotMode.SelectedIndexChanged
+    Private Sub cboPlotMode_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboPlotMode.SelectedIndexChanged
         UpdateCurrentOptions()
         EnableDisableStyleControls()
     End Sub
 
-    Private Sub cboPointStyle_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboPointStyle.SelectedIndexChanged
+    Private Sub cboPointStyle_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboPointStyle.SelectedIndexChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboSeriesNumber_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboSeriesNumber.SelectedIndexChanged
+    Private Sub cboSeriesNumber_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboSeriesNumber.SelectedIndexChanged
         ShowOptionsForSeries(cboSeriesNumber.SelectedIndex + 1)
     End Sub
 
-    Private Sub chkFrameStyle3D_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFrameStyle3D.CheckedChanged
+    Private Sub chkFrameStyle3D_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkFrameStyle3D.CheckedChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkLinkLineColors_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkLinkLineColors.CheckedChanged
+    Private Sub chkLinkLineColors_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkLinkLineColors.CheckedChanged
         If chkLinkLineColors.Checked Then
             SynchronizeLineColors(lblLineColorSelection.BackColor)
         End If
     End Sub
 
-    Private Sub chkLinkPointColorToLineColor_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkLinkPointColorToLineColor.CheckedChanged
+    Private Sub chkLinkPointColorToLineColor_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkLinkPointColorToLineColor.CheckedChanged
         If chkLinkPointColorToLineColor.Checked Then
             SynchronizePointColorWithLineColor(lblLineColorSelection.BackColor)
         End If
     End Sub
 
-    Private Sub chkNormalizeOnLoadOrPaste_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkNormalizeOnLoadOrPaste.CheckedChanged
+    Private Sub chkNormalizeOnLoadOrPaste_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkNormalizeOnLoadOrPaste.CheckedChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkShowGridlinesMajorX_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkShowGridlinesMajorX.CheckedChanged
+    Private Sub chkShowGridlinesMajorX_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkShowGridlinesMajorX.CheckedChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkShowGridlinesMajorY_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkShowGridlinesMajorY.CheckedChanged
+    Private Sub chkShowGridlinesMajorY_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkShowGridlinesMajorY.CheckedChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkShowGridlinesMinorX_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkShowGridlinesMinorX.CheckedChanged
+    Private Sub chkShowGridlinesMinorX_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkShowGridlinesMinorX.CheckedChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkShowGridlinesMinorY_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkShowGridlinesMinorY.CheckedChanged
+    Private Sub chkShowGridlinesMinorY_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkShowGridlinesMinorY.CheckedChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cmdApply_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdApply.Click
+    Private Sub cmdApply_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdApply.Click
         ApplyChanges()
     End Sub
 
-    Private Sub cmdCancel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCancel.Click
+    Private Sub cmdCancel_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdCancel.Click
 
         ' Restore the saved options, then call ApplyChanges
         udtOptionsNew = udtOptionsSaved
@@ -2165,30 +2165,30 @@ ShowOptionsForSeriesErrorHandler:
         Me.Close()
     End Sub
 
-    Private Sub cmdCopyToAllSeries_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCopyToAllSeries.Click
+    Private Sub cmdCopyToAllSeries_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdCopyToAllSeries.Click
         CopyCurrentSettingsToAllSeries()
     End Sub
 
-    Private Sub cmdOK_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdOK.Click
+    Private Sub cmdOK_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdOK.Click
         If cmdOK.Text = OK_BUTTON_CAPTION Then
             ApplyChanges()
         End If
         Me.Close()
     End Sub
 
-    Private Sub cmdResetToDefaults_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdResetToDefaults.Click
+    Private Sub cmdResetToDefaults_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdResetToDefaults.Click
         ResetToDefaults()
     End Sub
 
-    Private Sub cmdSaveStyle_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSaveStyle.Click
+    Private Sub cmdSaveStyle_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdSaveStyle.Click
         MsgBox("Not yet enabled")
     End Sub
 
-    Private Sub cmdStyleLoad_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdStyleLoad.Click
+    Private Sub cmdStyleLoad_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdStyleLoad.Click
         MsgBox("Not yet enabled")
     End Sub
 
-    Private Sub frmCWSpectrumOptions_Activated(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Activated
+    Private Sub frmCWSpectrumOptions_Activated(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Activated
 
         ' Only update with the current settings if the user hasn't made any changes
         If cmdOK.Text = CLOSE_BUTTON_CAPTION Then
@@ -2201,73 +2201,73 @@ ShowOptionsForSeriesErrorHandler:
 
     End Sub
 
-    Private Sub frmCWSpectrumOptions_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    Private Sub frmCWSpectrumOptions_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
         SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.UpperThird, 607, 560)
 
         PopulateComboBoxes()
     End Sub
 
-    Private Sub frmCWSpectrumOptions_Closed(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Closed
+    Private Sub frmCWSpectrumOptions_Closed(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Closed
         mSpectrumForm = Nothing
     End Sub
 
-    Private Sub lblAnnotationColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblAnnotationColorSelection.Click
+    Private Sub lblAnnotationColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblAnnotationColorSelection.Click
         SelectCustomColor(lblAnnotationColorSelection)
 
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblBarFillColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblBarFillColorSelection.Click
+    Private Sub lblBarFillColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblBarFillColorSelection.Click
         SelectCustomColor(lblBarFillColorSelection)
         SynchronizeLineColors(lblBarFillColorSelection.BackColor)
     End Sub
 
-    Private Sub lblCursor1ColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblCursor1ColorSelection.Click
+    Private Sub lblCursor1ColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblCursor1ColorSelection.Click
         SelectCustomColor(lblCursor1ColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblCursor2ColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblCursor2ColorSelection.Click
+    Private Sub lblCursor2ColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblCursor2ColorSelection.Click
         SelectCustomColor(lblCursor2ColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblFrameBorderColorSelection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFrameBorderColorSelection.Click
+    Private Sub lblFrameBorderColorSelection_Click(sender As System.Object, e As System.EventArgs) Handles lblFrameBorderColorSelection.Click
         SelectCustomColor(lblFrameBorderColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblGridLinesMajorColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblGridLinesMajorColorSelection.Click
+    Private Sub lblGridLinesMajorColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblGridLinesMajorColorSelection.Click
         SelectCustomColor(lblGridLinesMajorColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblGridLinesMinorColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblGridLinesMinorColorSelection.Click
+    Private Sub lblGridLinesMinorColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblGridLinesMinorColorSelection.Click
         SelectCustomColor(lblGridLinesMinorColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblLabelFontColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblLabelFontColorSelection.Click
+    Private Sub lblLabelFontColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblLabelFontColorSelection.Click
         SelectCustomColor(lblLabelFontColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblLineColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblLineColorSelection.Click
+    Private Sub lblLineColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblLineColorSelection.Click
         SelectCustomColor(lblLineColorSelection)
         SynchronizeLineColors(lblLineColorSelection.BackColor)
     End Sub
 
-    Private Sub lblLineToBaseColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblLineToBaseColorSelection.Click
+    Private Sub lblLineToBaseColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblLineToBaseColorSelection.Click
         SelectCustomColor(lblLineToBaseColorSelection)
         SynchronizeLineColors(lblLineToBaseColorSelection.BackColor)
     End Sub
 
-    Private Sub lblPlotBackgroundColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblPlotBackgroundColorSelection.Click
+    Private Sub lblPlotBackgroundColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblPlotBackgroundColorSelection.Click
         SelectCustomColor(lblPlotBackgroundColorSelection)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub lblPointColorSelection_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lblPointColorSelection.Click
+    Private Sub lblPointColorSelection_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles lblPointColorSelection.Click
         SelectCustomColor(lblPointColorSelection)
 
         If chkLinkPointColorToLineColor.Checked Then
@@ -2280,72 +2280,72 @@ ShowOptionsForSeriesErrorHandler:
         End If
     End Sub
 
-    Private Sub txtLegendCaption_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtLegendCaption.TextChanged
+    Private Sub txtLegendCaption_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtLegendCaption.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtLegendCaption_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtLegendCaption.Enter
+    Private Sub txtLegendCaption_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtLegendCaption.Enter
         TextBoxGotFocusHandler(txtLegendCaption)
     End Sub
 
-    Private Sub txtLineWidth_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtLineWidth.TextChanged
+    Private Sub txtLineWidth_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtLineWidth.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtLineWidth_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLineWidth.KeyPress
+    Private Sub txtLineWidth_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLineWidth.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtLineWidth, eventArgs, True, False)
     End Sub
 
-    Private Sub txtLineWidth_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtLineWidth.Leave
+    Private Sub txtLineWidth_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtLineWidth.Leave
         SharedVBNetRoutines.VBNetRoutines.ValidateTextboxInt(txtLineWidth, 0, 5, 2)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtNormalizationConstant_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtNormalizationConstant.TextChanged
+    Private Sub txtNormalizationConstant_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtNormalizationConstant.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtNormalizationConstant_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtNormalizationConstant.Enter
+    Private Sub txtNormalizationConstant_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtNormalizationConstant.Enter
         TextBoxGotFocusHandler(txtNormalizationConstant)
     End Sub
 
-    Private Sub txtNormalizationConstant_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtNormalizationConstant.KeyPress
+    Private Sub txtNormalizationConstant_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtNormalizationConstant.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtNormalizationConstant, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
-    Private Sub txtPlotSubTitle_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPlotSubTitle.TextChanged
+    Private Sub txtPlotSubTitle_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPlotSubTitle.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtPlotSubTitle_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPlotSubTitle.Enter
+    Private Sub txtPlotSubTitle_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPlotSubTitle.Enter
         TextBoxGotFocusHandler(txtPlotSubTitle)
     End Sub
 
-    Private Sub txtPlotSubTitle_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPlotSubTitle.Leave
+    Private Sub txtPlotSubTitle_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPlotSubTitle.Leave
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtPlotTitle_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPlotTitle.TextChanged
+    Private Sub txtPlotTitle_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPlotTitle.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtPlotTitle_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPlotTitle.Enter
+    Private Sub txtPlotTitle_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPlotTitle.Enter
         TextBoxGotFocusHandler(txtPlotTitle)
     End Sub
 
-    Private Sub txtXAxisLabel_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtXAxisLabel.TextChanged
+    Private Sub txtXAxisLabel_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXAxisLabel.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtXAxisLabel_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtXAxisLabel.Enter
+    Private Sub txtXAxisLabel_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXAxisLabel.Enter
         TextBoxGotFocusHandler(txtXAxisLabel)
     End Sub
 
-    Private Sub txtYAxisLabel_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtYAxisLabel.TextChanged
+    Private Sub txtYAxisLabel_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYAxisLabel.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtYAxisLabel_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtYAxisLabel.Enter
+    Private Sub txtYAxisLabel_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYAxisLabel.Enter
         TextBoxGotFocusHandler(txtYAxisLabel)
     End Sub
 

@@ -1,6 +1,8 @@
 Option Strict Off
-Option Explicit On 
+Option Explicit On
 
+Imports System.Collections.Generic
+Imports System.Runtime.InteropServices
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
 ' Upgraded to VB.NET from VB6 in October 2003
@@ -9,18 +11,18 @@ Option Explicit On
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
 ' Website: http://ncrr.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
-' 
+'
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
-' in compliance with the License.  You may obtain a copy of the License at 
+' in compliance with the License.  You may obtain a copy of the License at
 ' http://www.apache.org/licenses/LICENSE-2.0
 
 <System.Runtime.InteropServices.ProgId("CWGraphControl_NET.CWGraphControl")> Public Class CWGraphControl
-	Inherits System.Windows.Forms.UserControl
+    Inherits System.Windows.Forms.UserControl
 #Region "Windows Form Designer generated code "
-	Public Sub New()
-		MyBase.New()
+    Public Sub New()
+        MyBase.New()
         'This call is required by the Windows Form Designer.
-		InitializeComponent()
+        InitializeComponent()
 
         mControlComponentsInitialized = True
         InitializeGraphControl()
@@ -667,7 +669,7 @@ Option Explicit On
         '
         'linLegendSeriesColor2
         '
-        Me.linLegendSeriesColor2.BackColor = System.Drawing.Color.Red
+        Me.linLegendSeriesColor2.BackColor = Color.Red
         Me.linLegendSeriesColor2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.linLegendSeriesColor2.Location = New System.Drawing.Point(8, 64)
         Me.linLegendSeriesColor2.Name = "linLegendSeriesColor2"
@@ -676,7 +678,7 @@ Option Explicit On
         '
         'linLegendSeriesColor1
         '
-        Me.linLegendSeriesColor1.BackColor = System.Drawing.Color.Red
+        Me.linLegendSeriesColor1.BackColor = Color.Red
         Me.linLegendSeriesColor1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.linLegendSeriesColor1.Location = New System.Drawing.Point(8, 24)
         Me.linLegendSeriesColor1.Name = "linLegendSeriesColor1"
@@ -940,7 +942,7 @@ Option Explicit On
     Private Structure udtAnnotationStyleType
         Public FontName As String
         Public FontSize As Short
-        Public FontColor As System.Drawing.Color
+        Public FontColor As Color
     End Structure
 
     Private Structure udtAnnotationInfoType
@@ -1150,7 +1152,7 @@ Option Explicit On
         Exit Sub
 
 AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
-        MsgBox("Error in CWGraphControl.AdjustScalingToIncludeAnnotationCaptions: " & vbCrLf & Err.Description, MsgBoxStyle.Information + MsgBoxStyle.OKOnly)
+        MsgBox("Error in CWGraphControl.AdjustScalingToIncludeAnnotationCaptions: " & vbCrLf & Err.Description, MsgBoxStyle.Information + MsgBoxStyle.OkOnly)
 
     End Sub
 
@@ -1158,7 +1160,7 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
         If intSeriesNumber < 1 Or intSeriesNumber > CWGraph.Plots.Count Then intSeriesNumber = 1
     End Sub
 
-    Public Sub AutoLabelPeaks(ByVal intSeriesNumber As Short, ByRef blnShowXPos As Boolean, ByRef blnShowYPos As Boolean, Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = True, Optional ByRef intMaxPeakCount As Integer = 100, Optional ByRef blnForceAsContinuousData As Boolean = False, Optional ByRef blnForceAsDiscreteData As Boolean = False)
+    Public Sub AutoLabelPeaks(intSeriesNumber As Short, ByRef blnShowXPos As Boolean, ByRef blnShowYPos As Boolean, Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = True, Optional ByRef intMaxPeakCount As Integer = 100, Optional ByRef blnForceAsContinuousData As Boolean = False, Optional ByRef blnForceAsDiscreteData As Boolean = False)
 
         Dim blnContinuousData As Boolean
         Dim blnAnnotationsRemoved As Boolean
@@ -1167,18 +1169,10 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
         Dim strGraphTitleSaved, strGraphSubTitleSaved As String
         Dim strProgressCaption As String
 
-        Dim intIndex, intPeaksFoundDimCount As Integer
-        Dim intPointerIndex As Integer
+        Dim intIndex As Integer
         Dim intIndexStart As Integer
         Dim intAnnotationIndex As Integer
         Dim strCaptionText As String
-
-        Dim intPeakCount As Integer
-        Dim intPeakLocations() As Integer       ' 0-based array
-        Dim intPeakEdgesLeft() As Integer       ' 0-based array
-        Dim intPeakEdgesRight() As Integer      ' 0-based array
-        Dim dblPeakAreas() As Double            ' 0-based array
-        Dim intPointerArray() As Integer        ' 0-based array
 
         Dim dblMaximumIntensity, dblIntensityThreshold As Double
 
@@ -1194,7 +1188,7 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
         strProgressCaption = "Auto-labeling peaks in series " & intSeriesNumber.ToString.Trim
         SetLabelTitle(strProgressCaption)
         SetLabelSubTitle("")
-        System.Windows.Forms.Application.DoEvents()
+        Application.DoEvents()
 
         If blnForceAsContinuousData Or blnForceAsDiscreteData Then
             If blnForceAsContinuousData Then
@@ -1216,7 +1210,8 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
 
         ZoomOutFull(False)
 
-        intPeakCount = 0
+        Dim detectedPeaks As List(Of clsPeakInfo)
+
         If blnContinuousData Then
             ' Use the Magnitude-Concativity method to find the peaks
             ' The threshold is mPeakDetectIntensityThresholdCounts
@@ -1224,8 +1219,10 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
             With mDataSaved(intSeriesNumber)
                 If .DataCount > 0 And .Initialized Then
                     SetLabelTitle(strProgressCaption & " - Detecting Peaks")
-                    System.Windows.Forms.Application.DoEvents()
-                    intPeakCount = objDetectPeaks.DetectPeaks(.XVals, .YVals, mPeakDetectIntensityThresholdCounts, mPeakDetectWidthPointsMinimum, intPeakLocations, intPeakEdgesLeft, intPeakEdgesRight, dblPeakAreas, mPeakDetectIntensityThresholdPercentageOfMaximum)
+                    Application.DoEvents()
+                    detectedPeaks = objDetectPeaks.DetectPeaks(.XVals, .YVals, mPeakDetectIntensityThresholdCounts, mPeakDetectWidthPointsMinimum, mPeakDetectIntensityThresholdPercentageOfMaximum)
+                Else
+                    detectedPeaks = New List(Of clsPeakInfo)
                 End If
             End With
         Else
@@ -1247,63 +1244,67 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
                     dblIntensityThreshold = mPeakDetectIntensityThresholdCounts
                 End If
 
-                intPeaksFoundDimCount = 50
-                ReDim intPeakLocations(intPeaksFoundDimCount)
+                detectedPeaks = New List(Of clsPeakInfo)
 
                 ' Make a list of the data points within threshold
                 For intIndex = 0 To .DataCount - 1
                     If .YVals(intIndex) >= dblIntensityThreshold Then
-                        intPeakLocations(intPeakCount) = intIndex
-                        intPeakCount = intPeakCount + 1
-                        If intPeakCount >= intPeaksFoundDimCount Then
-                            intPeaksFoundDimCount = intPeaksFoundDimCount + 50
-                            ReDim Preserve intPeakLocations(intPeaksFoundDimCount)
-                        End If
+                        Dim newPeak = New clsPeakInfo(intIndex)
+                        detectedPeaks.Add(newPeak)
                     End If
                 Next intIndex
             End With
         End If
 
-        If intPeakCount > 0 Then
+        If detectedPeaks.Count > 0 Then
             With mDataSaved(intSeriesNumber)
                 ' Remove all existing annotations for the series
                 RemoveAnnotationsForSeries(intSeriesNumber)
                 blnAnnotationsRemoved = True
 
-                AutoLabelPeaksSortPeaks(.YVals, intPeakLocations, intPeakCount, intPointerArray)
+                Dim sortedPeaks = (From item In detectedPeaks Select item Order By item.PeakArea Ascending).ToList()
 
-                If intPeakCount > intMaxPeakCount Then
-                    intIndexStart = intPeakCount - intMaxPeakCount
+                If sortedPeaks.Count > intMaxPeakCount Then
+                    intIndexStart = sortedPeaks.Count - intMaxPeakCount
                 Else
                     intIndexStart = 0
                 End If
 
-                SetLabelTitle(strProgressCaption & " - Labeling Peaks: 0 / " & intPeakCount.ToString.Trim)
-                System.Windows.Forms.Application.DoEvents()
-                For intPointerIndex = intIndexStart To intPeakCount - 1
-                    intIndex = intPointerArray(intPointerIndex)
+                SetLabelTitle(strProgressCaption & " - Labeling Peaks: 0 / " & sortedPeaks.Count)
+                Application.DoEvents()
+
+                For intPeakIndex = intIndexStart To sortedPeaks.Count - 1
+
+                    Dim dataPointIndex = sortedPeaks(intIndex).PeakLocation
 
                     If blnShowXPos Or blnShowYPos Then
-                        strCaptionText = GenerateAnnotationUsingNearestPoint(.XVals(intPeakLocations(intIndex)), .YVals(intPeakLocations(intIndex)), intSeriesNumber, blnShowXPos, blnShowYPos, True, "", CInt(intPeakLocations(intIndex)))
+                        strCaptionText = GenerateAnnotationUsingNearestPoint(.XVals(dataPointIndex),
+                                                                             .YVals(dataPointIndex),
+                                                                             intSeriesNumber, blnShowXPos, blnShowYPos,
+                                                                             True, "",
+                                                                             CInt(dataPointIndex))
                     Else
                         ' Show the data point number
                         strCaptionText = intIndex.ToString.Trim
                     End If
 
-                    intAnnotationIndex = SetAnnotation(False, .XVals(intPeakLocations(intIndex)), .YVals(intPeakLocations(intIndex)), strCaptionText, intCaptionAngle, intSeriesNumber, asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, intPeakLocations(intIndex), blnShowXPos, blnShowYPos, blnIncludeArrow, blnHideInDenseRegions, 0, True)
+                    intAnnotationIndex = SetAnnotation(False, .XVals(dataPointIndex), .YVals(dataPointIndex),
+                                                       strCaptionText, intCaptionAngle, intSeriesNumber,
+                                                       asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint,
+                                                       dataPointIndex, blnShowXPos, blnShowYPos, blnIncludeArrow, blnHideInDenseRegions, 0, True)
                     If intAnnotationIndex <= 0 Then
                         ' Addition failed
                         Exit For
                     End If
 
-                    SetLabelTitle(strProgressCaption & " - Labeling Peaks: " & (intIndex + 1).ToString.Trim & " / " & intPeakCount.ToString.Trim)
-                    System.Windows.Forms.Application.DoEvents()
-                Next intPointerIndex
+                    SetLabelTitle(strProgressCaption & " - Labeling Peaks: " & (intIndex + 1).ToString.Trim & " / " & sortedPeaks.Count)
+                    Application.DoEvents()
+                Next
             End With
         End If
 
         SetLabelTitle(strProgressCaption & " - Finishing up")
-        System.Windows.Forms.Application.DoEvents()
+        Application.DoEvents()
 
         ZoomOutFull()
 
@@ -1312,42 +1313,14 @@ AdjustScalingToIncludeAnnotationCaptionsErrorHandler:
 
         SetLabelTitle(strGraphTitleSaved)
         SetLabelSubTitle(strGraphSubTitleSaved)
-        System.Windows.Forms.Application.DoEvents()
+        Application.DoEvents()
 
         Exit Sub
 
 AutoLabelPeaksErrorHandler:
-        MsgBox("Error in CWGraphControl.AutoLabelPeaksError(): " & vbCrLf & Err.Description, MsgBoxStyle.Information + MsgBoxStyle.OKOnly)
+        MsgBox("Error in CWGraphControl.AutoLabelPeaksError(): " & vbCrLf & Err.Description, MsgBoxStyle.Information + MsgBoxStyle.OkOnly)
         SetLabelTitle(strGraphTitleSaved)
         SetLabelSubTitle(strGraphSubTitleSaved)
-
-    End Sub
-
-    Private Sub AutoLabelPeaksSortPeaks(ByRef dblYVals() As Double, ByRef intPeakLocations() As Integer, ByRef intPeakCount As Integer, ByRef intPointerArray() As Integer)
-
-        Dim intPointerIndex As Integer
-        Dim dblPeakIntensities() As Double ' 0-based array
-
-        On Error GoTo AutoLabelPeaksSortPeaksErrorHandler
-
-        ReDim intPointerArray(intPeakCount - 1)
-        ReDim dblPeakIntensities(intPeakCount - 1)
-
-        For intPointerIndex = 0 To intPeakCount - 1
-            intPointerArray(intPointerIndex) = intPointerIndex
-            dblPeakIntensities(intPointerIndex) = dblYVals(intPeakLocations(intPointerIndex))
-        Next intPointerIndex
-
-        ' Sort intPointerArray() ascending by examining dblPeakIntensities()
-        ShellSortByIntensity(dblPeakIntensities, intPointerArray, 0, intPeakCount - 1)
-
-        Exit Sub
-
-AutoLabelPeaksSortPeaksErrorHandler:
-        System.Diagnostics.Debug.WriteLine("Error occured in AutoLabelPeaksSortPeaks: " & Err.Description)
-        System.Diagnostics.Debug.Assert(False, "")
-
-        intPeakCount = 0
 
     End Sub
 
@@ -1440,7 +1413,7 @@ AutoLabelPeaksSortPeaksErrorHandler:
         Next intIndex
     End Sub
 
-    Public Sub ClearData(ByVal intSeriesToClear As Short)
+    Public Sub ClearData(intSeriesToClear As Short)
 
         If intSeriesToClear <= MAX_SERIES_COUNT Then
             With mDataSaved(intSeriesToClear)
@@ -1480,7 +1453,7 @@ AutoLabelPeaksSortPeaksErrorHandler:
         End Select
     End Sub
 
-    Private Sub ComputeExtentsRotatedRectangle(ByRef dblStartX As Double, ByRef dblStartY As Double, ByRef dblLength As Double, ByRef dblHeight As Double, ByVal dblAngle As Double, ByRef dblScalingX As Double, ByRef dblScalingY As Double, ByRef X1 As Double, ByRef Y1 As Double, ByRef X2 As Double, ByRef Y2 As Double)
+    Private Sub ComputeExtentsRotatedRectangle(ByRef dblStartX As Double, ByRef dblStartY As Double, ByRef dblLength As Double, ByRef dblHeight As Double, dblAngle As Double, ByRef dblScalingX As Double, ByRef dblScalingY As Double, ByRef X1 As Double, ByRef Y1 As Double, ByRef X2 As Double, ByRef Y2 As Double)
 
         ' Given a rectangle starting at dblStartX and dblStartY, with length dblLength and height dblHeight, find
         '  the extents of a rectangle surrounding the given rectangle, no matter what angle the given rectangle is rotated to
@@ -1560,11 +1533,11 @@ AutoLabelPeaksSortPeaksErrorHandler:
 
     End Sub
 
-    Private Function ConvertColorNameToColorObject(ByVal strColorName As String) As System.Drawing.Color
+    Private Function ConvertColorNameToColorObject(strColorName As String) As Color
         ' Removes "Color [" and "]" from strColorName
 
         Dim strCleanName As String
-        Dim cNewColor As System.Drawing.Color
+        Dim cNewColor As Color
 
         If Not strColorName Is Nothing Then
             strCleanName = strColorName
@@ -1573,13 +1546,13 @@ AutoLabelPeaksSortPeaksErrorHandler:
                 strCleanName = strCleanName.Remove(strCleanName.Length - 1, 1)
             End If
 
-            cNewColor = System.Drawing.Color.FromName(strCleanName)
+            cNewColor = Color.FromName(strCleanName)
 
             Debug.Assert(cNewColor.ToString = strColorName)
 
             Return cNewColor
         Else
-            Return System.Drawing.Color.Black
+            Return Color.Black
         End If
 
     End Function
@@ -1588,7 +1561,7 @@ AutoLabelPeaksSortPeaksErrorHandler:
         Get
             Return chkXAxisDateMode.Checked
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             ' Note that this will fire UpdateDisplayPrecision()
             chkXAxisDateMode.Checked = Value
         End Set
@@ -1598,13 +1571,13 @@ AutoLabelPeaksSortPeaksErrorHandler:
         Get
             Return chkXAxisDateModeShowTime.Checked
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             ' Note that this will fire UpdateDisplayPrecision()
             chkXAxisDateModeShowTime.Checked = Value
         End Set
     End Property
 
-    Private Sub DisplayPosition(ByVal XPos As Double, ByVal YPos As Double)
+    Private Sub DisplayPosition(XPos As Double, YPos As Double)
 
         mLastXPos = XPos
         mLastYPos = YPos
@@ -1655,7 +1628,7 @@ AutoLabelPeaksSortPeaksErrorHandler:
         End If
     End Sub
 
-    Public Sub GenerateSineWave(ByVal intSeriesNumber As Short, ByVal blnXAxisLogBased As Boolean)
+    Public Sub GenerateSineWave(intSeriesNumber As Short, blnXAxisLogBased As Boolean)
 
         Const DATA_COUNT As Short = 1021
         Dim dblDataX(DATA_COUNT - 1) As Double
@@ -1677,19 +1650,19 @@ AutoLabelPeaksSortPeaksErrorHandler:
 
     End Sub
 
-    Public Function GetAnnotationFontColor(ByVal intSeriesIndex As Short) As System.Drawing.Color
+    Public Function GetAnnotationFontColor(intSeriesIndex As Short) As Color
         AssureValidSeriesNumber(intSeriesIndex)
 
         Return mAnnotationStyles(intSeriesIndex).FontColor
     End Function
 
-    Public Function GetAnnotationFontName(ByVal intSeriesIndex As Short) As String
+    Public Function GetAnnotationFontName(intSeriesIndex As Short) As String
         AssureValidSeriesNumber(intSeriesIndex)
 
         Return mAnnotationStyles(intSeriesIndex).FontName
     End Function
 
-    Public Function GetAnnotationFontSize(ByVal intSeriesIndex As Short) As Short
+    Public Function GetAnnotationFontSize(intSeriesIndex As Short) As Short
         AssureValidSeriesNumber(intSeriesIndex)
 
         Return mAnnotationStyles(intSeriesIndex).FontSize
@@ -1772,7 +1745,7 @@ GenerateAnnotationUsingNearestPointErrorHandler:
         Return mAnnotationDensityAutoHideCaptions
     End Function
 
-    Public Function GetAnnotationByIndex(ByVal intAnnotationIndex As Integer, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, ByRef strCaptionText As String, Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 0, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToAnyPoint, Optional ByRef intPointNumberToBind As Integer = 0, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = False, Optional ByRef strAnnotationNameReturn As String = "") As Boolean
+    Public Function GetAnnotationByIndex(intAnnotationIndex As Integer, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, ByRef strCaptionText As String, Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 0, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToAnyPoint, Optional ByRef intPointNumberToBind As Integer = 0, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = False, Optional ByRef strAnnotationNameReturn As String = "") As Boolean
         ' Returns True if a match was found, False if not found
 
         With CWGraph.Annotations
@@ -1817,7 +1790,7 @@ GenerateAnnotationUsingNearestPointErrorHandler:
 
     End Function
 
-    Public Function GetAnnotationByName(ByVal strAnnotationName As String, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, ByRef strCaptionText As String, Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 0, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToAnyPoint, Optional ByRef intPointNumberToBind As Integer = 0, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = False, Optional ByRef strAnnotationNameReturn As String = "", Optional ByRef blnCaseSensitive As Boolean = False) As Boolean
+    Public Function GetAnnotationByName(strAnnotationName As String, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, ByRef strCaptionText As String, Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 0, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToAnyPoint, Optional ByRef intPointNumberToBind As Integer = 0, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = False, Optional ByRef strAnnotationNameReturn As String = "", Optional ByRef blnCaseSensitive As Boolean = False) As Boolean
         ' Returns True if a match was found, False if not found
 
         Dim intIndex As Short
@@ -1865,9 +1838,9 @@ GenerateAnnotationUsingNearestPointErrorHandler:
         End If
     End Function
 
-    Public Function GetCursorColor(Optional ByVal intCursorNumber As Integer = 1) As System.Drawing.Color
+    Public Function GetCursorColor(Optional ByVal intCursorNumber As Integer = 1) As Color
         intCursorNumber = ValidateCursorNumber(intCursorNumber)
-        Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Cursors.Item(intCursorNumber).Color))
+        Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Cursors.Item(intCursorNumber).Color))
     End Function
 
     Public Sub GetCursorPosition(ByRef XPos As Double, ByRef YPos As Double, Optional ByVal intCursorNumber As Integer = 1)
@@ -1886,7 +1859,7 @@ GenerateAnnotationUsingNearestPointErrorHandler:
         Return CWGraph.Cursors.Item(intCursorNumber).Visible
     End Function
 
-    Public Function GetDataCount(ByVal intSeriesNumber As Short) As Integer
+    Public Function GetDataCount(intSeriesNumber As Short) As Integer
 
         If intSeriesNumber < 1 Or intSeriesNumber > CWGraph.Plots.Count Or intSeriesNumber > MAX_SERIES_COUNT Then
             Return 0
@@ -1900,12 +1873,18 @@ GenerateAnnotationUsingNearestPointErrorHandler:
 
     End Function
 
-    Public Function GetDataXvsY(ByVal intSeriesNumber As Short, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, ByRef DataCount As Integer) As Boolean
+    Public Function GetDataXvsY(
+      intSeriesNumber As Short,
+      <Out()> ByRef XDataZeroBased1DArray() As Double,
+      <Out()> ByRef YDataZeroBased1DArray() As Double, ByRef DataCount As Integer) As Boolean
+
         ' Returns True if success, or False if an error
 
         Try
             If intSeriesNumber < 1 Or intSeriesNumber > CWGraph.Plots.Count Or intSeriesNumber > MAX_SERIES_COUNT Then
                 DataCount = 0
+                ReDim XDataZeroBased1DArray(0)
+                ReDim YDataZeroBased1DArray(0)
                 Return False
             Else
                 If mDataSaved(intSeriesNumber).Initialized Then
@@ -1924,987 +1903,994 @@ GenerateAnnotationUsingNearestPointErrorHandler:
                     Return True
                 Else
                     DataCount = 0
+                    ReDim XDataZeroBased1DArray(0)
+                    ReDim YDataZeroBased1DArray(0)
                     Return False
                 End If
             End If
         Catch ex As Exception
-            System.Diagnostics.Debug.Assert(False, "")
+            Console.WriteLine("Warning in GetDataXvsY; no data")
             DataCount = 0
+            ReDim XDataZeroBased1DArray(0)
+            ReDim YDataZeroBased1DArray(0)
             Return False
         End Try
 
     End Function
 
-	Public Function GetDefaultSeriesColor(ByRef intSeriesNumber As Short) As System.Drawing.Color
-		Const COLOR_COUNT As Short = 8
-		Dim cSuggestedColors(COLOR_COUNT - 1) As System.Drawing.Color ' 0-based array
-
-		cSuggestedColors(0) = Drawing.Color.Blue		  ' RGB(0, 0, 255)
-		cSuggestedColors(1) = Drawing.Color.Red			  ' RGB(255, 0, 0)
-		cSuggestedColors(2) = Drawing.Color.Green		  ' RGB(0, 160, 0)
-		cSuggestedColors(3) = Drawing.Color.Magenta		  ' RGB(255, 0, 255)
-
-		cSuggestedColors(4) = Drawing.Color.Purple		  ' RGB(128, 128, 255)
-		cSuggestedColors(5) = Drawing.Color.Salmon		  ' RGB(255, 128, 128)
-		cSuggestedColors(6) = Drawing.Color.LightGreen	  ' RGB(128, 255, 128)
-		cSuggestedColors(7) = Drawing.Color.Pink		  ' RGB(255, 128, 255)
-
-		Return cSuggestedColors(intSeriesNumber Mod COLOR_COUNT)
-	End Function
-
-	Public Function GetDisplayPrecisionX() As Double
-		Return mPrecisionX
-	End Function
-
-	Public Function GetDisplayPrecisionY() As Double
-		Return mPrecisionY
-	End Function
-
-	Public Function GetFixMinimumYAtZero() As Boolean
-		Return chkFixMinimumYAtZero.Checked
-	End Function
-
-	Public Function GetGridLinesXVisible(Optional ByRef blnMajorGridLines As Boolean = True) As Boolean
-		' blnMajorGridLines = True means Major Grid Lines
-		' blnMajorGridLines = False means Minor Grid Lines
-
-		If blnMajorGridLines Then
-			Return CWGraph.Axes.Item(1).Ticks.MajorGrid
-		Else
-			Return CWGraph.Axes.Item(1).Ticks.MinorGrid
-		End If
-	End Function
-
-	Public Function GetGridlinesYVisible(Optional ByRef blnMajorGridLines As Boolean = True) As Boolean
-		' blnMajorGridLines = True means Major Grid Lines
-		' blnMajorGridLines = False means Minor Grid Lines
-
-		If blnMajorGridLines Then
-			Return CWGraph.Axes.Item(2).Ticks.MajorGrid
-		Else
-			Return CWGraph.Axes.Item(2).Ticks.MinorGrid
-		End If
-	End Function
-
-	Public Function GetFrameColor() As System.Drawing.Color
-		Return CWGraph.GraphFrameColor
-	End Function
-
-	Public Function GetFrameStyleIs3D() As Boolean
-		If CWGraph.GraphFrameStyle = CWUIControlsLib.CWGraphFrameStyles.cwGraphFrame3D Then
-			Return True
-		Else
-			Return False
-		End If
-	End Function
-
-	Public Function GetGridLinesXColor(Optional ByRef blnMajorGridLines As Boolean = True) As System.Drawing.Color
-		' blnMajorGridLines = True means Major Grid Lines
-		' blnMajorGridLines = False means Minor Grid Lines
-
-		If blnMajorGridLines Then
-			Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(1).Ticks.MajorGridColor))
-		Else
-			Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(1).Ticks.MinorGridColor))
-		End If
-	End Function
-
-	Public Function GetGridLinesYColor(Optional ByRef blnMajorGridLines As Boolean = True) As System.Drawing.Color
-		' blnMajorGridLines = True means Major Grid Lines
-		' blnMajorGridLines = False means Minor Grid Lines
-
-		If blnMajorGridLines Then
-			Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(2).Ticks.MajorGridColor))
-		Else
-			Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(2).Ticks.MinorGridColor))
-		End If
-	End Function
-
-	Public Function GetLabelFontColor() As System.Drawing.Color
-		Return CWGraph.CaptionColor
-	End Function
-
-	Public Function GetLabelFontName() As String
-		Return CWGraph.Font.Name
-	End Function
-
-	Public Function GetLabelFontSize() As Short
-		Return CWGraph.Font.Size
-	End Function
-
-	Public Function GetLabelSubtitle() As String
-		Return mSubTitle
-	End Function
-
-	Public Function GetLabelTitle() As String
-		Return mTitle
-	End Function
-
-	Public Function GetLabelXAxis() As String
-		Return CWGraph.Axes.Item(1).Caption
-	End Function
-
-	Public Function GetLabelYAxis() As String
-		Return CWGraph.Axes.Item(2).Caption
-	End Function
-
-	Public Function GetPeakDetectIntensityThresholdCounts() As Double
-		Return mPeakDetectIntensityThresholdCounts
-	End Function
-
-	Public Function GetPeakDetectIntensityThresholdPercentageOfMaximum() As Integer
-		Return mPeakDetectIntensityThresholdPercentageOfMaximum
-	End Function
-
-	Public Function GetPeakDetectWidthPointsMinimum() As Integer
-		Return mPeakDetectWidthPointsMinimum
-	End Function
-
-	Public Function GetPlotBackgroundColor() As System.Drawing.Color
-		Return CWGraph.PlotAreaColor
-	End Function
-
-	Public Function GetRangeX(Optional ByRef dblMinimum As Double = 0, Optional ByRef dblMaximum As Double = 0) As Double
-		' Returns Abs(dblMaximum - dblMinimum)
-		With CWGraph.Axes.Item(1)
-			dblMinimum = .Minimum
-			dblMaximum = .Maximum
-			Return System.Math.Abs(.Maximum - .Minimum)
-		End With
-	End Function
-
-	Public Function GetRangeY(Optional ByRef dblMinimum As Double = 0, Optional ByRef dblMaximum As Double = 0) As Double
-		' Returns Abs(dblMaximum - dblMinimum)
-		With CWGraph.Axes.Item(2)
-			dblMinimum = .Minimum
-			dblMaximum = .Maximum
-			Return System.Math.Abs(.Maximum - .Minimum)
-		End With
-	End Function
+    Public Function GetDefaultSeriesColor(ByRef intSeriesNumber As Short) As Color
+        Const COLOR_COUNT As Short = 8
+        Dim cSuggestedColors(COLOR_COUNT - 1) As Color ' 0-based array
+
+        cSuggestedColors(0) = Drawing.Color.Blue          ' RGB(0, 0, 255)
+        cSuggestedColors(1) = Drawing.Color.Red           ' RGB(255, 0, 0)
+        cSuggestedColors(2) = Drawing.Color.Green         ' RGB(0, 160, 0)
+        cSuggestedColors(3) = Drawing.Color.Magenta       ' RGB(255, 0, 255)
+
+        cSuggestedColors(4) = Drawing.Color.Purple        ' RGB(128, 128, 255)
+        cSuggestedColors(5) = Drawing.Color.Salmon        ' RGB(255, 128, 128)
+        cSuggestedColors(6) = Drawing.Color.LightGreen    ' RGB(128, 255, 128)
+        cSuggestedColors(7) = Drawing.Color.Pink          ' RGB(255, 128, 255)
+
+        Return cSuggestedColors(intSeriesNumber Mod COLOR_COUNT)
+    End Function
+
+    Public Function GetDisplayPrecisionX() As Double
+        Return mPrecisionX
+    End Function
+
+    Public Function GetDisplayPrecisionY() As Double
+        Return mPrecisionY
+    End Function
+
+    Public Function GetFixMinimumYAtZero() As Boolean
+        Return chkFixMinimumYAtZero.Checked
+    End Function
+
+    Public Function GetGridLinesXVisible(Optional ByRef blnMajorGridLines As Boolean = True) As Boolean
+        ' blnMajorGridLines = True means Major Grid Lines
+        ' blnMajorGridLines = False means Minor Grid Lines
+
+        If blnMajorGridLines Then
+            Return CWGraph.Axes.Item(1).Ticks.MajorGrid
+        Else
+            Return CWGraph.Axes.Item(1).Ticks.MinorGrid
+        End If
+    End Function
+
+    Public Function GetGridlinesYVisible(Optional ByRef blnMajorGridLines As Boolean = True) As Boolean
+        ' blnMajorGridLines = True means Major Grid Lines
+        ' blnMajorGridLines = False means Minor Grid Lines
+
+        If blnMajorGridLines Then
+            Return CWGraph.Axes.Item(2).Ticks.MajorGrid
+        Else
+            Return CWGraph.Axes.Item(2).Ticks.MinorGrid
+        End If
+    End Function
+
+    Public Function GetFrameColor() As Color
+        Return CWGraph.GraphFrameColor
+    End Function
+
+    Public Function GetFrameStyleIs3D() As Boolean
+        If CWGraph.GraphFrameStyle = CWUIControlsLib.CWGraphFrameStyles.cwGraphFrame3D Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Function GetGridLinesXColor(Optional ByRef blnMajorGridLines As Boolean = True) As Color
+        ' blnMajorGridLines = True means Major Grid Lines
+        ' blnMajorGridLines = False means Minor Grid Lines
+
+        If blnMajorGridLines Then
+            Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(1).Ticks.MajorGridColor))
+        Else
+            Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(1).Ticks.MinorGridColor))
+        End If
+    End Function
+
+    Public Function GetGridLinesYColor(Optional ByRef blnMajorGridLines As Boolean = True) As Color
+        ' blnMajorGridLines = True means Major Grid Lines
+        ' blnMajorGridLines = False means Minor Grid Lines
+
+        If blnMajorGridLines Then
+            Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(2).Ticks.MajorGridColor))
+        Else
+            Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Axes.Item(2).Ticks.MinorGridColor))
+        End If
+    End Function
+
+    Public Function GetLabelFontColor() As Color
+        Return CWGraph.CaptionColor
+    End Function
+
+    Public Function GetLabelFontName() As String
+        Return CWGraph.Font.Name
+    End Function
+
+    Public Function GetLabelFontSize() As Short
+        Return CWGraph.Font.Size
+    End Function
+
+    Public Function GetLabelSubtitle() As String
+        Return mSubTitle
+    End Function
+
+    Public Function GetLabelTitle() As String
+        Return mTitle
+    End Function
+
+    Public Function GetLabelXAxis() As String
+        Return CWGraph.Axes.Item(1).Caption
+    End Function
+
+    Public Function GetLabelYAxis() As String
+        Return CWGraph.Axes.Item(2).Caption
+    End Function
+
+    Public Function GetPeakDetectIntensityThresholdCounts() As Double
+        Return mPeakDetectIntensityThresholdCounts
+    End Function
+
+    Public Function GetPeakDetectIntensityThresholdPercentageOfMaximum() As Integer
+        Return mPeakDetectIntensityThresholdPercentageOfMaximum
+    End Function
+
+    Public Function GetPeakDetectWidthPointsMinimum() As Integer
+        Return mPeakDetectWidthPointsMinimum
+    End Function
+
+    Public Function GetPlotBackgroundColor() As Color
+        Return CWGraph.PlotAreaColor
+    End Function
+
+    Public Function GetRangeX(Optional ByRef dblMinimum As Double = 0, Optional ByRef dblMaximum As Double = 0) As Double
+        ' Returns Abs(dblMaximum - dblMinimum)
+        With CWGraph.Axes.Item(1)
+            dblMinimum = .Minimum
+            dblMaximum = .Maximum
+            Return System.Math.Abs(.Maximum - .Minimum)
+        End With
+    End Function
+
+    Public Function GetRangeY(Optional ByRef dblMinimum As Double = 0, Optional ByRef dblMaximum As Double = 0) As Double
+        ' Returns Abs(dblMaximum - dblMinimum)
+        With CWGraph.Axes.Item(2)
+            dblMinimum = .Minimum
+            dblMaximum = .Maximum
+            Return System.Math.Abs(.Maximum - .Minimum)
+        End With
+    End Function
 
-	Public Function GetSeriesBarFillColor(ByVal intSeriesNumber As Short) As System.Drawing.Color
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesNumber).FillColor))
-	End Function
+    Public Function GetSeriesBarFillColor(intSeriesNumber As Short) As Color
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesNumber).FillColor))
+    End Function
 
-	Public Function GetSeriesCount() As Short
-		Return CWGraph.Plots.Count
-	End Function
+    Public Function GetSeriesCount() As Short
+        Return CWGraph.Plots.Count
+    End Function
 
-	Public Function GetSeriesLegendCaption(ByVal intSeriesNumber As Short) As String
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return mDataSaved(intSeriesNumber).LegendCaption
-	End Function
+    Public Function GetSeriesLegendCaption(intSeriesNumber As Short) As String
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return mDataSaved(intSeriesNumber).LegendCaption
+    End Function
 
-	Public Function GetSeriesLineColor(ByVal intSeriesNumber As Short) As System.Drawing.Color
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesNumber).LineColor))
-	End Function
+    Public Function GetSeriesLineColor(intSeriesNumber As Short) As Color
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesNumber).LineColor))
+    End Function
 
-	Public Function GetSeriesLineToBaseColor(ByVal intSeriesNumber As Short) As System.Drawing.Color
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32((CWGraph.Plots.Item(intSeriesNumber).LineToBaseColor)))
-	End Function
+    Public Function GetSeriesLineToBaseColor(intSeriesNumber As Short) As Color
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return ColorTranslator.FromOle(System.Convert.ToInt32((CWGraph.Plots.Item(intSeriesNumber).LineToBaseColor)))
+    End Function
 
-	Public Function GetSeriesLineStyle(ByVal intSeriesNumber As Short) As CWUIControlsLib.CWLineStyles
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return CWGraph.Plots.Item(intSeriesNumber).LineStyle
-	End Function
+    Public Function GetSeriesLineStyle(intSeriesNumber As Short) As CWUIControlsLib.CWLineStyles
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return CWGraph.Plots.Item(intSeriesNumber).LineStyle
+    End Function
 
-	Public Function GetSeriesLineWidth(ByVal intSeriesNumber As Short) As Short
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return CWGraph.Plots.Item(intSeriesNumber).LineWidth
-	End Function
+    Public Function GetSeriesLineWidth(intSeriesNumber As Short) As Short
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return CWGraph.Plots.Item(intSeriesNumber).LineWidth
+    End Function
 
-	Public Function GetSeriesOriginalIntensityMaximum(ByVal intSeriesNumber As Short) As Double
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return mDataSaved(intSeriesNumber).OriginalMaximumIntensity
-	End Function
+    Public Function GetSeriesOriginalIntensityMaximum(intSeriesNumber As Short) As Double
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return mDataSaved(intSeriesNumber).OriginalMaximumIntensity
+    End Function
 
-	Public Function GetSeriesPlotMode(ByVal intSeriesNumber As Short) As pmPlotModeConstants
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return mSeriesPlotMode(intSeriesNumber)
-	End Function
+    Public Function GetSeriesPlotMode(intSeriesNumber As Short) As pmPlotModeConstants
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return mSeriesPlotMode(intSeriesNumber)
+    End Function
 
-	Public Function GetSeriesPointColor(ByVal intSeriesNumber As Short) As System.Drawing.Color
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesNumber).PointColor))
-	End Function
+    Public Function GetSeriesPointColor(intSeriesNumber As Short) As Color
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesNumber).PointColor))
+    End Function
 
-	Public Function GetSeriesPointStyle(ByVal intSeriesNumber As Short) As CWUIControlsLib.CWPointStyles
-		AssureValidSeriesNumber(intSeriesNumber)
-		Return CWGraph.Plots.Item(intSeriesNumber).PointStyle
-	End Function
+    Public Function GetSeriesPointStyle(intSeriesNumber As Short) As CWUIControlsLib.CWPointStyles
+        AssureValidSeriesNumber(intSeriesNumber)
+        Return CWGraph.Plots.Item(intSeriesNumber).PointStyle
+    End Function
 
-	Private Sub InitializeAnnotationInfoArray()
-		ReDim mAnnotations(CWGraph.Annotations.Count)
-	End Sub
+    Private Sub InitializeAnnotationInfoArray()
+        ReDim mAnnotations(CWGraph.Annotations.Count)
+    End Sub
 
-	Private Sub InitializeGraphControl()
+    Private Sub InitializeGraphControl()
 
-		Dim objToolTip As ToolTip
+        Dim objToolTip As ToolTip
 
-		ToggleOptionsFrameVisibility(True)
+        ToggleOptionsFrameVisibility(True)
 
-		SetSeriesCount(2)
-		SetSeriesPlotMode(1, pmPlotModeConstants.pmSticksToZero)
-		SetSeriesPlotMode(2, pmPlotModeConstants.pmSticksToZero)
+        SetSeriesCount(2)
+        SetSeriesPlotMode(1, pmPlotModeConstants.pmSticksToZero)
+        SetSeriesPlotMode(2, pmPlotModeConstants.pmSticksToZero)
 
-		' Populate the combo boxes
-		PopulateComboBoxes()
+        ' Populate the combo boxes
+        PopulateComboBoxes()
 
-		mControlsFrameHidden = False
-		cmdRollUpHide.Visible = True
-		cmdRollUpShow.Visible = False
+        mControlsFrameHidden = False
+        cmdRollUpHide.Visible = True
+        cmdRollUpShow.Visible = False
 
-		UpdateLegend()
+        UpdateLegend()
 
-		' Read settings from registry
-		' If not present (or can't be read), then defaults are used
-		RegistryReadSettings()
+        ' Read settings from registry
+        ' If not present (or can't be read), then defaults are used
+        RegistryReadSettings()
 
-		EnableDisableDynamicControls()
+        EnableDisableDynamicControls()
 
-		CenterCursor(1, True)
+        CenterCursor(1, True)
 
-		ZoomOutFull(False)
+        ZoomOutFull(False)
 
-		EnableTrackModeAllEvents()
+        EnableTrackModeAllEvents()
 
-		fraOptionsShadow.Top = 0
-		fraOptionsShadow.Left = 0
+        fraOptionsShadow.Top = 0
+        fraOptionsShadow.Left = 0
 
-		MyBase.Width = 33
-		MyBase.Height = 20
+        MyBase.Width = 33
+        MyBase.Height = 20
 
-		InitializeAnnotationInfoArray()
-		mRecentAnnotationSnapMode = asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint
-		mRecentAnnotationHideInDenseRegions = True
+        InitializeAnnotationInfoArray()
+        mRecentAnnotationSnapMode = asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint
+        mRecentAnnotationHideInDenseRegions = True
 
-		UpdateAnnotationDensityTolerances()
+        UpdateAnnotationDensityTolerances()
 
-		objToolTip = New ToolTip
-		objToolTip.SetToolTip(txtAnnotationDensityToleranceX, "Minimum units between displayed annotations.")
-		objToolTip.SetToolTip(txtAnnotationDensityToleranceY, objToolTip.GetToolTip(txtAnnotationDensityToleranceX))
+        objToolTip = New ToolTip
+        objToolTip.SetToolTip(txtAnnotationDensityToleranceX, "Minimum units between displayed annotations.")
+        objToolTip.SetToolTip(txtAnnotationDensityToleranceY, objToolTip.GetToolTip(txtAnnotationDensityToleranceX))
 
-		objToolTip.SetToolTip(cboMouseAction, "Use the A key to temporarily enable 'Move Annotation' mode, P to 'Pan' the graph, Z for the 'Zoom Box', and C to move the 'Cursor'")
+        objToolTip.SetToolTip(cboMouseAction, "Use the A key to temporarily enable 'Move Annotation' mode, P to 'Pan' the graph, Z for the 'Zoom Box', and C to move the 'Cursor'")
 
-		objToolTip = Nothing
+        objToolTip = Nothing
 
-		chkAutoAdjustScalingToIncludeAnnotationCaptions.Text = "&Auto Adjust Scaling to" & vbCrLf & "Include Captions"
+        chkAutoAdjustScalingToIncludeAnnotationCaptions.Text = "&Auto Adjust Scaling to" & vbCrLf & "Include Captions"
 
-	End Sub
+    End Sub
 
-	Private Function LookupSeriesNumberForPlotObject(ByRef objPlot As CWUIControlsLib.CWPlot) As Short
-		' Returns the series number if a match is found
-		' Otherwise, returns 0
+    Private Function LookupSeriesNumberForPlotObject(ByRef objPlot As CWUIControlsLib.CWPlot) As Short
+        ' Returns the series number if a match is found
+        ' Otherwise, returns 0
 
-		Dim intSeriesIndexCompare As Short
-		Dim intMatchingSeriesNumber As Short
+        Dim intSeriesIndexCompare As Short
+        Dim intMatchingSeriesNumber As Short
 
-		intMatchingSeriesNumber = 0
-		For intSeriesIndexCompare = 1 To CWGraph.Plots.Count
-			If objPlot._Name = CWGraph.Plots.Item(intSeriesIndexCompare)._Name Then
-				intMatchingSeriesNumber = intSeriesIndexCompare
-				Exit For
-			End If
-		Next intSeriesIndexCompare
+        intMatchingSeriesNumber = 0
+        For intSeriesIndexCompare = 1 To CWGraph.Plots.Count
+            If objPlot._Name = CWGraph.Plots.Item(intSeriesIndexCompare)._Name Then
+                intMatchingSeriesNumber = intSeriesIndexCompare
+                Exit For
+            End If
+        Next intSeriesIndexCompare
 
-		If intMatchingSeriesNumber = 0 Then
-			' Match not found by comparing objects
-			' Try finding a match by comparing names
-			intMatchingSeriesNumber = LookupSeriesNumberForPlotName((objPlot.Name))
-		End If
+        If intMatchingSeriesNumber = 0 Then
+            ' Match not found by comparing objects
+            ' Try finding a match by comparing names
+            intMatchingSeriesNumber = LookupSeriesNumberForPlotName((objPlot.Name))
+        End If
 
-		Return intMatchingSeriesNumber
+        Return intMatchingSeriesNumber
 
-	End Function
+    End Function
 
-	Private Function Lookup2DArrayValueByName(ByRef str2DArray(,) As String, ByVal strNameToFind As String, Optional ByVal strTextToReturnIfNotFound As String = "") As String
-		Dim intSettings As Short
-		Dim strValue As String
+    Private Function Lookup2DArrayValueByName(ByRef str2DArray(,) As String, strNameToFind As String, Optional ByVal strTextToReturnIfNotFound As String = "") As String
+        Dim intSettings As Short
+        Dim strValue As String
 
-		strNameToFind = strNameToFind.ToUpper
+        strNameToFind = strNameToFind.ToUpper
 
-		strValue = strTextToReturnIfNotFound
-		For intSettings = LBound(str2DArray, 1) To UBound(str2DArray, 1)
-			If str2DArray(intSettings, 0).ToUpper = strNameToFind Then
-				strValue = str2DArray(intSettings, 1)
-				Exit For
-			End If
-		Next intSettings
+        strValue = strTextToReturnIfNotFound
+        For intSettings = LBound(str2DArray, 1) To UBound(str2DArray, 1)
+            If str2DArray(intSettings, 0).ToUpper = strNameToFind Then
+                strValue = str2DArray(intSettings, 1)
+                Exit For
+            End If
+        Next intSettings
 
-		Return strValue
+        Return strValue
 
-	End Function
+    End Function
 
-	Private Function LookupCaptionForAnnotation(ByVal intAnnotationIndex As Integer) As String
-		' This function is needed since an annotation's "official" caption is changed to ""
-		'  when the caption is hidden in dense areas; the original is stored in mAnnotations().CaptionText
+    Private Function LookupCaptionForAnnotation(intAnnotationIndex As Integer) As String
+        ' This function is needed since an annotation's "official" caption is changed to ""
+        '  when the caption is hidden in dense areas; the original is stored in mAnnotations().CaptionText
 
-		On Error GoTo LookupCaptionForAnnotationErrorHandler
+        On Error GoTo LookupCaptionForAnnotationErrorHandler
 
-		If intAnnotationIndex < 1 Or intAnnotationIndex > CWGraph.Annotations.Count Then
-			Return String.Empty
-		Else
-			If mAnnotations(intAnnotationIndex).Hidden Then
-				Return mAnnotations(intAnnotationIndex).CaptionText
-			Else
-				Return CWGraph.Annotations.Item(intAnnotationIndex).Caption.Text
-			End If
-		End If
+        If intAnnotationIndex < 1 Or intAnnotationIndex > CWGraph.Annotations.Count Then
+            Return String.Empty
+        Else
+            If mAnnotations(intAnnotationIndex).Hidden Then
+                Return mAnnotations(intAnnotationIndex).CaptionText
+            Else
+                Return CWGraph.Annotations.Item(intAnnotationIndex).Caption.Text
+            End If
+        End If
 
-		Exit Function
+        Exit Function
 
 LookupCaptionForAnnotationErrorHandler:
-		System.Diagnostics.Debug.WriteLine("Error occurred in CWGraphControl.LookupCaptionForAnnotation(): " & Err.Description)
-		Return String.Empty
+        System.Diagnostics.Debug.WriteLine("Error occurred in CWGraphControl.LookupCaptionForAnnotation(): " & Err.Description)
+        Return String.Empty
 
-	End Function
+    End Function
 
-	Private Function LookupArrowVisibilityForAnnotation(ByVal intAnnotationIndex As Integer) As Boolean
-		' This function is needed since an annotation's arrow is hidden when the caption is hidden
-		'  when the caption is hidden in dense areas; mAnnotations().IncludeArrow will report whether or not an arrow really should be present
+    Private Function LookupArrowVisibilityForAnnotation(intAnnotationIndex As Integer) As Boolean
+        ' This function is needed since an annotation's arrow is hidden when the caption is hidden
+        '  when the caption is hidden in dense areas; mAnnotations().IncludeArrow will report whether or not an arrow really should be present
 
-		On Error GoTo LookupArrowVisibilityForAnnotationErrorHandler
+        On Error GoTo LookupArrowVisibilityForAnnotationErrorHandler
 
-		If intAnnotationIndex < 1 Or intAnnotationIndex > CWGraph.Annotations.Count Then
-			Return False
-		Else
-			If mAnnotations(intAnnotationIndex).Hidden Then
-				Return mAnnotations(intAnnotationIndex).IncludeArrow
-			Else
-				Return CWGraph.Annotations.Item(intAnnotationIndex).Arrow.Visible
-			End If
-		End If
+        If intAnnotationIndex < 1 Or intAnnotationIndex > CWGraph.Annotations.Count Then
+            Return False
+        Else
+            If mAnnotations(intAnnotationIndex).Hidden Then
+                Return mAnnotations(intAnnotationIndex).IncludeArrow
+            Else
+                Return CWGraph.Annotations.Item(intAnnotationIndex).Arrow.Visible
+            End If
+        End If
 
-		Exit Function
+        Exit Function
 
 LookupArrowVisibilityForAnnotationErrorHandler:
-		System.Diagnostics.Debug.WriteLine("Error occurred in CWGraphControl.LookupArrowVisibilityForAnnotation(): " & Err.Description)
-		Return False
-
-	End Function
-
-	Public Function LookupNearestPointNumber(ByVal dblXPosSearch As Double, ByVal dblYPosSearch As Double, ByRef intSeriesNumber As Short, Optional ByRef dblDistanceToClosestSeriesNumberDataPoint As Double = 0, Optional ByVal blnLimitToGivenSeriesNumber As Boolean = False) As Integer
-		' Looks for the point nearest to dblXPosSearch and dblYPosSearch
-		' If found, then returns the point number; otherwise returns -1
-		' Returns the distance from the search points to the target point ByRef in dblDistanceToClosestSeriesNumberDataPoint
-		' Updates intSeriesNumber with the series number of the point
-		' However, if blnLimitToGivenSeriesNumber then will only return points for the given series number
-
-		Dim intRangeIndex, intIndex As Integer
-		Dim intClosestSeriesNumber As Short
-		Dim intClosestDataPoint As Integer
-		Dim dblYDistance, dblXDistance, dblDistance As Double
-
-		dblDistanceToClosestSeriesNumberDataPoint = HUGE_POS_NUMBER_DOUBLE
-		intClosestSeriesNumber = -1
-
-		' Determine the series number closest to the click location
-		' Step through mDataSaved() to find the series that is closest to the mouse click
-		For intRangeIndex = 1 To MAX_SERIES_COUNT
-			If Not blnLimitToGivenSeriesNumber Or (blnLimitToGivenSeriesNumber And intRangeIndex = intSeriesNumber) Then
-				With mDataSaved(intRangeIndex)
-					If .Initialized Then
-						For intIndex = 0 To .DataCount - 1
-							dblXDistance = System.Math.Abs(.XVals(intIndex) - dblXPosSearch)
-							dblYDistance = System.Math.Abs(.YVals(intIndex) - dblYPosSearch)
-
-							dblDistance = System.Math.Sqrt(dblXDistance ^ 2 + dblYDistance ^ 2)
-							If dblDistance < dblDistanceToClosestSeriesNumberDataPoint Then
-								dblDistanceToClosestSeriesNumberDataPoint = dblDistance
-								intClosestSeriesNumber = intRangeIndex
-								intClosestDataPoint = intIndex
-							End If
-						Next intIndex
-					End If
-				End With
-
-			End If
-		Next intRangeIndex
-
-		If intClosestSeriesNumber >= 1 Then
-			If blnLimitToGivenSeriesNumber Then System.Diagnostics.Debug.Assert(intSeriesNumber = intClosestSeriesNumber, "")
-			intSeriesNumber = intClosestSeriesNumber
-			Return intClosestDataPoint
-		Else
-			dblDistanceToClosestSeriesNumberDataPoint = 0
-			Return -1
-		End If
-
-	End Function
-
-	Private Function LookupSeriesNumberForPlotName(ByVal strPlotName As String) As Short
-		' Returns the series number if a match is found
-		' Otherwise, returns 0
-
-		Dim intSeriesIndexCompare As Short
-		Dim intMatchingSeriesNumber As Short
-
-		intMatchingSeriesNumber = 0
-		For intSeriesIndexCompare = 1 To CWGraph.Plots.Count
-			If strPlotName = CWGraph.Plots.Item(intSeriesIndexCompare).Name Then
-				intMatchingSeriesNumber = intSeriesIndexCompare
-				Exit For
-			End If
-		Next intSeriesIndexCompare
-
-		Return intMatchingSeriesNumber
-
-	End Function
-
-	Private Sub MoveOptionsFrame()
-		mControlsFrameLocation = mControlsFrameLocation + 1
-		If mControlsFrameLocation > ofOptionsFrameLocationConstants.ofBottomRight Then
-			mControlsFrameLocation = ofOptionsFrameLocationConstants.ofTopLeft
-		End If
-
-		PositionControls()
-	End Sub
-
-	Private Sub PopulateComboBoxes()
-
-		With cboMouseAction
-			.Items.Clear()
-			.Items.Add("Zoom Box")
-			.Items.Add("Zoom X")
-			.Items.Add("Zoom Y")
-			.Items.Add("Pan graph")
-			.Items.Add("Pan along X")
-			.Items.Add("Cursor")
-			.Items.Add("Move Annotation")
-			.SelectedIndex = cmZoomBoxCursorModeConstants.cmZoomX
-		End With
-
-	End Sub
-
-	Private Sub PositionControls()
-		Dim intDesiredValue, intCompareValue As Integer
-		Dim intOptionsTopWhenAtBottom As Integer
-		Dim intOptionsLeftWhenAtRight As Integer
-
-		' lblPosition is auto-sized, based on mPrecisionX and mPrecisionY
-		With lblPosition
-			.Width = 100 + mPrecisionX * 6.6 + mPrecisionY * 6.6
-			lblDeltaPosFromCursor.Width = .Width
-			intDesiredValue = .Left + .Width + 4
-			If intDesiredValue < 187 Then intDesiredValue = 187
-			fraPosition.Width = intDesiredValue
-		End With
-
-		' fraLegend grows when the window gets larger
-		' However, the minimum width is 240
-		With fraLegend
-			.Left = fraPosition.Left + fraPosition.Width
-			intDesiredValue = ClientRectangle.Width - fraControls.Left - .Left - cmdRollUpHide.Width - 4
-			If intDesiredValue < 240 Then intDesiredValue = 240
-			.Width = intDesiredValue
-		End With
-
-		' fraControls is sized to encompass all of the other frames
-		With fraControls
-			.Width = fraLegend.Left + fraLegend.Width
-			.Left = 8
-		End With
-
-		' cmdRollUpHide and cmdRollUpShow are placed in the bottom right corner of the form
-		' However, they must be to the right of fraControls if it is visible
-		' If fraControls is hidden, then the bottom right corner of the form is used
-		intDesiredValue = ClientRectangle.Height - cmdRollUpHide.Height
-		If intDesiredValue < cmdRollUpHide.Height Then intDesiredValue = cmdRollUpHide.Height
-
-		cmdRollUpHide.Top = intDesiredValue
-		intDesiredValue = ClientRectangle.Width - cmdRollUpHide.Width - 4
-		If mControlsFrameHidden Then
-			intCompareValue = ClientRectangle.Width / 2
-		Else
-			intCompareValue = fraControls.Left + fraControls.Width + 4
-		End If
-
-		If intDesiredValue < intCompareValue Then
-			intDesiredValue = intCompareValue
-		End If
-
-		cmdRollUpHide.Left = intDesiredValue
-		cmdRollUpShow.Top = cmdRollUpHide.Top
-		cmdRollUpShow.Left = cmdRollUpHide.Left
-
-		intDesiredValue = cmdRollUpHide.Top + cmdRollUpHide.Height
-		With fraControls
-			If Not mControlsFrameHidden Then
-				intDesiredValue = intDesiredValue - fraControls.Height
-			End If
-
-			If intDesiredValue < 0 Then intDesiredValue = 0
-
-			.Top = intDesiredValue
-		End With
-
-		intDesiredValue = fraControls.Top - CWGraph.Top - 4
-		If intDesiredValue < 1 Then intDesiredValue = 1
-		CWGraph.Height = intDesiredValue
-
-		' Position the Options Controls frame
-		intOptionsLeftWhenAtRight = ClientRectangle.Width - fraOptions.Width - (fraOptionsShadow.Width - fraOptions.Width)
-		If intOptionsLeftWhenAtRight < 0 Then intOptionsLeftWhenAtRight = 0
-
-		intOptionsTopWhenAtBottom = CWGraph.Top + CWGraph.Height - fraOptions.Height - (fraOptionsShadow.Height - fraOptions.Height)
-		If intOptionsTopWhenAtBottom < 0 Then intOptionsTopWhenAtBottom = 0
-
-		With fraOptionsShadow
-			Select Case mControlsFrameLocation
-				Case ofOptionsFrameLocationConstants.ofTopLeft
-					.SetBounds(0, 0, 0, 0, BoundsSpecified.Location)
-				Case ofOptionsFrameLocationConstants.ofTopRight
-					.SetBounds(intOptionsLeftWhenAtRight, 0, 0, 0, BoundsSpecified.Location)
-				Case ofOptionsFrameLocationConstants.ofBottomLeft
-					.SetBounds(0, intOptionsTopWhenAtBottom, 0, 0, BoundsSpecified.Location)
-				Case ofOptionsFrameLocationConstants.ofBottomRight
-					.SetBounds(intOptionsLeftWhenAtRight, intOptionsTopWhenAtBottom, 0, 0, BoundsSpecified.Location)
-				Case Else
-					' Programming error
-					System.Diagnostics.Debug.Assert(False, "")
-			End Select
-		End With
-
-		UpdateAnnotationDensityTolerances()
-
-	End Sub
-
-	Private Sub RecordZoomRange(ByVal blnZoomingOutFull As Boolean, Optional ByRef blnReturnAnnotationVisibilityChecked As Boolean = False)
-		Dim blnProceed As Boolean
-		Dim intIndex As Short
-
-		' Make sure the new range isn't the same as the saved one
-		' If it is, then no need to record it
-		blnProceed = True
-		With ZoomHistory(0)
-			If .XMinimum = CWGraph.Axes.Item(1).Minimum And .XMaximum = CWGraph.Axes.Item(1).Maximum And .YMinimum = CWGraph.Axes.Item(2).Minimum And .YMaximum = CWGraph.Axes.Item(2).Maximum Then
-				blnProceed = False
-			End If
-		End With
-
-		If Not blnProceed Then
-			blnReturnAnnotationVisibilityChecked = False
-			Exit Sub
-		End If
-
-		' If Autoscaling based on visible y, then need to update the y-axis limits now
-		If mAutoScaleVisibleY And Not blnZoomingOutFull Then
-			AutoScaleVisibleYNow()
-		End If
-
-		' Shift the history values up by one
-		For intIndex = MAX_HISTORY_COUNT - 1 To 1 Step -1
-			ZoomHistory(intIndex) = ZoomHistory(intIndex - 1)
-		Next intIndex
-
-		' Add the current range to the 0th position
-		With ZoomHistory(0)
-			.XMinimum = CWGraph.Axes.Item(1).Minimum
-			.XMaximum = CWGraph.Axes.Item(1).Maximum
-			.YMinimum = CWGraph.Axes.Item(2).Minimum
-			.YMaximum = CWGraph.Axes.Item(2).Maximum
-		End With
-
-		UpdateAnnotationDensityTolerances()
-		blnReturnAnnotationVisibilityChecked = True
-
-	End Sub
-
-	Public Function RemoveAnnotationByCaption(ByVal strAnnotationText As String, Optional ByVal blnCaseSensitive As Boolean = False) As Boolean
-		' Looks for an annotation containing strAnnotationText
-		' If found, removes it and returns True
-		' Otherwise, returns false
-		Dim intIndex As Integer
-		Dim blnFound As Boolean
-
-		If Not blnCaseSensitive Then strAnnotationText = strAnnotationText.ToLower
-
-		blnFound = False
-		With CWGraph
-			For intIndex = 1 To .Annotations.Count
-				If blnCaseSensitive Then
-					If LookupCaptionForAnnotation(intIndex) = strAnnotationText Then blnFound = True
-				Else
-					If LookupCaptionForAnnotation(intIndex).ToLower = strAnnotationText Then blnFound = True
-				End If
-				If blnFound Then
-					blnFound = RemoveAnnotationByIndex(intIndex)
-					Exit For
-				End If
-			Next intIndex
-		End With
-
-		Return blnFound
-	End Function
-
-	Public Function RemoveAnnotationByIndex(ByVal intAnnotationIndex As Integer) As Boolean
-		' Removes annotation given by intAnnotationIndex
-		' Returns true if success, false if not found or error
-
-		Dim intInfoIndex As Integer
-
-		If intAnnotationIndex >= 1 And intAnnotationIndex <= CWGraph.Annotations.Count Then
-			For intInfoIndex = intAnnotationIndex To CWGraph.Annotations.Count - 1
-				mAnnotations(intInfoIndex) = mAnnotations(intInfoIndex + 1)
-			Next intInfoIndex
-
-			CWGraph.Annotations.Remove(intAnnotationIndex)
-
-			ReDim Preserve mAnnotations(CWGraph.Annotations.Count)
-
-			Return True
-		Else
-			Return False
-		End If
-
-	End Function
-
-	Private Sub RegistryReadSettings()
-
-		Dim strGraphOptions(,) As String		' 2D array, KeyNames are in (x, 0); KeyValues are in (x, 1)
-
-		Dim intSeriesIndex As Short
-		Dim strValue, strValue2 As String
-		Dim cDefaultFrameBorderColor As System.Drawing.Color
-		Dim cFrameBorderColor As System.Drawing.Color
-
-		Try
-			strGraphOptions = GetAllSettings(APP_NAME_IN_REGISTRY, "Options")
-
-			If Not IsArray(strGraphOptions) Then
-				ReDim strGraphOptions(0, 2)
-			End If
-
-			' Read the Label font settings (plot title and axis labels)
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontName", DEFAULT_FONT_NAME)
-			If Len(strValue) = 0 Then strValue = DEFAULT_FONT_NAME
-			SetLabelFontName(strValue)
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontSize", DEFAULT_FONT_SIZE.ToString)
-			If Len(strValue) = 0 Then strValue = DEFAULT_FONT_SIZE.ToString.Trim
-			SetLabelFontSize(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-
-			Try
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontColor", System.Drawing.Color.Black.ToString)
-				If IsNumeric(strValue) Then
-					strValue = System.Drawing.Color.Black.ToString
-				End If
-				SetLabelFontColor(ConvertColorNameToColorObject(strValue))
-			Catch ex As Exception
-				' Ignore the error
-			End Try
-
-			Try
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "PlotBackgroundColor", System.Drawing.Color.White.ToString)
-				If IsNumeric(strValue) Then
-					strValue = System.Drawing.Color.White.ToString
-				End If
-				SetPlotBackgroundColor(ConvertColorNameToColorObject(strValue))
-			Catch ex As Exception
-				' Ignore the error
-			End Try
-
-			Try
-
-				cDefaultFrameBorderColor = System.Drawing.Color.FromArgb(255, 236, 233, 216)
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "FrameBorderColor", cDefaultFrameBorderColor.ToString)
-				If IsNumeric(strValue) Then
-					strValue = cDefaultFrameBorderColor.ToString
-				End If
-				cFrameBorderColor = ConvertColorNameToColorObject(strValue)
-				If cFrameBorderColor.ToArgb = 0 Then cFrameBorderColor = cDefaultFrameBorderColor
-
-				SetFrameColor(cFrameBorderColor)
-			Catch ex As Exception
-				' Ignore the error
-			End Try
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "FrameStyleIs3D", "True")
-			SetFrameStyle(CBoolSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityAutoHideCaptions", "True")
-			SetAnnotationDensityAutoHideCaptions(CBoolSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityToleranceAutoAdjust", "True")
-			SetAnnotationDensityToleranceAutoAdjust(CBoolSafe(strValue))
-
-			If GetAnnotationDensityToleranceAutoAdjust() Then
-				UpdateAnnotationDensityTolerances()
-			Else
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityToleranceX")
-				If Not IsNumeric(strValue) Then
-					strValue = "0.1"
-				ElseIf Val(strValue) <= 0 Then
-					strValue = "0.1"
-				End If
-				SetAnnotationDensityToleranceX(Val(strValue))
-
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityToleranceY")
-				If Not IsNumeric(strValue) Then
-					strValue = "0.1"
-				ElseIf Val(strValue) <= 0 Then
-					strValue = "0.1"
-				End If
-				SetAnnotationDensityToleranceY(Val(strValue))
-			End If
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectIntensityThresholdCounts", "10")
-			SetPeakDetectIntensityThresholdCounts(SharedVBNetRoutines.VBNetRoutines.CDblSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectIntensityThresholdPercentageOfMaximum", "0")
-			SetPeakDetectIntensityThresholdPercentageOfMaximum(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectWidthPointsMinimum", "5")
-			SetPeakDetectWidthPointsMinimum(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "AutoScaleVisibleY", "False")
-			strValue2 = Lookup2DArrayValueByName(strGraphOptions, "FixMinimumYAtZero", "False")
-			SetAutoscaleVisibleY(CBoolSafe(strValue), CBoolSafe(strValue2))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "AutoAdjustScalingToIncludeCaptions", "True")
-			SetAutoAdjustScalingToIncludeCaptions(CBoolSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "PrecisionX", "2")
-			SetDisplayPrecisionX(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "PrecisionY", "1")
-			SetDisplayPrecisionY(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor1Visible", "True")
-			SetCursorVisible(CBoolSafe(strValue), 1)
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor2Visible", "False")
-			SetCursorVisible(CBoolSafe(strValue), 2)
-
-			strValue = Lookup2DArrayValueByName(strGraphOptions, "CursorSnapToData", "False")
-			SetCursorSnapMode(CBoolSafe(strValue))
-
-			Try
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor1Color", System.Drawing.Color.Black.ToString)
-				If IsNumeric(strValue) Then
-					strValue = System.Drawing.Color.Black.ToString
-				End If
-				SetCursorColor(ConvertColorNameToColorObject(strValue), 1)
-			Catch ex As Exception
-				' Ignore the error
-			End Try
-
-			Try
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor2Color", System.Drawing.Color.DimGray.ToString)
-				If IsNumeric(strValue) Then
-					strValue = System.Drawing.Color.DimGray.ToString
-				End If
-				SetCursorColor(ConvertColorNameToColorObject(strValue), 2)
-			Catch ex As Exception
-				' Ignore the error
-			End Try
-
-			' Populate mAnnotationStyles()
-			For intSeriesIndex = 1 To MAX_SERIES_COUNT
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontName" & intSeriesIndex.ToString.Trim, DEFAULT_FONT_NAME)
-				If Len(strValue) = 0 Then strValue = DEFAULT_FONT_NAME
-				SetAnnotationFontName(intSeriesIndex, strValue)
-
-				strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontSize" & intSeriesIndex.ToString.Trim, DEFAULT_ANNOTATION_FONT_SIZE.ToString.Trim)
-				If Len(strValue) = 0 Then strValue = DEFAULT_ANNOTATION_FONT_SIZE.ToString.Trim
-				SetAnnotationFontSize(intSeriesIndex, SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-
-				Try
-					strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontColor", System.Drawing.Color.White.ToString)
-					If IsNumeric(strValue) Then
-						strValue = System.Drawing.Color.White.ToString
-					End If
-
-					If ConvertColorNameToColorObject(strValue).Equals(CWGraph.PlotAreaColor) Then
-						' We won't be able to see the labels since the color is the same as the background color
-						If CWGraph.PlotAreaColor.Equals(System.Drawing.Color.Black) Then
-							strValue = System.Drawing.Color.White.ToString
-						Else
-							strValue = System.Drawing.Color.Black.ToString
-						End If
-					End If
-					SetAnnotationFontColor(intSeriesIndex, ConvertColorNameToColorObject(strValue))
-
-				Catch ex As Exception
-					' Ignore the error
-				End Try
-
-			Next intSeriesIndex
-
-		Catch ex As Exception
-			Debug.WriteLine("Error in RegistryReadSettings: " & ex.Message)
-		End Try
-
-
-	End Sub
-
-	Private Sub RegistrySaveSettings()
-
-		Dim intSeriesIndex As Short
-
-		' Use Resume Next error handling in case the user doesn't have access to writing the registry
-		On Error Resume Next
-
-		SaveSetting(APP_NAME_IN_REGISTRY, "About", "About", "Settings for a customized version of the National Instruments CWGraph control.")
-		SaveSetting(APP_NAME_IN_REGISTRY, "About", "Author", "Software written by Matthew Monroe for Pacific Northwest National Laboratory in Richland, WA")
-		SaveSetting(APP_NAME_IN_REGISTRY, "About", "Contact", "Contact via http://www.alchemistmatt.com")
-		SaveSetting(APP_NAME_IN_REGISTRY, "About", "Date", CWGRAPH_APP_DATE)
-		SaveSetting(APP_NAME_IN_REGISTRY, "About", "Version", CWGRAPH_APP_VERSION)
-
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "LabelFontName", GetLabelFontName())
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "LabelFontSize", GetLabelFontSize().ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "LabelFontColor", GetLabelFontColor().ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PlotBackgroundColor", GetPlotBackgroundColor().ToString.Trim)
-
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityAutoHideCaptions", mAnnotationDensityAutoHideCaptions.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityToleranceAutoAdjust", mAnnotationDensityToleranceAutoAdjust.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityToleranceX", mAnnotationDensityToleranceX.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityToleranceY", mAnnotationDensityToleranceY.ToString.Trim)
-
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PeakDetectIntensityThresholdCounts", mPeakDetectIntensityThresholdCounts.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PeakDetectIntensityThresholdPercentageOfMaximum", mPeakDetectIntensityThresholdPercentageOfMaximum.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PeakDetectWidthPointsMinimum", mPeakDetectWidthPointsMinimum.ToString.Trim)
-
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AutoScaleVisibleY", mAutoScaleVisibleY.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "FixMinimumYAtZero", mFixMinimumYAtZero.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AutoAdjustScalingToIncludeCaptions", mAutoAdjustScalingToIncludeCaptions.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PrecisionX", mPrecisionX.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PrecisionY", mPrecisionY.ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor1Visible", GetCursorVisibility(1.ToString.Trim))
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor2Visible", GetCursorVisibility(2.ToString.Trim))
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "CursorSnapToData", GetCursorSnapToDataPointModeEnabled().ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor1Color", GetCursorColor(1).ToString.Trim)
-		SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor2Color", GetCursorColor(2).ToString.Trim)
-
-		For intSeriesIndex = 1 To MAX_SERIES_COUNT
-			SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationFontName" & intSeriesIndex.ToString.Trim, mAnnotationStyles(intSeriesIndex).FontName)
-			SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationFontSize" & intSeriesIndex.ToString.Trim, mAnnotationStyles(intSeriesIndex).FontSize.ToString.Trim)
-			SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationFontColor" & intSeriesIndex.ToString.Trim, mAnnotationStyles(intSeriesIndex).FontColor.ToString.Trim)
-		Next intSeriesIndex
-
-	End Sub
-
-	Public Sub RemoveAllAnnotations(Optional ByVal blnConfirmRemoval As Boolean = False)
-		Dim eResponse As MsgBoxResult
-
-		If CWGraph.Annotations.Count = 0 Then Exit Sub
-
-		If blnConfirmRemoval Then
-			eResponse = MsgBox("Do you really want to remove all the annotations?", MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel, "Remove Annotations")
-			If eResponse <> MsgBoxResult.Yes Then Exit Sub
-		End If
-
-		CWGraph.Annotations.RemoveAll()
-
-		InitializeAnnotationInfoArray()
-	End Sub
-
-	Public Sub RemoveAnnotationsForSeries(ByVal intSeriesNumber As Short)
-
-		Dim intIndex As Short
-		Dim intInfoIndex As Integer
-
-		If CWGraph.Annotations.Count = 0 Then Exit Sub
-		If intSeriesNumber < 1 Or intSeriesNumber > CWGraph.Plots.Count Then Exit Sub
-
-		intIndex = 1
-		Do While intIndex <= CWGraph.Annotations.Count
-			If LookupSeriesNumberForPlotObject((CWGraph.Annotations.Item(intIndex).Plot)) = intSeriesNumber Then
-				For intInfoIndex = 1 To CWGraph.Annotations.Count - 1
-					mAnnotations(intInfoIndex) = mAnnotations(intInfoIndex + 1)
-				Next intInfoIndex
-
-				CWGraph.Annotations.Remove(intIndex)
-			Else
-				intIndex = intIndex + 1
-			End If
-		Loop
-
-		ReDim Preserve mAnnotations(CWGraph.Annotations.Count)
-
-	End Sub
-
-	Private Sub ReportCursorLocation(Optional ByVal intCursorNumber As Integer = 1)
-
-		intCursorNumber = ValidateCursorNumber(intCursorNumber)
-		With CWGraph.Cursors.Item(intCursorNumber)
-			lblPosition.Text = FormatNumber(.XPosition, mPrecisionX) & ", " & FormatNumber(.YPosition, mPrecisionY)
-		End With
-
-	End Sub
-
-	Public Sub ResetOptionsToDefaults(Optional ByVal blnClearAllData As Boolean = False, Optional ByVal blnResetSeriesCount As Boolean = False, Optional ByRef intNewSeriesCount As Short = 2, Optional ByVal eDefaultPlotMode As pmPlotModeConstants = pmPlotModeConstants.pmLines)
-		Dim intSeriesIndex As Short
-
-		If blnClearAllData Then
-			For intSeriesIndex = 1 To CWGraph.Plots.Count
-				RemoveAnnotationsForSeries(intSeriesIndex)
-				ClearData(intSeriesIndex)
-			Next intSeriesIndex
-		End If
-
-		If blnResetSeriesCount Then
-			AssureValidSeriesNumber(intNewSeriesCount)
-			SetSeriesCount(intNewSeriesCount)
-		End If
-
-		SetAnnotationDensityAutoHideCaptions(True)
-		SetAnnotationDensityToleranceAutoAdjust(True)
-		SetAnnotationFontName(1, DEFAULT_FONT_NAME, True)
-		SetAnnotationFontSize(1, DEFAULT_ANNOTATION_FONT_SIZE, True)
-		SetAnnotationFontColor(1, System.Drawing.Color.Black, True)
-
-		SetAutoAdjustScalingToIncludeCaptions(True)
-		SetAutoscaleVisibleY(False, False)
-
-		SetCursorVisible(True, 1)
-		SetCursorVisible(False, 2)
-		SetCursorSnapMode(False)
-		SetCursorPosition(0, 0, 1)
-		SetCursorPosition(0, 0, 2)
-		SetCursorColor(System.Drawing.Color.Black, 1)
-		SetCursorColor(System.Drawing.Color.DimGray, 2)
-		SetDisplayPrecisionX(2)
-		SetDisplayPrecisionY(1)
-
-		SetGridLinesXColor(System.Drawing.Color.Black, True, True)
-		SetGridLinesYColor(System.Drawing.Color.Black, True, True)
-		SetGridLinesXColor(System.Drawing.Color.DimGray, False, True)
-		SetGridLinesYColor(System.Drawing.Color.DimGray, False, True)
-
-		SetGridLinesXVisible(False, True, True)
-		SetGridLinesYVisible(False, True, True)
-		SetGridLinesXVisible(False, False, True)
-		SetGridLinesYVisible(False, False, True)
-
-		SetLabelFontName(DEFAULT_FONT_NAME)
-		SetLabelFontSize(DEFAULT_FONT_SIZE)
-		SetLabelFontColor(System.Drawing.Color.Black)
-
-		SetLabelSubTitle("")
-		SetLabelTitle("")
-		SetLabelXAxis("")
-		SetLabelYAxis("")
-
-		SetPeakDetectIntensityThresholdCounts(10)
-		SetPeakDetectIntensityThresholdPercentageOfMaximum(0)
-		SetPeakDetectWidthPointsMinimum(5)
-
-		SetPlotBackgroundColor(System.Drawing.Color.White)
-
-		For intSeriesIndex = 1 To CWGraph.Plots.Count
-			SetSeriesColor(intSeriesIndex, GetDefaultSeriesColor(intSeriesIndex))
-			SetSeriesLineStyle(intSeriesIndex, CWUIControlsLib.CWLineStyles.cwLineSolid)
-			SetSeriesLineWidth(intSeriesIndex, 1)
-			SetSeriesPlotMode(intSeriesIndex, eDefaultPlotMode)
-		Next intSeriesIndex
-
-	End Sub
-
-    Public Function SetAnnotation(ByVal blnPromptForText As Boolean, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, Optional ByRef strCaptionText As String = "", Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 1, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional ByRef intPointNumberToBind As Integer = -1, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = True, Optional ByRef intAnnotationIndexForce As Integer = 0, Optional ByRef blnAutomaticCaptionPlacement As Boolean = False) As Integer
+        System.Diagnostics.Debug.WriteLine("Error occurred in CWGraphControl.LookupArrowVisibilityForAnnotation(): " & Err.Description)
+        Return False
+
+    End Function
+
+    Public Function LookupNearestPointNumber(dblXPosSearch As Double, dblYPosSearch As Double, ByRef intSeriesNumber As Short, Optional ByRef dblDistanceToClosestSeriesNumberDataPoint As Double = 0, Optional ByVal blnLimitToGivenSeriesNumber As Boolean = False) As Integer
+        ' Looks for the point nearest to dblXPosSearch and dblYPosSearch
+        ' If found, then returns the point number; otherwise returns -1
+        ' Returns the distance from the search points to the target point ByRef in dblDistanceToClosestSeriesNumberDataPoint
+        ' Updates intSeriesNumber with the series number of the point
+        ' However, if blnLimitToGivenSeriesNumber then will only return points for the given series number
+
+        Dim intRangeIndex, intIndex As Integer
+        Dim intClosestSeriesNumber As Short
+        Dim intClosestDataPoint As Integer
+        Dim dblYDistance, dblXDistance, dblDistance As Double
+
+        dblDistanceToClosestSeriesNumberDataPoint = HUGE_POS_NUMBER_DOUBLE
+        intClosestSeriesNumber = -1
+
+        ' Determine the series number closest to the click location
+        ' Step through mDataSaved() to find the series that is closest to the mouse click
+        For intRangeIndex = 1 To MAX_SERIES_COUNT
+            If Not blnLimitToGivenSeriesNumber Or (blnLimitToGivenSeriesNumber And intRangeIndex = intSeriesNumber) Then
+                With mDataSaved(intRangeIndex)
+                    If .Initialized Then
+                        For intIndex = 0 To .DataCount - 1
+                            dblXDistance = System.Math.Abs(.XVals(intIndex) - dblXPosSearch)
+                            dblYDistance = System.Math.Abs(.YVals(intIndex) - dblYPosSearch)
+
+                            dblDistance = System.Math.Sqrt(dblXDistance ^ 2 + dblYDistance ^ 2)
+                            If dblDistance < dblDistanceToClosestSeriesNumberDataPoint Then
+                                dblDistanceToClosestSeriesNumberDataPoint = dblDistance
+                                intClosestSeriesNumber = intRangeIndex
+                                intClosestDataPoint = intIndex
+                            End If
+                        Next intIndex
+                    End If
+                End With
+
+            End If
+        Next intRangeIndex
+
+        If intClosestSeriesNumber >= 1 Then
+            If blnLimitToGivenSeriesNumber Then System.Diagnostics.Debug.Assert(intSeriesNumber = intClosestSeriesNumber, "")
+            intSeriesNumber = intClosestSeriesNumber
+            Return intClosestDataPoint
+        Else
+            dblDistanceToClosestSeriesNumberDataPoint = 0
+            Return -1
+        End If
+
+    End Function
+
+    Private Function LookupSeriesNumberForPlotName(strPlotName As String) As Short
+        ' Returns the series number if a match is found
+        ' Otherwise, returns 0
+
+        Dim intSeriesIndexCompare As Short
+        Dim intMatchingSeriesNumber As Short
+
+        intMatchingSeriesNumber = 0
+        For intSeriesIndexCompare = 1 To CWGraph.Plots.Count
+            If strPlotName = CWGraph.Plots.Item(intSeriesIndexCompare).Name Then
+                intMatchingSeriesNumber = intSeriesIndexCompare
+                Exit For
+            End If
+        Next intSeriesIndexCompare
+
+        Return intMatchingSeriesNumber
+
+    End Function
+
+    Private Sub MoveOptionsFrame()
+        mControlsFrameLocation = mControlsFrameLocation + 1
+        If mControlsFrameLocation > ofOptionsFrameLocationConstants.ofBottomRight Then
+            mControlsFrameLocation = ofOptionsFrameLocationConstants.ofTopLeft
+        End If
+
+        PositionControls()
+    End Sub
+
+    Private Sub PopulateComboBoxes()
+
+        With cboMouseAction
+            .Items.Clear()
+            .Items.Add("Zoom Box")
+            .Items.Add("Zoom X")
+            .Items.Add("Zoom Y")
+            .Items.Add("Pan graph")
+            .Items.Add("Pan along X")
+            .Items.Add("Cursor")
+            .Items.Add("Move Annotation")
+            .SelectedIndex = cmZoomBoxCursorModeConstants.cmZoomX
+        End With
+
+    End Sub
+
+    Private Sub PositionControls()
+        Dim intDesiredValue, intCompareValue As Integer
+        Dim intOptionsTopWhenAtBottom As Integer
+        Dim intOptionsLeftWhenAtRight As Integer
+
+        ' lblPosition is auto-sized, based on mPrecisionX and mPrecisionY
+        With lblPosition
+            .Width = 100 + mPrecisionX * 6.6 + mPrecisionY * 6.6
+            lblDeltaPosFromCursor.Width = .Width
+            intDesiredValue = .Left + .Width + 4
+            If intDesiredValue < 187 Then intDesiredValue = 187
+            fraPosition.Width = intDesiredValue
+        End With
+
+        ' fraLegend grows when the window gets larger
+        ' However, the minimum width is 240
+        With fraLegend
+            .Left = fraPosition.Left + fraPosition.Width
+            intDesiredValue = ClientRectangle.Width - fraControls.Left - .Left - cmdRollUpHide.Width - 4
+            If intDesiredValue < 240 Then intDesiredValue = 240
+            .Width = intDesiredValue
+        End With
+
+        ' fraControls is sized to encompass all of the other frames
+        With fraControls
+            .Width = fraLegend.Left + fraLegend.Width
+            .Left = 8
+        End With
+
+        ' cmdRollUpHide and cmdRollUpShow are placed in the bottom right corner of the form
+        ' However, they must be to the right of fraControls if it is visible
+        ' If fraControls is hidden, then the bottom right corner of the form is used
+        intDesiredValue = ClientRectangle.Height - cmdRollUpHide.Height
+        If intDesiredValue < cmdRollUpHide.Height Then intDesiredValue = cmdRollUpHide.Height
+
+        cmdRollUpHide.Top = intDesiredValue
+        intDesiredValue = ClientRectangle.Width - cmdRollUpHide.Width - 4
+        If mControlsFrameHidden Then
+            intCompareValue = ClientRectangle.Width / 2
+        Else
+            intCompareValue = fraControls.Left + fraControls.Width + 4
+        End If
+
+        If intDesiredValue < intCompareValue Then
+            intDesiredValue = intCompareValue
+        End If
+
+        cmdRollUpHide.Left = intDesiredValue
+        cmdRollUpShow.Top = cmdRollUpHide.Top
+        cmdRollUpShow.Left = cmdRollUpHide.Left
+
+        intDesiredValue = cmdRollUpHide.Top + cmdRollUpHide.Height
+        With fraControls
+            If Not mControlsFrameHidden Then
+                intDesiredValue = intDesiredValue - fraControls.Height
+            End If
+
+            If intDesiredValue < 0 Then intDesiredValue = 0
+
+            .Top = intDesiredValue
+        End With
+
+        intDesiredValue = fraControls.Top - CWGraph.Top - 4
+        If intDesiredValue < 1 Then intDesiredValue = 1
+        CWGraph.Height = intDesiredValue
+
+        ' Position the Options Controls frame
+        intOptionsLeftWhenAtRight = ClientRectangle.Width - fraOptions.Width - (fraOptionsShadow.Width - fraOptions.Width)
+        If intOptionsLeftWhenAtRight < 0 Then intOptionsLeftWhenAtRight = 0
+
+        intOptionsTopWhenAtBottom = CWGraph.Top + CWGraph.Height - fraOptions.Height - (fraOptionsShadow.Height - fraOptions.Height)
+        If intOptionsTopWhenAtBottom < 0 Then intOptionsTopWhenAtBottom = 0
+
+        With fraOptionsShadow
+            Select Case mControlsFrameLocation
+                Case ofOptionsFrameLocationConstants.ofTopLeft
+                    .SetBounds(0, 0, 0, 0, BoundsSpecified.Location)
+                Case ofOptionsFrameLocationConstants.ofTopRight
+                    .SetBounds(intOptionsLeftWhenAtRight, 0, 0, 0, BoundsSpecified.Location)
+                Case ofOptionsFrameLocationConstants.ofBottomLeft
+                    .SetBounds(0, intOptionsTopWhenAtBottom, 0, 0, BoundsSpecified.Location)
+                Case ofOptionsFrameLocationConstants.ofBottomRight
+                    .SetBounds(intOptionsLeftWhenAtRight, intOptionsTopWhenAtBottom, 0, 0, BoundsSpecified.Location)
+                Case Else
+                    ' Programming error
+                    System.Diagnostics.Debug.Assert(False, "")
+            End Select
+        End With
+
+        UpdateAnnotationDensityTolerances()
+
+    End Sub
+
+    Private Sub RecordZoomRange(blnZoomingOutFull As Boolean, Optional ByRef blnReturnAnnotationVisibilityChecked As Boolean = False)
+        Dim blnProceed As Boolean
+        Dim intIndex As Short
+
+        ' Make sure the new range isn't the same as the saved one
+        ' If it is, then no need to record it
+        blnProceed = True
+        With ZoomHistory(0)
+            If Math.Abs(.XMinimum - CWGraph.Axes.Item(1).Minimum) < Single.Epsilon And
+               Math.Abs(.XMaximum - CWGraph.Axes.Item(1).Maximum) < Single.Epsilon And
+               Math.Abs(.YMinimum - CWGraph.Axes.Item(2).Minimum) < Single.Epsilon And
+               Math.Abs(.YMaximum - CWGraph.Axes.Item(2).Maximum) < Single.Epsilon Then
+                blnProceed = False
+            End If
+        End With
+
+        If Not blnProceed Then
+            blnReturnAnnotationVisibilityChecked = False
+            Exit Sub
+        End If
+
+        ' If Autoscaling based on visible y, then need to update the y-axis limits now
+        If mAutoScaleVisibleY And Not blnZoomingOutFull Then
+            AutoScaleVisibleYNow()
+        End If
+
+        ' Shift the history values up by one
+        For intIndex = MAX_HISTORY_COUNT - 1 To 1 Step -1
+            ZoomHistory(intIndex) = ZoomHistory(intIndex - 1)
+        Next intIndex
+
+        ' Add the current range to the 0th position
+        With ZoomHistory(0)
+            .XMinimum = CWGraph.Axes.Item(1).Minimum
+            .XMaximum = CWGraph.Axes.Item(1).Maximum
+            .YMinimum = CWGraph.Axes.Item(2).Minimum
+            .YMaximum = CWGraph.Axes.Item(2).Maximum
+        End With
+
+        UpdateAnnotationDensityTolerances()
+        blnReturnAnnotationVisibilityChecked = True
+
+    End Sub
+
+    Public Function RemoveAnnotationByCaption(strAnnotationText As String, Optional ByVal blnCaseSensitive As Boolean = False) As Boolean
+        ' Looks for an annotation containing strAnnotationText
+        ' If found, removes it and returns True
+        ' Otherwise, returns false
+        Dim intIndex As Integer
+        Dim blnFound As Boolean
+
+        If Not blnCaseSensitive Then strAnnotationText = strAnnotationText.ToLower
+
+        blnFound = False
+        With CWGraph
+            For intIndex = 1 To .Annotations.Count
+                If blnCaseSensitive Then
+                    If LookupCaptionForAnnotation(intIndex) = strAnnotationText Then blnFound = True
+                Else
+                    If LookupCaptionForAnnotation(intIndex).ToLower = strAnnotationText Then blnFound = True
+                End If
+                If blnFound Then
+                    blnFound = RemoveAnnotationByIndex(intIndex)
+                    Exit For
+                End If
+            Next intIndex
+        End With
+
+        Return blnFound
+    End Function
+
+    Public Function RemoveAnnotationByIndex(intAnnotationIndex As Integer) As Boolean
+        ' Removes annotation given by intAnnotationIndex
+        ' Returns true if success, false if not found or error
+
+        Dim intInfoIndex As Integer
+
+        If intAnnotationIndex >= 1 And intAnnotationIndex <= CWGraph.Annotations.Count Then
+            For intInfoIndex = intAnnotationIndex To CWGraph.Annotations.Count - 1
+                mAnnotations(intInfoIndex) = mAnnotations(intInfoIndex + 1)
+            Next intInfoIndex
+
+            CWGraph.Annotations.Remove(intAnnotationIndex)
+
+            ReDim Preserve mAnnotations(CWGraph.Annotations.Count)
+
+            Return True
+        Else
+            Return False
+        End If
+
+    End Function
+
+    Private Sub RegistryReadSettings()
+
+        Dim strGraphOptions(,) As String        ' 2D array, KeyNames are in (x, 0); KeyValues are in (x, 1)
+
+        Dim intSeriesIndex As Short
+        Dim strValue, strValue2 As String
+        Dim cDefaultFrameBorderColor As Color
+        Dim cFrameBorderColor As Color
+
+        Try
+            strGraphOptions = GetAllSettings(APP_NAME_IN_REGISTRY, "Options")
+
+            If Not IsArray(strGraphOptions) Then
+                ReDim strGraphOptions(0, 2)
+            End If
+
+            ' Read the Label font settings (plot title and axis labels)
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontName", DEFAULT_FONT_NAME)
+            If Len(strValue) = 0 Then strValue = DEFAULT_FONT_NAME
+            SetLabelFontName(strValue)
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontSize", DEFAULT_FONT_SIZE.ToString)
+            If Len(strValue) = 0 Then strValue = DEFAULT_FONT_SIZE.ToString.Trim
+            SetLabelFontSize(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+
+            Try
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontColor", Color.Black.ToString)
+                If IsNumeric(strValue) Then
+                    strValue = Color.Black.ToString
+                End If
+                SetLabelFontColor(ConvertColorNameToColorObject(strValue))
+            Catch ex As Exception
+                ' Ignore the error
+            End Try
+
+            Try
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "PlotBackgroundColor", Color.White.ToString)
+                If IsNumeric(strValue) Then
+                    strValue = Color.White.ToString
+                End If
+                SetPlotBackgroundColor(ConvertColorNameToColorObject(strValue))
+            Catch ex As Exception
+                ' Ignore the error
+            End Try
+
+            Try
+
+                cDefaultFrameBorderColor = Color.FromArgb(255, 236, 233, 216)
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "FrameBorderColor", cDefaultFrameBorderColor.ToString)
+                If IsNumeric(strValue) Then
+                    strValue = cDefaultFrameBorderColor.ToString
+                End If
+                cFrameBorderColor = ConvertColorNameToColorObject(strValue)
+                If cFrameBorderColor.ToArgb = 0 Then cFrameBorderColor = cDefaultFrameBorderColor
+
+                SetFrameColor(cFrameBorderColor)
+            Catch ex As Exception
+                ' Ignore the error
+            End Try
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "FrameStyleIs3D", "True")
+            SetFrameStyle(CBoolSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityAutoHideCaptions", "True")
+            SetAnnotationDensityAutoHideCaptions(CBoolSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityToleranceAutoAdjust", "True")
+            SetAnnotationDensityToleranceAutoAdjust(CBoolSafe(strValue))
+
+            If GetAnnotationDensityToleranceAutoAdjust() Then
+                UpdateAnnotationDensityTolerances()
+            Else
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityToleranceX")
+                If Not IsNumeric(strValue) Then
+                    strValue = "0.1"
+                ElseIf Val(strValue) <= 0 Then
+                    strValue = "0.1"
+                End If
+                SetAnnotationDensityToleranceX(Val(strValue))
+
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationDensityToleranceY")
+                If Not IsNumeric(strValue) Then
+                    strValue = "0.1"
+                ElseIf Val(strValue) <= 0 Then
+                    strValue = "0.1"
+                End If
+                SetAnnotationDensityToleranceY(Val(strValue))
+            End If
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectIntensityThresholdCounts", "10")
+            SetPeakDetectIntensityThresholdCounts(SharedVBNetRoutines.VBNetRoutines.CDblSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectIntensityThresholdPercentageOfMaximum", "0")
+            SetPeakDetectIntensityThresholdPercentageOfMaximum(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectWidthPointsMinimum", "5")
+            SetPeakDetectWidthPointsMinimum(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "AutoScaleVisibleY", "False")
+            strValue2 = Lookup2DArrayValueByName(strGraphOptions, "FixMinimumYAtZero", "False")
+            SetAutoscaleVisibleY(CBoolSafe(strValue), CBoolSafe(strValue2))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "AutoAdjustScalingToIncludeCaptions", "True")
+            SetAutoAdjustScalingToIncludeCaptions(CBoolSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "PrecisionX", "2")
+            SetDisplayPrecisionX(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "PrecisionY", "1")
+            SetDisplayPrecisionY(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor1Visible", "True")
+            SetCursorVisible(CBoolSafe(strValue), 1)
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor2Visible", "False")
+            SetCursorVisible(CBoolSafe(strValue), 2)
+
+            strValue = Lookup2DArrayValueByName(strGraphOptions, "CursorSnapToData", "False")
+            SetCursorSnapMode(CBoolSafe(strValue))
+
+            Try
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor1Color", Color.Black.ToString)
+                If IsNumeric(strValue) Then
+                    strValue = Color.Black.ToString
+                End If
+                SetCursorColor(ConvertColorNameToColorObject(strValue), 1)
+            Catch ex As Exception
+                ' Ignore the error
+            End Try
+
+            Try
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor2Color", Color.DimGray.ToString)
+                If IsNumeric(strValue) Then
+                    strValue = Color.DimGray.ToString
+                End If
+                SetCursorColor(ConvertColorNameToColorObject(strValue), 2)
+            Catch ex As Exception
+                ' Ignore the error
+            End Try
+
+            ' Populate mAnnotationStyles()
+            For intSeriesIndex = 1 To MAX_SERIES_COUNT
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontName" & intSeriesIndex.ToString.Trim, DEFAULT_FONT_NAME)
+                If Len(strValue) = 0 Then strValue = DEFAULT_FONT_NAME
+                SetAnnotationFontName(intSeriesIndex, strValue)
+
+                strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontSize" & intSeriesIndex.ToString.Trim, DEFAULT_ANNOTATION_FONT_SIZE.ToString.Trim)
+                If Len(strValue) = 0 Then strValue = DEFAULT_ANNOTATION_FONT_SIZE.ToString.Trim
+                SetAnnotationFontSize(intSeriesIndex, SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+
+                Try
+                    strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontColor", Color.White.ToString)
+                    If IsNumeric(strValue) Then
+                        strValue = Color.White.ToString
+                    End If
+
+                    If ConvertColorNameToColorObject(strValue).Equals(CWGraph.PlotAreaColor) Then
+                        ' We won't be able to see the labels since the color is the same as the background color
+                        If CWGraph.PlotAreaColor.Equals(Color.Black) Then
+                            strValue = Color.White.ToString
+                        Else
+                            strValue = Color.Black.ToString
+                        End If
+                    End If
+                    SetAnnotationFontColor(intSeriesIndex, ConvertColorNameToColorObject(strValue))
+
+                Catch ex As Exception
+                    ' Ignore the error
+                End Try
+
+            Next intSeriesIndex
+
+        Catch ex As Exception
+            Debug.WriteLine("Error in RegistryReadSettings: " & ex.Message)
+        End Try
+
+
+    End Sub
+
+    Private Sub RegistrySaveSettings()
+
+        Dim intSeriesIndex As Short
+
+        ' Use Resume Next error handling in case the user doesn't have access to writing the registry
+        On Error Resume Next
+
+        SaveSetting(APP_NAME_IN_REGISTRY, "About", "About", "Settings for a customized version of the National Instruments CWGraph control.")
+        SaveSetting(APP_NAME_IN_REGISTRY, "About", "Author", "Software written by Matthew Monroe for Pacific Northwest National Laboratory in Richland, WA")
+        SaveSetting(APP_NAME_IN_REGISTRY, "About", "Contact", "Contact via http://www.alchemistmatt.com")
+        SaveSetting(APP_NAME_IN_REGISTRY, "About", "Date", CWGRAPH_APP_DATE)
+        SaveSetting(APP_NAME_IN_REGISTRY, "About", "Version", CWGRAPH_APP_VERSION)
+
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "LabelFontName", GetLabelFontName())
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "LabelFontSize", GetLabelFontSize().ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "LabelFontColor", GetLabelFontColor().ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PlotBackgroundColor", GetPlotBackgroundColor().ToString.Trim)
+
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityAutoHideCaptions", mAnnotationDensityAutoHideCaptions.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityToleranceAutoAdjust", mAnnotationDensityToleranceAutoAdjust.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityToleranceX", mAnnotationDensityToleranceX.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationDensityToleranceY", mAnnotationDensityToleranceY.ToString.Trim)
+
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PeakDetectIntensityThresholdCounts", mPeakDetectIntensityThresholdCounts.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PeakDetectIntensityThresholdPercentageOfMaximum", mPeakDetectIntensityThresholdPercentageOfMaximum.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PeakDetectWidthPointsMinimum", mPeakDetectWidthPointsMinimum.ToString.Trim)
+
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AutoScaleVisibleY", mAutoScaleVisibleY.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "FixMinimumYAtZero", mFixMinimumYAtZero.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AutoAdjustScalingToIncludeCaptions", mAutoAdjustScalingToIncludeCaptions.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PrecisionX", mPrecisionX.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "PrecisionY", mPrecisionY.ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor1Visible", GetCursorVisibility(1.ToString.Trim))
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor2Visible", GetCursorVisibility(2.ToString.Trim))
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "CursorSnapToData", GetCursorSnapToDataPointModeEnabled().ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor1Color", GetCursorColor(1).ToString.Trim)
+        SaveSetting(APP_NAME_IN_REGISTRY, "Options", "Cursor2Color", GetCursorColor(2).ToString.Trim)
+
+        For intSeriesIndex = 1 To MAX_SERIES_COUNT
+            SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationFontName" & intSeriesIndex.ToString.Trim, mAnnotationStyles(intSeriesIndex).FontName)
+            SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationFontSize" & intSeriesIndex.ToString.Trim, mAnnotationStyles(intSeriesIndex).FontSize.ToString.Trim)
+            SaveSetting(APP_NAME_IN_REGISTRY, "Options", "AnnotationFontColor" & intSeriesIndex.ToString.Trim, mAnnotationStyles(intSeriesIndex).FontColor.ToString.Trim)
+        Next intSeriesIndex
+
+    End Sub
+
+    Public Sub RemoveAllAnnotations(Optional ByVal blnConfirmRemoval As Boolean = False)
+        Dim eResponse As MsgBoxResult
+
+        If CWGraph.Annotations.Count = 0 Then Exit Sub
+
+        If blnConfirmRemoval Then
+            eResponse = MsgBox("Do you really want to remove all the annotations?", MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel, "Remove Annotations")
+            If eResponse <> MsgBoxResult.Yes Then Exit Sub
+        End If
+
+        CWGraph.Annotations.RemoveAll()
+
+        InitializeAnnotationInfoArray()
+    End Sub
+
+    Public Sub RemoveAnnotationsForSeries(intSeriesNumber As Short)
+
+        Dim intIndex As Short
+        Dim intInfoIndex As Integer
+
+        If CWGraph.Annotations.Count = 0 Then Exit Sub
+        If intSeriesNumber < 1 Or intSeriesNumber > CWGraph.Plots.Count Then Exit Sub
+
+        intIndex = 1
+        Do While intIndex <= CWGraph.Annotations.Count
+            If LookupSeriesNumberForPlotObject((CWGraph.Annotations.Item(intIndex).Plot)) = intSeriesNumber Then
+                For intInfoIndex = 1 To CWGraph.Annotations.Count - 1
+                    mAnnotations(intInfoIndex) = mAnnotations(intInfoIndex + 1)
+                Next intInfoIndex
+
+                CWGraph.Annotations.Remove(intIndex)
+            Else
+                intIndex = intIndex + 1
+            End If
+        Loop
+
+        ReDim Preserve mAnnotations(CWGraph.Annotations.Count)
+
+    End Sub
+
+    Private Sub ReportCursorLocation(Optional ByVal intCursorNumber As Integer = 1)
+
+        intCursorNumber = ValidateCursorNumber(intCursorNumber)
+        With CWGraph.Cursors.Item(intCursorNumber)
+            lblPosition.Text = FormatNumber(.XPosition, mPrecisionX) & ", " & FormatNumber(.YPosition, mPrecisionY)
+        End With
+
+    End Sub
+
+    Public Sub ResetOptionsToDefaults(Optional ByVal blnClearAllData As Boolean = False, Optional ByVal blnResetSeriesCount As Boolean = False, Optional ByRef intNewSeriesCount As Short = 2, Optional ByVal eDefaultPlotMode As pmPlotModeConstants = pmPlotModeConstants.pmLines)
+        Dim intSeriesIndex As Short
+
+        If blnClearAllData Then
+            For intSeriesIndex = 1 To CWGraph.Plots.Count
+                RemoveAnnotationsForSeries(intSeriesIndex)
+                ClearData(intSeriesIndex)
+            Next intSeriesIndex
+        End If
+
+        If blnResetSeriesCount Then
+            AssureValidSeriesNumber(intNewSeriesCount)
+            SetSeriesCount(intNewSeriesCount)
+        End If
+
+        SetAnnotationDensityAutoHideCaptions(True)
+        SetAnnotationDensityToleranceAutoAdjust(True)
+        SetAnnotationFontName(1, DEFAULT_FONT_NAME, True)
+        SetAnnotationFontSize(1, DEFAULT_ANNOTATION_FONT_SIZE, True)
+        SetAnnotationFontColor(1, Color.Black, True)
+
+        SetAutoAdjustScalingToIncludeCaptions(True)
+        SetAutoscaleVisibleY(False, False)
+
+        SetCursorVisible(True, 1)
+        SetCursorVisible(False, 2)
+        SetCursorSnapMode(False)
+        SetCursorPosition(0, 0, 1)
+        SetCursorPosition(0, 0, 2)
+        SetCursorColor(Color.Black, 1)
+        SetCursorColor(Color.DimGray, 2)
+        SetDisplayPrecisionX(2)
+        SetDisplayPrecisionY(1)
+
+        SetGridLinesXColor(Color.Black, True, True)
+        SetGridLinesYColor(Color.Black, True, True)
+        SetGridLinesXColor(Color.DimGray, False, True)
+        SetGridLinesYColor(Color.DimGray, False, True)
+
+        SetGridLinesXVisible(False, True, True)
+        SetGridLinesYVisible(False, True, True)
+        SetGridLinesXVisible(False, False, True)
+        SetGridLinesYVisible(False, False, True)
+
+        SetLabelFontName(DEFAULT_FONT_NAME)
+        SetLabelFontSize(DEFAULT_FONT_SIZE)
+        SetLabelFontColor(Color.Black)
+
+        SetLabelSubTitle("")
+        SetLabelTitle("")
+        SetLabelXAxis("")
+        SetLabelYAxis("")
+
+        SetPeakDetectIntensityThresholdCounts(10)
+        SetPeakDetectIntensityThresholdPercentageOfMaximum(0)
+        SetPeakDetectWidthPointsMinimum(5)
+
+        SetPlotBackgroundColor(Color.White)
+
+        For intSeriesIndex = 1 To CWGraph.Plots.Count
+            SetSeriesColor(intSeriesIndex, GetDefaultSeriesColor(intSeriesIndex))
+            SetSeriesLineStyle(intSeriesIndex, CWUIControlsLib.CWLineStyles.cwLineSolid)
+            SetSeriesLineWidth(intSeriesIndex, 1)
+            SetSeriesPlotMode(intSeriesIndex, eDefaultPlotMode)
+        Next intSeriesIndex
+
+    End Sub
+
+    Public Function SetAnnotation(blnPromptForText As Boolean, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, Optional ByRef strCaptionText As String = "", Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 1, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional ByRef intPointNumberToBind As Integer = -1, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = True, Optional ByRef intAnnotationIndexForce As Integer = 0, Optional ByRef blnAutomaticCaptionPlacement As Boolean = False) As Integer
         ' Adds a new annotation
         '  or updates an existing one of intAnnotationIndexForce is > 0
         ' Returns the index of the annotation (.Annotations is 1-based)
@@ -2981,7 +2967,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
             End With
 
         Catch ex As Exception
-            MsgBox("Unable to add annotation: " & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OKOnly, "Error")
+            MsgBox("Unable to add annotation: " & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             intAnnotationIndex = 0
         End Try
 
@@ -2989,7 +2975,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Function
 
-    Public Function SetAnnotationByIndex(ByVal intAnnotationIndex As Integer, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, Optional ByRef strCaptionText As String = "", Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 1, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional ByRef intPointNumberToBind As Integer = -1, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = True, Optional ByRef blnAutomaticCaptionPlacement As Boolean = False, Optional ByRef strReturnAnnotationName As String = "") As Boolean
+    Public Function SetAnnotationByIndex(intAnnotationIndex As Integer, ByRef CaptionXPos As Double, ByRef CaptionYPos As Double, Optional ByRef strCaptionText As String = "", Optional ByRef intCaptionAngle As Integer = 0, Optional ByRef intSeriesNumber As Short = 1, Optional ByRef eAnnotationSnapMode As asmAnnotationSnapModeConstants = asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional ByRef intPointNumberToBind As Integer = -1, Optional ByRef blnAnnotationShowsNearestPointX As Boolean = False, Optional ByRef blnAnnotationShowsNearestPointY As Boolean = False, Optional ByRef blnIncludeArrow As Boolean = False, Optional ByRef blnHideInDenseRegions As Boolean = True, Optional ByRef blnAutomaticCaptionPlacement As Boolean = False, Optional ByRef strReturnAnnotationName As String = "") As Boolean
         ' Returns True if success, false if failure
         ' This function only updates the given annotation's settings and does not display the Set Annotation dialog
 
@@ -3041,7 +3027,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
                     If mAnnotationStyles(intSeriesNumber).FontName = "" Or mAnnotationStyles(intSeriesNumber).FontSize = 0 Then
                         mAnnotationStyles(intSeriesNumber).FontName = DEFAULT_FONT_NAME
                         mAnnotationStyles(intSeriesNumber).FontSize = DEFAULT_ANNOTATION_FONT_SIZE
-                        mAnnotationStyles(intSeriesNumber).FontColor = System.Drawing.Color.Black
+                        mAnnotationStyles(intSeriesNumber).FontColor = Color.Black
                     End If
 
                     'objFont = New System.drawing.Font(mAnnotationStyles(intSeriesNumber).FontName, mAnnotationStyles(intSeriesNumber).FontSize)
@@ -3053,7 +3039,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
                     Catch ex As Exception
                         ' Ignore the error
                     End Try
-                    .Caption.Color = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(mAnnotationStyles(intSeriesNumber).FontColor))
+                    .Caption.Color = System.Convert.ToUInt32(ColorTranslator.ToOle(mAnnotationStyles(intSeriesNumber).FontColor))
                     .Arrow.Color = .Caption.Color
 
                     If intPointNumberToBind >= lngDataCountForSeries Then
@@ -3095,7 +3081,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Function
 
-    Public Sub SetAnnotationFontColor(ByVal intSeriesNumber As Short, ByVal cNewColor As System.Drawing.Color, Optional ByVal blnMakeDefaultForAll As Boolean = False)
+    Public Sub SetAnnotationFontColor(intSeriesNumber As Short, cNewColor As Color, Optional ByVal blnMakeDefaultForAll As Boolean = False)
 
         AssureValidSeriesNumber(intSeriesNumber)
         If blnMakeDefaultForAll Then intSeriesNumber = 1
@@ -3104,7 +3090,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         UpdateAnnotationFonts(intSeriesNumber, blnMakeDefaultForAll)
     End Sub
 
-    Public Sub SetAnnotationFontName(ByVal intSeriesNumber As Short, ByVal strNewFontName As String, Optional ByVal blnMakeDefaultForAll As Boolean = False)
+    Public Sub SetAnnotationFontName(intSeriesNumber As Short, strNewFontName As String, Optional ByVal blnMakeDefaultForAll As Boolean = False)
         If Len(strNewFontName) = 0 Then Exit Sub
 
         AssureValidSeriesNumber(intSeriesNumber)
@@ -3114,7 +3100,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         UpdateAnnotationFonts(intSeriesNumber, blnMakeDefaultForAll)
     End Sub
 
-    Public Sub SetAnnotationFontSize(ByVal intSeriesNumber As Short, ByVal intNewSize As Short, Optional ByVal blnMakeDefaultForAll As Boolean = False)
+    Public Sub SetAnnotationFontSize(intSeriesNumber As Short, intNewSize As Short, Optional ByVal blnMakeDefaultForAll As Boolean = False)
         If intNewSize < 6 Then intNewSize = DEFAULT_ANNOTATION_FONT_SIZE
         If intNewSize > 128 Then intNewSize = DEFAULT_ANNOTATION_FONT_SIZE
 
@@ -3125,7 +3111,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         UpdateAnnotationFonts(intSeriesNumber, blnMakeDefaultForAll)
     End Sub
 
-    Public Sub SetAnnotationDensityAutoHideCaptions(ByVal blnEnableAutoHide As Boolean, Optional ByVal blnShowHiddenCaptionsIfDisabled As Boolean = True)
+    Public Sub SetAnnotationDensityAutoHideCaptions(blnEnableAutoHide As Boolean, Optional ByVal blnShowHiddenCaptionsIfDisabled As Boolean = True)
         Static blnUpdating As Boolean
 
         If blnUpdating Or Not mControlComponentsInitialized Then Exit Sub
@@ -3138,7 +3124,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         blnUpdating = False
     End Sub
 
-    Public Sub SetAnnotationDensityToleranceX(ByVal dblNewThreshold As Double)
+    Public Sub SetAnnotationDensityToleranceX(dblNewThreshold As Double)
         If dblNewThreshold < 0 Then dblNewThreshold = 0.1
 
         mAnnotationDensityToleranceX = dblNewThreshold
@@ -3147,7 +3133,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetAnnotationDensityToleranceY(ByVal dblNewThreshold As Double)
+    Public Sub SetAnnotationDensityToleranceY(dblNewThreshold As Double)
         If dblNewThreshold < 0 Then dblNewThreshold = 0.1
 
         mAnnotationDensityToleranceY = dblNewThreshold
@@ -3156,31 +3142,31 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetAnnotationDensityToleranceAutoAdjust(ByVal blnEnableAutoAdjust As Boolean)
+    Public Sub SetAnnotationDensityToleranceAutoAdjust(blnEnableAutoAdjust As Boolean)
         mAnnotationDensityToleranceAutoAdjust = blnEnableAutoAdjust
         SynchronizeCheckboxesWithSettings()
     End Sub
 
-    Public Sub SetAutoscaleXAxis(ByVal blnEnableAutoscale As Boolean)
+    Public Sub SetAutoscaleXAxis(blnEnableAutoscale As Boolean)
         CWGraph.Axes.Item(1).AutoScale = blnEnableAutoscale
         If blnEnableAutoscale Then
             AutoScaleXNow()
         End If
     End Sub
 
-    Public Sub SetAutoscaleYAxis(ByVal blnEnableAutoscale As Boolean)
+    Public Sub SetAutoscaleYAxis(blnEnableAutoscale As Boolean)
         CWGraph.Axes.Item(2).AutoScale = blnEnableAutoscale
         If blnEnableAutoscale Then
             AutoScaleYNow()
         End If
     End Sub
 
-    Public Sub SetAutoAdjustScalingToIncludeCaptions(ByVal blnEnable As Boolean)
+    Public Sub SetAutoAdjustScalingToIncludeCaptions(blnEnable As Boolean)
         mAutoAdjustScalingToIncludeCaptions = blnEnable
         SynchronizeCheckboxesWithSettings()
     End Sub
 
-    Public Sub SetAutoscaleVisibleY(ByVal blnEnableAutoscale As Boolean, ByVal blnFixMinimumYAtZero As Boolean)
+    Public Sub SetAutoscaleVisibleY(blnEnableAutoscale As Boolean, blnFixMinimumYAtZero As Boolean)
         mAutoScaleVisibleY = blnEnableAutoscale
         mFixMinimumYAtZero = blnFixMinimumYAtZero
 
@@ -3188,12 +3174,12 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetCursorColor(ByVal cNewColor As System.Drawing.Color, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub SetCursorColor(cNewColor As Color, Optional ByVal intCursorNumber As Integer = 1)
         intCursorNumber = ValidateCursorNumber(intCursorNumber)
-        CWGraph.Cursors.Item(intCursorNumber).Color = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        CWGraph.Cursors.Item(intCursorNumber).Color = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
     End Sub
 
-    Public Sub SetCursorPosition(ByVal XPos As Double, ByVal YPos As Double, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub SetCursorPosition(XPos As Double, YPos As Double, Optional ByVal intCursorNumber As Integer = 1)
 
         intCursorNumber = ValidateCursorNumber(intCursorNumber)
         With CWGraph.Cursors.Item(intCursorNumber)
@@ -3203,7 +3189,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetCursorSnapMode(ByVal blnSnapToData As Boolean)
+    Public Sub SetCursorSnapMode(blnSnapToData As Boolean)
 
         Static blnUpdating As Boolean
 
@@ -3227,7 +3213,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetCursorVisible(ByVal blnShowCursor As Boolean, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub SetCursorVisible(blnShowCursor As Boolean, Optional ByVal intCursorNumber As Integer = 1)
         Static blnUpdating As Boolean
 
         If blnUpdating Or Not mControlComponentsInitialized Then Exit Sub
@@ -3240,7 +3226,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         blnUpdating = False
     End Sub
 
-    Public Sub SetCustomTicksXAxis(ByVal dblMajorUnitsBase As Double, ByVal dblMajorUnitsInterval As Double, Optional ByVal blnResetToDefaultTicks As Boolean = False)
+    Public Sub SetCustomTicksXAxis(dblMajorUnitsBase As Double, dblMajorUnitsInterval As Double, Optional ByVal blnResetToDefaultTicks As Boolean = False)
 
         If blnResetToDefaultTicks Then
             CWGraph.Axes.Item(1).Ticks.AutoDivisions = True
@@ -3255,7 +3241,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetCustomTicksYAxis(ByVal dblMajorUnitsBase As Double, ByVal dblMajorUnitsInterval As Double, Optional ByVal blnResetToDefaultTicks As Boolean = False)
+    Public Sub SetCustomTicksYAxis(dblMajorUnitsBase As Double, dblMajorUnitsInterval As Double, Optional ByVal blnResetToDefaultTicks As Boolean = False)
 
         If blnResetToDefaultTicks Then
             CWGraph.Axes.Item(2).Ticks.AutoDivisions = True
@@ -3270,7 +3256,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetDataXvsY(ByRef intSeriesNumber As Short, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, ByVal DataCount As Integer, Optional ByVal strLegendCaption As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
+    Public Sub SetDataXvsY(ByRef intSeriesNumber As Short, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, DataCount As Integer, Optional ByVal strLegendCaption As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
         Dim DataToPlot2d(,) As Double
         Dim intIndex As Integer
 
@@ -3297,7 +3283,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetDataYOnly(ByRef intSeriesNumber As Short, ByRef YDataZeroBased1DArray() As Double, ByVal YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strLegendCaption As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
+    Public Sub SetDataYOnly(ByRef intSeriesNumber As Short, ByRef YDataZeroBased1DArray() As Double, YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strLegendCaption As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
 
         ''Dim DataToPlot As Object
         ''Dim intIndex As Integer
@@ -3345,12 +3331,12 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetDisplayPrecisionX(ByVal intPrecision As Short)
+    Public Sub SetDisplayPrecisionX(intPrecision As Short)
         mPrecisionX = intPrecision
         UpdateDisplayPrecision()
     End Sub
 
-    Public Sub SetDisplayPrecisionY(ByVal intPrecision As Short)
+    Public Sub SetDisplayPrecisionY(intPrecision As Short)
         mPrecisionY = intPrecision
         UpdateDisplayPrecision()
     End Sub
@@ -3361,11 +3347,11 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         CWGraph.Focus()
     End Sub
 
-    Public Sub SetFrameColor(ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetFrameColor(cNewColor As Color)
         CWGraph.GraphFrameColor = cNewColor
     End Sub
 
-    Public Sub SetFrameStyle(ByVal blnEnable3D As Boolean)
+    Public Sub SetFrameStyle(blnEnable3D As Boolean)
         If blnEnable3D Then
             CWGraph.GraphFrameStyle = CWUIControlsLib.CWGraphFrameStyles.cwGraphFrame3D
         Else
@@ -3373,7 +3359,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetGridLinesXColor(ByVal cNewColor As System.Drawing.Color, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False, Optional ByVal blnUpdateTickColors As Boolean = True)
+    Public Sub SetGridLinesXColor(cNewColor As Color, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False, Optional ByVal blnUpdateTickColors As Boolean = True)
 
         ' blnMajorGridLines = True means Major Grid Lines
         ' blnMajorGridLines = False means Minor Grid Lines
@@ -3381,7 +3367,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         Dim intIndex As Short
         Dim uintNewColor As UInt32
 
-        uintNewColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        uintNewColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
 
         If blnApplyToAllAxes Then
             For intIndex = 1 To CWGraph.Axes.Count
@@ -3404,7 +3390,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetGridLinesYColor(ByVal cNewColor As System.Drawing.Color, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False, Optional ByVal blnUpdateTickColors As Boolean = True)
+    Public Sub SetGridLinesYColor(cNewColor As Color, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False, Optional ByVal blnUpdateTickColors As Boolean = True)
         ' blnMajorGridLines = True means Major Grid Lines
         ' blnMajorGridLines = False means Minor Grid Lines
 
@@ -3413,7 +3399,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         If blnApplyToAllAxes Then
             SetGridLinesXColor(cNewColor, blnMajorGridLines, True, blnUpdateTickColors)
         Else
-            uintNewColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+            uintNewColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
             If blnMajorGridLines Then
                 CWGraph.Axes.Item(2).Ticks.MajorGridColor = uintNewColor
                 If blnUpdateTickColors Then CWGraph.Axes.Item(2).Ticks.MajorTickColor = uintNewColor
@@ -3424,7 +3410,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetGridLinesXVisible(ByVal blnShowGridLines As Boolean, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False)
+    Public Sub SetGridLinesXVisible(blnShowGridLines As Boolean, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False)
         ' blnMajorGridLines = True means Major Grid Lines
         ' blnMajorGridLines = False means Minor Grid Lines
 
@@ -3448,7 +3434,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetGridLinesYVisible(ByVal blnShowGridLines As Boolean, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False)
+    Public Sub SetGridLinesYVisible(blnShowGridLines As Boolean, Optional ByVal blnMajorGridLines As Boolean = True, Optional ByVal blnApplyToAllAxes As Boolean = False)
         ' blnMajorGridLines = True means Major Grid Lines
         ' blnMajorGridLines = False means Minor Grid Lines
 
@@ -3464,9 +3450,9 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetLabelFontColor(ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetLabelFontColor(cNewColor As Color)
         Dim uintNewColor As UInt32
-        uintNewColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        uintNewColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
 
         CWGraph.CaptionColor = cNewColor
         CWGraph.Axes.Item(1).CaptionColor = uintNewColor
@@ -3477,7 +3463,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         CWGraph.Axes.Item(2).Labels.Color = uintNewColor
     End Sub
 
-    Public Sub SetLabelFontName(ByVal strFontName As String)
+    Public Sub SetLabelFontName(strFontName As String)
         On Error Resume Next
 
         Dim objFont As System.Drawing.Font = CWGraph.Font.Clone()
@@ -3486,7 +3472,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         CWGraph.Font = objFont
     End Sub
 
-    Public Sub SetLabelFontSize(ByVal intNewSize As Short)
+    Public Sub SetLabelFontSize(intNewSize As Short)
         If intNewSize < 6 Then intNewSize = DEFAULT_FONT_SIZE
         If intNewSize > 128 Then intNewSize = DEFAULT_FONT_SIZE
 
@@ -3497,15 +3483,15 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetLabelXAxis(ByVal strAxisLabel As String)
+    Public Sub SetLabelXAxis(strAxisLabel As String)
         CWGraph.Axes.Item(1).Caption = strAxisLabel
     End Sub
 
-    Public Sub SetLabelYAxis(ByVal strAxisLabel As String)
+    Public Sub SetLabelYAxis(strAxisLabel As String)
         CWGraph.Axes.Item(2).Caption = strAxisLabel
     End Sub
 
-    Public Sub SetLabelTitle(ByVal strTitle As String)
+    Public Sub SetLabelTitle(strTitle As String)
         mTitle = strTitle
         If Len(mSubTitle) > 0 Then
             CWGraph.Text = mTitle & " " & mSubTitle
@@ -3514,28 +3500,28 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetLabelSubTitle(ByVal strSubTitle As String)
+    Public Sub SetLabelSubTitle(strSubTitle As String)
         mSubTitle = strSubTitle
         SetLabelTitle(mTitle)
     End Sub
 
-    Public Sub SetPeakDetectIntensityThresholdCounts(ByVal dblNewThreshold As Double)
+    Public Sub SetPeakDetectIntensityThresholdCounts(dblNewThreshold As Double)
         mPeakDetectIntensityThresholdCounts = dblNewThreshold
     End Sub
 
-    Public Sub SetPeakDetectIntensityThresholdPercentageOfMaximum(ByVal lngNewPercentage As Integer)
+    Public Sub SetPeakDetectIntensityThresholdPercentageOfMaximum(lngNewPercentage As Integer)
         mPeakDetectIntensityThresholdPercentageOfMaximum = lngNewPercentage
     End Sub
 
-    Public Sub SetPeakDetectWidthPointsMinimum(ByVal lngMinimumWidthInPoints As Integer)
+    Public Sub SetPeakDetectWidthPointsMinimum(lngMinimumWidthInPoints As Integer)
         mPeakDetectWidthPointsMinimum = lngMinimumWidthInPoints
     End Sub
 
-    Public Sub SetPlotBackgroundColor(ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetPlotBackgroundColor(cNewColor As Color)
         CWGraph.PlotAreaColor = cNewColor
     End Sub
 
-    Public Sub SetRangeX(ByVal dblMinimum As Double, ByVal dblMaximum As Double, Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnReturnAnnotationVisibilityChecked As Boolean = False)
+    Public Sub SetRangeX(dblMinimum As Double, dblMaximum As Double, Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnReturnAnnotationVisibilityChecked As Boolean = False)
         With CWGraph.Axes.Item(1)
             .Minimum = dblMinimum
             .Maximum = dblMaximum
@@ -3548,7 +3534,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetRangeY(ByVal dblMinimum As Double, ByVal dblMaximum As Double, Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnReturnAnnotationVisibilityChecked As Boolean = False)
+    Public Sub SetRangeY(dblMinimum As Double, dblMaximum As Double, Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnReturnAnnotationVisibilityChecked As Boolean = False)
         With CWGraph.Axes.Item(2)
             .Minimum = dblMinimum
             .Maximum = dblMaximum
@@ -3561,12 +3547,12 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End If
     End Sub
 
-    Public Sub SetSeriesBarFillColor(ByVal intSeriesNumber As Short, ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetSeriesBarFillColor(intSeriesNumber As Short, cNewColor As Color)
         AssureValidSeriesNumber(intSeriesNumber)
-        CWGraph.Plots.Item(intSeriesNumber).FillColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        CWGraph.Plots.Item(intSeriesNumber).FillColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
     End Sub
 
-    Public Sub SetSeriesColor(ByVal intSeriesNumber As Short, ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetSeriesColor(intSeriesNumber As Short, cNewColor As Color)
         AssureValidSeriesNumber(intSeriesNumber)
 
         SetSeriesLineColor(intSeriesNumber, cNewColor)
@@ -3576,7 +3562,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetSeriesCount(ByVal intCount As Short)
+    Public Sub SetSeriesCount(intCount As Short)
         Dim intSeriesNumber As Short
 
         If intCount < 1 Then intCount = 1
@@ -3597,24 +3583,24 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         Next intSeriesNumber
     End Sub
 
-    Public Sub SetSeriesLineColor(ByVal intSeriesNumber As Short, ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetSeriesLineColor(intSeriesNumber As Short, cNewColor As Color)
         AssureValidSeriesNumber(intSeriesNumber)
-        CWGraph.Plots.Item(intSeriesNumber).LineColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        CWGraph.Plots.Item(intSeriesNumber).LineColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
     End Sub
 
-    Public Sub SetSeriesLineToBaseColor(ByVal intSeriesNumber As Short, ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetSeriesLineToBaseColor(intSeriesNumber As Short, cNewColor As Color)
         AssureValidSeriesNumber(intSeriesNumber)
-        CWGraph.Plots.Item(intSeriesNumber).LineToBaseColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        CWGraph.Plots.Item(intSeriesNumber).LineToBaseColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
     End Sub
 
-    Public Sub SetSeriesLineStyle(ByVal intSeriesNumber As Short, ByVal eLineStyle As CWUIControlsLib.CWLineStyles)
+    Public Sub SetSeriesLineStyle(intSeriesNumber As Short, eLineStyle As CWUIControlsLib.CWLineStyles)
         AssureValidSeriesNumber(intSeriesNumber)
 
         On Error Resume Next
         CWGraph.Plots.Item(intSeriesNumber).LineStyle = eLineStyle
     End Sub
 
-    Public Sub SetSeriesLineWidth(ByVal intSeriesNumber As Short, ByVal intWidth As Short)
+    Public Sub SetSeriesLineWidth(intSeriesNumber As Short, intWidth As Short)
         AssureValidSeriesNumber(intSeriesNumber)
 
         If intWidth < 0 Then intWidth = 0
@@ -3623,24 +3609,24 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         CWGraph.Plots.Item(intSeriesNumber).LineWidth = intWidth
     End Sub
 
-    Public Sub SetSeriesLegendCaption(ByVal intSeriesNumber As Short, ByVal strNewCaption As String)
+    Public Sub SetSeriesLegendCaption(intSeriesNumber As Short, strNewCaption As String)
         AssureValidSeriesNumber(intSeriesNumber)
         mDataSaved(intSeriesNumber).LegendCaption = strNewCaption
         UpdateLegend()
     End Sub
 
-    Public Sub SetSeriesPointColor(ByVal intSeriesNumber As Short, ByVal cNewColor As System.Drawing.Color)
+    Public Sub SetSeriesPointColor(intSeriesNumber As Short, cNewColor As Color)
         AssureValidSeriesNumber(intSeriesNumber)
-        CWGraph.Plots.Item(intSeriesNumber).PointColor = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(cNewColor))
+        CWGraph.Plots.Item(intSeriesNumber).PointColor = System.Convert.ToUInt32(ColorTranslator.ToOle(cNewColor))
     End Sub
 
-    Public Sub SetSeriesOriginalIntensityMaximum(ByVal intSeriesNumber As Short, ByVal dblNewOriginalMaximumIntensity As Double)
+    Public Sub SetSeriesOriginalIntensityMaximum(intSeriesNumber As Short, dblNewOriginalMaximumIntensity As Double)
         AssureValidSeriesNumber(intSeriesNumber)
         mDataSaved(intSeriesNumber).OriginalMaximumIntensity = dblNewOriginalMaximumIntensity
         UpdateLegend()
     End Sub
 
-    Public Sub SetSeriesPlotMode(ByVal intSeriesNumber As Short, ByVal ePlotMode As pmPlotModeConstants, Optional ByVal blnMakeDefault As Boolean = False)
+    Public Sub SetSeriesPlotMode(intSeriesNumber As Short, ePlotMode As pmPlotModeConstants, Optional ByVal blnMakeDefault As Boolean = False)
 
         Dim intSeriesIndex As Short
 
@@ -3660,7 +3646,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Private Sub SetSeriesPlotModeWork(ByVal pltThisPlot As CWUIControlsLib.CWPlot, ByVal ePlotMode As pmPlotModeConstants)
+    Private Sub SetSeriesPlotModeWork(pltThisPlot As CWUIControlsLib.CWPlot, ePlotMode As pmPlotModeConstants)
 
         With pltThisPlot
             Select Case ePlotMode
@@ -3694,14 +3680,14 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Public Sub SetSeriesPointStyle(ByVal intSeriesNumber As Short, ByVal ePointStyle As CWUIControlsLib.CWPointStyles)
+    Public Sub SetSeriesPointStyle(intSeriesNumber As Short, ePointStyle As CWUIControlsLib.CWPointStyles)
         AssureValidSeriesNumber(intSeriesNumber)
 
         On Error Resume Next
         CWGraph.Plots.Item(intSeriesNumber).PointStyle = ePointStyle
     End Sub
 
-    Public Sub SetSeriesStartAndIncrement(ByVal intSeriesNumber As Short, ByVal dblXFirst As Double, ByVal dblIncrement As Double)
+    Public Sub SetSeriesStartAndIncrement(intSeriesNumber As Short, dblXFirst As Double, dblIncrement As Double)
         AssureValidSeriesNumber(intSeriesNumber)
 
         With CWGraph.Plots.Item(intSeriesNumber)
@@ -3710,52 +3696,10 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         End With
     End Sub
 
-    Public Sub SetSeriesVisible(ByVal intSeriesNumber As Short, ByVal blnShowSeries As Boolean)
+    Public Sub SetSeriesVisible(intSeriesNumber As Short, blnShowSeries As Boolean)
         AssureValidSeriesNumber(intSeriesNumber)
 
         CWGraph.Plots.Item(intSeriesNumber).Visible = blnShowSeries
-    End Sub
-
-    Private Sub ShellSortByIntensity(ByVal dblValuesZeroBased() As Double, ByVal intPointerArray() As Integer, ByVal lngLowIndex As Integer, ByVal lngHighIndex As Integer)
-        ' Sorts the PointerArray to dblValuesZeroBased()
-
-        Dim lngCount As Integer
-        Dim lngIncrement As Integer
-        Dim intIndex As Integer
-        Dim lngIndexCompare As Integer
-        Dim lngPointerSaved As Integer
-        Dim dblCompareVal As Double
-
-        ' sort array[lngLowIndex..lngHighIndex]
-
-        ' compute largest increment
-        lngCount = lngHighIndex - lngLowIndex + 1
-        lngIncrement = 1
-        If (lngCount < 14) Then
-            lngIncrement = 1
-        Else
-            Do While lngIncrement < lngCount
-                lngIncrement = 3 * lngIncrement + 1
-            Loop
-            lngIncrement = lngIncrement \ 3
-            lngIncrement = lngIncrement \ 3
-        End If
-
-        Do While lngIncrement > 0
-            ' sort by insertion in increments of lngIncrement
-            For intIndex = lngLowIndex + lngIncrement To lngHighIndex
-                lngPointerSaved = intPointerArray(intIndex)
-                dblCompareVal = dblValuesZeroBased(lngPointerSaved)
-                For lngIndexCompare = intIndex - lngIncrement To lngLowIndex Step -lngIncrement
-                    ' Use <= to sort ascending; Use > to sort descending
-                    If dblValuesZeroBased(intPointerArray(lngIndexCompare)) <= dblCompareVal Then Exit For
-                    intPointerArray(lngIndexCompare + lngIncrement) = intPointerArray(lngIndexCompare)
-                Next lngIndexCompare
-                intPointerArray(lngIndexCompare + lngIncrement) = lngPointerSaved
-            Next intIndex
-            lngIncrement = lngIncrement \ 3
-        Loop
-
     End Sub
 
     Public Sub ShowHideAnnotations(Optional ByVal blnForceOperation As Boolean = False, Optional ByVal blnShowHiddenCaptionsIfDisabled As Boolean = True)
@@ -3887,13 +3831,13 @@ LookupArrowVisibilityForAnnotationErrorHandler:
             MyBase.Cursor = objMouseCursorSaved
 
         Catch ex As Exception
-            MsgBox("Error in CWGraphControl.ShowHideAnnotations(): " & vbCrLf & ex.Message, MsgBoxStyle.Information + MsgBoxStyle.OKOnly)
+            MsgBox("Error in CWGraphControl.ShowHideAnnotations(): " & vbCrLf & ex.Message, MsgBoxStyle.Information + MsgBoxStyle.OkOnly)
             MyBase.Cursor = objMouseCursorSaved
 
         End Try
     End Sub
 
-    Public Sub ShowHideControls(ByVal blnHideControlsFrame As Boolean)
+    Public Sub ShowHideControls(blnHideControlsFrame As Boolean)
         mControlsFrameHidden = blnHideControlsFrame
 
         cmdRollUpHide.Visible = Not mControlsFrameHidden
@@ -3943,7 +3887,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
     End Sub
 
-    Private Sub ToggleTemporaryMouseMode(ByVal blnEnable As Boolean, Optional ByVal eModeToEnable As cmZoomBoxCursorModeConstants = cmZoomBoxCursorModeConstants.cmZoomX)
+    Private Sub ToggleTemporaryMouseMode(blnEnable As Boolean, Optional ByVal eModeToEnable As cmZoomBoxCursorModeConstants = cmZoomBoxCursorModeConstants.cmZoomX)
         If blnEnable Then
             If Not mMouseModeTemp Then
                 ' Turn on temporary cursor mode
@@ -3963,7 +3907,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         UpdateDynamicAnnotationCaptions()
     End Sub
 
-    Private Sub UpdateAnnotationFonts(ByVal intSeriesNumber As Short, Optional ByVal blnMakeDefaultForAll As Boolean = False)
+    Private Sub UpdateAnnotationFonts(intSeriesNumber As Short, Optional ByVal blnMakeDefaultForAll As Boolean = False)
         ' Updates the font, size, and color of all of the annotations for a given series
         ' To all update all series, use intSeriesNumber <= 0
 
@@ -3988,7 +3932,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
                     objFont = Microsoft.VisualBasic.Compatibility.VB6.FontChangeName(objFont, mAnnotationStyles(intAnnotationSeriesNumber).FontName)
                     objFont = Microsoft.VisualBasic.Compatibility.VB6.FontChangeSize(objFont, mAnnotationStyles(intAnnotationSeriesNumber).FontSize)
                     .Caption.Font = objFont
-                    .Caption.Color = System.Convert.ToUInt32(System.Drawing.ColorTranslator.ToOle(mAnnotationStyles(intSeriesNumber).FontColor))
+                    .Caption.Color = System.Convert.ToUInt32(ColorTranslator.ToOle(mAnnotationStyles(intSeriesNumber).FontColor))
                     .Arrow.Color = .Caption.Color
                 End If
             End With
@@ -4032,7 +3976,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
         Exit Sub
 
 UpdateAnnotationDensityTolerancesErrorHandler:
-        MsgBox("Error in CWGraphControl.UpdateAnnotationDensityTolerances: " & vbCrLf & Err.Description, MsgBoxStyle.Information + MsgBoxStyle.OKOnly)
+        MsgBox("Error in CWGraphControl.UpdateAnnotationDensityTolerances: " & vbCrLf & Err.Description, MsgBoxStyle.Information + MsgBoxStyle.OkOnly)
 
     End Sub
 
@@ -4123,7 +4067,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
 
     End Sub
 
-    Private Sub UpdateDataSavedArray(ByVal intSeriesNumber As Short, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, ByVal DataCount As Integer)
+    Private Sub UpdateDataSavedArray(intSeriesNumber As Short, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, DataCount As Integer)
 
         ' Update the saved data range
         ' This procedure assumes that the data is in increasing x order, though not necessarily evenly spaced
@@ -4169,13 +4113,13 @@ UpdateAnnotationDensityTolerancesErrorHandler:
             If mDataSaved(intSeriesIndex).Initialized Then
                 Select Case mSeriesPlotMode(intSeriesIndex)
                     Case pmPlotModeConstants.pmBar
-                        objLegendColor.BackColor = System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).FillColor))
+                        objLegendColor.BackColor = ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).FillColor))
                     Case pmPlotModeConstants.pmPoints
-                        objLegendColor.BackColor = System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).PointColor))
+                        objLegendColor.BackColor = ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).PointColor))
                     Case pmPlotModeConstants.pmSticksToZero
-                        objLegendColor.BackColor = System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).LineToBaseColor))
+                        objLegendColor.BackColor = ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).LineToBaseColor))
                     Case Else
-                        objLegendColor.BackColor = System.Drawing.ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).LineColor))
+                        objLegendColor.BackColor = ColorTranslator.FromOle(System.Convert.ToInt32(CWGraph.Plots.Item(intSeriesIndex).LineColor))
                 End Select
                 objLegendColor.Visible = True
                 objLegendCaption.AutoSize = True
@@ -4221,7 +4165,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
 
     End Sub
 
-    Private Function ValidateCursorNumber(ByVal intCursorNumber As Integer) As Integer
+    Private Function ValidateCursorNumber(intCursorNumber As Integer) As Integer
         If intCursorNumber >= 1 And intCursorNumber <= CWGraph.Cursors.Count Then
             Return intCursorNumber
         Else
@@ -4229,7 +4173,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         End If
     End Function
 
-    Private Function WithinTolerance(ByVal ThisNumber As Double, ByVal CompareNumber As Double, ByVal ThisTolerance As Double) As Boolean
+    Private Function WithinTolerance(ThisNumber As Double, CompareNumber As Double, ThisTolerance As Double) As Boolean
         If ThisNumber <= CompareNumber + ThisTolerance And ThisNumber >= CompareNumber - ThisTolerance Then
             Return True
         Else
@@ -4285,7 +4229,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
             CWGraph.Axes.Item(2).Minimum = .YMinimum
             CWGraph.Axes.Item(2).Maximum = .YMaximum
         End With
-        CWGraph.Refresh
+        CWGraph.Refresh()
 
         ' Shift the history values down by one
         For intIndex = 0 To MAX_HISTORY_COUNT - 2
@@ -4295,93 +4239,93 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         UpdateAnnotationDensityTolerances()
     End Sub
 
-    Private Sub cboMouseAction_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cboMouseAction.SelectedIndexChanged
+    Private Sub cboMouseAction_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboMouseAction.SelectedIndexChanged
         ComboBoxSetAction()
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkAnnotationAutoHideCaptions_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkAnnotationAutoHideCaptions.CheckedChanged
+    Private Sub chkAnnotationAutoHideCaptions_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkAnnotationAutoHideCaptions.CheckedChanged
         SetAnnotationDensityAutoHideCaptions(chkAnnotationAutoHideCaptions.Checked)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkAnnotationDensityToleranceAutoAdjust_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkAnnotationDensityToleranceAutoAdjust.CheckedChanged
+    Private Sub chkAnnotationDensityToleranceAutoAdjust_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkAnnotationDensityToleranceAutoAdjust.CheckedChanged
         SetAnnotationDensityToleranceAutoAdjust(chkAnnotationDensityToleranceAutoAdjust.Checked)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkAutoAdjustScalingToIncludeAnnotationCaptions_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkAutoAdjustScalingToIncludeAnnotationCaptions.CheckedChanged
+    Private Sub chkAutoAdjustScalingToIncludeAnnotationCaptions_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkAutoAdjustScalingToIncludeAnnotationCaptions.CheckedChanged
         SetAutoAdjustScalingToIncludeCaptions(chkAutoAdjustScalingToIncludeAnnotationCaptions.Checked)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkAutoScaleVisibleY_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkAutoScaleVisibleY.CheckedChanged
+    Private Sub chkAutoScaleVisibleY_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkAutoScaleVisibleY.CheckedChanged
         SetAutoscaleVisibleY(chkAutoScaleVisibleY.Checked, chkFixMinimumYAtZero.Checked)
         EnableDisableDynamicControls()
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkCursorSnapToData_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkCursorSnapToData.CheckedChanged
+    Private Sub chkCursorSnapToData_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkCursorSnapToData.CheckedChanged
         SetCursorSnapMode(chkCursorSnapToData.Checked)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkFixMinimumYAtZero_CheckedChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkFixMinimumYAtZero.CheckedChanged
+    Private Sub chkFixMinimumYAtZero_CheckedChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkFixMinimumYAtZero.CheckedChanged
         SetAutoscaleVisibleY(chkAutoScaleVisibleY.Checked, chkFixMinimumYAtZero.Checked)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkShowCursor1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowCursor1.CheckedChanged
+    Private Sub chkShowCursor1_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkShowCursor1.CheckedChanged
         SetCursorVisible(chkShowCursor1.Checked, 1)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkShowCursor2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowCursor2.CheckedChanged
+    Private Sub chkShowCursor2_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkShowCursor2.CheckedChanged
         SetCursorVisible(chkShowCursor2.Checked, 2)
         SetFocusToGraph()
     End Sub
 
-    Private Sub chkXAxisDateMode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkXAxisDateMode.CheckedChanged
+    Private Sub chkXAxisDateMode_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkXAxisDateMode.CheckedChanged
         EnableDisableDynamicControls()
         UpdateDisplayPrecision()
     End Sub
 
-    Private Sub chkXAxisDateModeShowTime_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkXAxisDateModeShowTime.CheckedChanged
+    Private Sub chkXAxisDateModeShowTime_CheckedChanged(sender As Object, e As System.EventArgs) Handles chkXAxisDateModeShowTime.CheckedChanged
         UpdateDisplayPrecision()
     End Sub
 
-    Private Sub cmdCenterCursors_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCenterCursors.Click
+    Private Sub cmdCenterCursors_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdCenterCursors.Click
         CenterCursor(1, True)
         SetFocusToGraph()
     End Sub
 
-    Private Sub cmdMove_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdMove.Click
+    Private Sub cmdMove_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdMove.Click
         MoveOptionsFrame()
     End Sub
 
-    Private Sub cmdOptions_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdOptionsHide.Click, cmdOptionsToggle.Click
+    Private Sub cmdOptions_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdOptionsHide.Click, cmdOptionsToggle.Click
         ToggleOptionsFrameVisibility()
     End Sub
 
-    Private Sub cmdRollUpHide_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdRollUpHide.Click
+    Private Sub cmdRollUpHide_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdRollUpHide.Click
         ShowHideControls(True)
     End Sub
 
-    Private Sub cmdRollUpShow_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdRollUpShow.Click
+    Private Sub cmdRollUpShow_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdRollUpShow.Click
         ShowHideControls(False)
     End Sub
 
-    Private Sub cmdZoomOut_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdZoomOut.Click
+    Private Sub cmdZoomOut_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdZoomOut.Click
         ZoomOutFull()
         SetFocusToGraph()
     End Sub
 
-    Private Sub CWGraph_AnnotationMouseDown(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_AnnotationMouseDownEvent) Handles CWGraph.AnnotationMouseDown
+    Private Sub CWGraph_AnnotationMouseDown(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_AnnotationMouseDownEvent) Handles CWGraph.AnnotationMouseDown
         ' This event will never fire since CWGraph_MouseDown disables .TrackMode = cwGTrackAllEvents
         '  in order to allow proper zooming to occur
     End Sub
 
-    Private Sub CWGraph_AnnotationMouseMove(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_AnnotationMouseMoveEvent) Handles CWGraph.AnnotationMouseMove
+    Private Sub CWGraph_AnnotationMouseMove(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_AnnotationMouseMoveEvent) Handles CWGraph.AnnotationMouseMove
         ' This code gets called when the mouse is moved over an annotation, regardless of whether or not a button is pushed
         With mLastMouseLocInfo
             .XPos = eventArgs.xPos
@@ -4398,16 +4342,16 @@ UpdateAnnotationDensityTolerancesErrorHandler:
 
     End Sub
 
-    Private Sub CWGraph_CursorChange(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_CursorChangeEvent) Handles CWGraph.CursorChange
+    Private Sub CWGraph_CursorChange(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_CursorChangeEvent) Handles CWGraph.CursorChange
         ReportCursorLocation(1)
     End Sub
 
-    Private Sub CWGraph_CursorMouseDown(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_CursorMouseDownEvent) Handles CWGraph.CursorMouseDown
+    Private Sub CWGraph_CursorMouseDown(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_CursorMouseDownEvent) Handles CWGraph.CursorMouseDown
         ' This event will never fire since CWGraph_MouseDown disables .TrackMode = cwGTrackAllEvents
         '  in order to allow proper zooming to occur
     End Sub
 
-    Private Sub CWGraph_CursorMouseMove(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_CursorMouseMoveEvent) Handles CWGraph.CursorMouseMove
+    Private Sub CWGraph_CursorMouseMove(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_CursorMouseMoveEvent) Handles CWGraph.CursorMouseMove
         ' This code gets called when the mouse moves over a cursor
         With mLastMouseLocInfo
             .XPos = eventArgs.xPos
@@ -4417,7 +4361,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         End With
     End Sub
 
-    Private Sub CWGraph_DblClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles CWGraph.DblClick
+    Private Sub CWGraph_DblClick(eventSender As System.Object, eventArgs As System.EventArgs) Handles CWGraph.DblClick
         If mLastMouseLocInfo.MouseButton = mbMouseButtonConstants.LeftButton Then
             If mLastMouseLocInfo.MouseLoc = clClickLocationConstants.clAnnotation And mLastMouseLocInfo.AnnotationNumber > 0 Then
                 ' Edit the given annotation
@@ -4429,12 +4373,12 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         End If
     End Sub
 
-    Private Sub CWGraph_MouseDownEvent(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_MouseDownEvent) Handles CWGraph.MouseDownEvent
+    Private Sub CWGraph_MouseDownEvent(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_MouseDownEvent) Handles CWGraph.MouseDownEvent
         mLastMouseLocInfo.MouseButton = eventArgs.button
         ComboBoxSetAction()
     End Sub
 
-    Private Sub CWGraph_MouseUpEvent(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_MouseUpEvent) Handles CWGraph.MouseUpEvent
+    Private Sub CWGraph_MouseUpEvent(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_MouseUpEvent) Handles CWGraph.MouseUpEvent
         If eventArgs.button = mbMouseButtonConstants.LeftButton And cboMouseAction.SelectedIndex <= cmZoomBoxCursorModeConstants.cmZoomY Then
             ' Record new zoom settings
             RecordZoomRange(False)
@@ -4447,12 +4391,12 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         EnableTrackModeAllEvents()
     End Sub
 
-    Private Sub CWGraph_PlotAreaMouseDown(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotAreaMouseDownEvent) Handles CWGraph.PlotAreaMouseDown
+    Private Sub CWGraph_PlotAreaMouseDown(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotAreaMouseDownEvent) Handles CWGraph.PlotAreaMouseDown
         ' This event will never fire since CWGraph_MouseDown disables .TrackMode = cwGTrackAllEvents
         '  in order to allow proper zooming to occur
     End Sub
 
-    Private Sub CWGraph_PlotAreaMouseMove(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotAreaMouseMoveEvent) Handles CWGraph.PlotAreaMouseMove
+    Private Sub CWGraph_PlotAreaMouseMove(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotAreaMouseMoveEvent) Handles CWGraph.PlotAreaMouseMove
         ' This code gets called when the mouse is moved on the plot area (i.e. in between plots and annotations)
         With mLastMouseLocInfo
             .XPos = eventArgs.xPos
@@ -4463,12 +4407,12 @@ UpdateAnnotationDensityTolerancesErrorHandler:
 
     End Sub
 
-    Private Sub CWGraph_PlotMouseDown(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotMouseDownEvent) Handles CWGraph.PlotMouseDown
+    Private Sub CWGraph_PlotMouseDown(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotMouseDownEvent) Handles CWGraph.PlotMouseDown
         ' This event will never fire since CWGraph_MouseDown disables .TrackMode = cwGTrackAllEvents
         '  in order to allow proper zooming to occur
     End Sub
 
-    Private Sub CWGraph_PlotMouseMove(ByVal eventSender As System.Object, ByVal eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotMouseMoveEvent) Handles CWGraph.PlotMouseMove
+    Private Sub CWGraph_PlotMouseMove(eventSender As System.Object, eventArgs As AxCWUIControlsLib._DCWGraphEvents_PlotMouseMoveEvent) Handles CWGraph.PlotMouseMove
         ' This code returns the value of the nearest data point, but only gets updated when the user is moving over a given plot's data (line or data point)
         ' Thus, the lblPosition control also gets updated by _PlotAreaMouseMove()
         With mLastMouseLocInfo
@@ -4481,87 +4425,87 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         DisplayPosition(eventArgs.xData, eventArgs.yData)
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceX_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceX.TextChanged
+    Private Sub txtAnnotationDensityToleranceX_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceX.TextChanged
         SetAnnotationDensityToleranceX(Val(txtAnnotationDensityToleranceX.Text))
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceX_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtAnnotationDensityToleranceX.KeyDown
+    Private Sub txtAnnotationDensityToleranceX_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtAnnotationDensityToleranceX.KeyDown
         Dim KeyCode As Short = eventArgs.KeyCode
         Dim Shift As Short = eventArgs.KeyData \ &H10000
         If KeyCode = System.Windows.Forms.Keys.Return Then ToggleOptionsFrameVisibility(True)
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceX_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtAnnotationDensityToleranceX.KeyPress
+    Private Sub txtAnnotationDensityToleranceX_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtAnnotationDensityToleranceX.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtAnnotationDensityToleranceX, eventArgs, True, True)
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceX_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceX.Leave
+    Private Sub txtAnnotationDensityToleranceX_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceX.Leave
         If Not IsNumeric(txtAnnotationDensityToleranceX.Text) Then
             txtAnnotationDensityToleranceX.Text = "0.5"
         End If
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceY_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceY.TextChanged
+    Private Sub txtAnnotationDensityToleranceY_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceY.TextChanged
         SetAnnotationDensityToleranceY(Val(txtAnnotationDensityToleranceY.Text))
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceY_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtAnnotationDensityToleranceY.KeyDown
+    Private Sub txtAnnotationDensityToleranceY_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtAnnotationDensityToleranceY.KeyDown
         Dim KeyCode As Short = eventArgs.KeyCode
         Dim Shift As Short = eventArgs.KeyData \ &H10000
         If KeyCode = System.Windows.Forms.Keys.Return Then ToggleOptionsFrameVisibility(True)
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceY_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtAnnotationDensityToleranceY.KeyPress
+    Private Sub txtAnnotationDensityToleranceY_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtAnnotationDensityToleranceY.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtAnnotationDensityToleranceY, eventArgs, True, True)
     End Sub
 
-    Private Sub txtAnnotationDensityToleranceY_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceY.Leave
+    Private Sub txtAnnotationDensityToleranceY_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceY.Leave
         If Not IsNumeric(txtAnnotationDensityToleranceY.Text) Then
             txtAnnotationDensityToleranceY.Text = "0.5"
         End If
     End Sub
 
-    Private Sub txtPrecisionX_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPrecisionX.TextChanged
+    Private Sub txtPrecisionX_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPrecisionX.TextChanged
         SetDisplayPrecisionX(Val(txtPrecisionX.Text))
     End Sub
 
-    Private Sub txtPrecisionX_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtPrecisionX.KeyDown
+    Private Sub txtPrecisionX_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtPrecisionX.KeyDown
         Dim KeyCode As Short = eventArgs.KeyCode
         Dim Shift As Short = eventArgs.KeyData \ &H10000
         If KeyCode = System.Windows.Forms.Keys.Return Then ToggleOptionsFrameVisibility(True)
     End Sub
 
-    Private Sub txtPrecisionX_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPrecisionX.KeyPress
+    Private Sub txtPrecisionX_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPrecisionX.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtPrecisionX, eventArgs, True, False)
     End Sub
 
-    Private Sub txtPrecisionX_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPrecisionX.Leave
+    Private Sub txtPrecisionX_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPrecisionX.Leave
         If Not IsNumeric(txtPrecisionX.Text) Then
             txtPrecisionX.Text = "3"
         End If
     End Sub
 
-    Private Sub txtPrecisionY_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPrecisionY.TextChanged
+    Private Sub txtPrecisionY_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPrecisionY.TextChanged
         SetDisplayPrecisionY(Val(txtPrecisionY.Text))
     End Sub
 
-    Private Sub txtPrecisionY_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtPrecisionY.KeyDown
+    Private Sub txtPrecisionY_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles txtPrecisionY.KeyDown
         Dim KeyCode As Short = eventArgs.KeyCode
         Dim Shift As Short = eventArgs.KeyData \ &H10000
         If KeyCode = System.Windows.Forms.Keys.Return Then ToggleOptionsFrameVisibility(True)
     End Sub
 
-    Private Sub txtPrecisionY_KeyPress(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPrecisionY.KeyPress
+    Private Sub txtPrecisionY_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPrecisionY.KeyPress
         SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtPrecisionY, eventArgs, True, False)
     End Sub
 
-    Private Sub txtPrecisionY_Leave(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPrecisionY.Leave
+    Private Sub txtPrecisionY_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPrecisionY.Leave
         If Not IsNumeric(txtPrecisionY.Text) Then
             txtPrecisionY.Text = "3"
         End If
     End Sub
 
-    Private Sub CWGraphControl_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
+    Private Sub CWGraphControl_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
         Dim KeyCode As Short = eventArgs.KeyCode
         Dim Shift As Short = eventArgs.KeyData \ &H10000
         If KeyCode = System.Windows.Forms.Keys.A And (Shift = 2) Then
@@ -4581,7 +4525,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         End If
     End Sub
 
-    Private Sub CWGraphControl_KeyUp(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyUp
+    Private Sub CWGraphControl_KeyUp(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyUp
         Dim KeyCode As Short = eventArgs.KeyCode
         Dim Shift As Short = eventArgs.KeyData \ &H10000
         If mMouseModeTemp Then
@@ -4592,7 +4536,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
         End If
     End Sub
 
-    Private Sub CWGraphControl_Resize(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Resize
+    Private Sub CWGraphControl_Resize(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Resize
         PositionControls()
     End Sub
 

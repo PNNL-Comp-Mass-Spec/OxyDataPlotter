@@ -6,18 +6,18 @@ Imports OxyPlot.Series
 Public Class ctlOxyPlotControl
 
 #Region "Constants"
-	Public Const MAX_SERIES_COUNT As Integer = 32
+    Public Const MAX_SERIES_COUNT As Integer = 32
 #End Region
 
 #Region "Enums"
 
-	Public Enum pmPlotModeConstants
-		pmLines = 0					' LineSeries
-		pmSticksToZero = 1			' StemSeries
-		pmBar = 2					' BarSeries
-		pmPoints = 3				' LineSeries
-		pmPointsAndLines = 4		' LineSeries
-	End Enum
+    Public Enum pmPlotModeConstants
+        pmLines = 0                 ' LineSeries
+        pmSticksToZero = 1          ' StemSeries
+        pmBar = 2                   ' BarSeries
+        pmPoints = 3                ' LineSeries
+        pmPointsAndLines = 4        ' LineSeries
+    End Enum
 #End Region
 
 #Region "Structures"
@@ -26,461 +26,477 @@ Public Class ctlOxyPlotControl
 
 #Region "Member variables"
 
-	Protected mDefaultPlotMode As pmPlotModeConstants
+    Protected mDefaultPlotMode As pmPlotModeConstants
 
-	' 0-based array
-	Protected mSeriesPlotMode(MAX_SERIES_COUNT) As pmPlotModeConstants
+    ' 0-based array
+    Protected mSeriesPlotMode(MAX_SERIES_COUNT) As pmPlotModeConstants
 
 #End Region
 
-	''' <summary>
-	''' Validates that intSeriesNumber is a number between 1 and the number of series on the plot
-	''' </summary>
-	''' <param name="intSeriesNumber"></param>
-	''' <remarks>Auto-updates intSeriesNumber to "1" if out of range</remarks>
-	Private Sub AssureValidSeriesNumber(ByRef intSeriesNumber As Integer)
-		If intSeriesNumber < 1 Or intSeriesNumber > ctlOxyPlot.Model.Series.Count Then intSeriesNumber = 1
-	End Sub
-
-	''' <summary>
-	''' Clear data on the specified series
-	''' </summary>
-	''' <param name="intSeriesToClear">Series number (series 1 is the first series)</param>
-	''' <remarks></remarks>
-	Public Sub ClearData(ByVal intSeriesToClear As Integer)
-
-		If intSeriesToClear < 1 Or intSeriesToClear > ctlOxyPlot.Model.Series.Count Then Exit Sub
-
-		CType(ctlOxyPlot.Model.Series(intSeriesToClear - 1), LineSeries).Points.Clear()
-
-	End Sub
-
-	Public Sub GenerateSineWave(ByVal intSeriesNumber As Integer, ByVal blnXAxisLogBased As Boolean)
-
-		Const DATA_COUNT As Short = 1021
-		Dim dblDataX(DATA_COUNT - 1) As Double
-		Dim dblDataY(DATA_COUNT - 1) As Double
-		Dim intIndex As Integer
-
-		SetSeriesPlotMode(intSeriesNumber, pmPlotModeConstants.pmLines)
-
-		For intIndex = 0 To DATA_COUNT - 1
-			dblDataX(intIndex) = System.Math.Log(intIndex + 1)
-			dblDataY(intIndex) = System.Math.Sin(intIndex / 25.0#) * 100
-		Next intIndex
-
-		If blnXAxisLogBased Then
-			SetDataXvsY(intSeriesNumber, dblDataX, dblDataY, DATA_COUNT, "Sine wave, log X")
-		Else
-			SetDataYOnly(intSeriesNumber, dblDataY, DATA_COUNT, 1, 0.02, "Sine wave")
-		End If
-
-	End Sub
-
-	Public Function GetDataCount(ByVal intSeriesNumber As Integer) As Integer
-
-		Dim intSeriesIndex As Integer = intSeriesNumber - 1
-
-		If intSeriesNumber < 0 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
-			Return 0
-		Else
-			Select Case mSeriesPlotMode(intSeriesIndex)
-				Case pmPlotModeConstants.pmBar
-					Dim oSeries As OxyPlot.Series.BarSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-					Return oSeries.Items.Count
-				Case pmPlotModeConstants.pmSticksToZero
-					Dim oSeries As OxyPlot.Series.StemSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
-					Return oSeries.Points.Count
-				Case Else
-					Dim oSeries As OxyPlot.Series.LineSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
-					Return oSeries.Points.Count
-			End Select
-		End If
-
-	End Function
-
-	Public Function GetDefaultSeriesColor(ByVal intSeriesNumber As Integer) As OxyPlot.OxyColor
-		Dim lstColors = ctlOxyPlot.Model.DefaultColors
-
-		If intSeriesNumber <= lstColors.Count Then
-			Return lstColors(intSeriesNumber - 1)
-		Else
-			Return lstColors(0)
-		End If
-
-	End Function
-
-	''' Creates a new bar series (no data points)
-	''' </summary>
-	''' <param name="strTitle"></param>
-	''' <returns></returns>
-	''' <remarks>Will be an empty series without any data points</remarks>
-	Protected Function GetNewBarSeries(ByVal strTitle As String) As BarSeries
-
-		Return GetNewBarSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
-
-	End Function
-
-	''' Creates a new bar series
-	''' </summary>
-	''' <param name="strTitle"></param>
-	''' <param name="lstData">Data points (only the Y values will be used for the bar heights)</param>
-	''' <returns></returns>
-	''' <remarks>Will be an empty series without any data points</remarks>
-	Protected Function GetNewBarSeries(ByVal strTitle As String, ByVal lstData As Generic.List(Of OxyPlot.DataPoint)) As BarSeries
+    ''' <summary>
+    ''' Validates that intSeriesNumber is a number between 1 and the number of series on the plot
+    ''' </summary>
+    ''' <param name="intSeriesNumber"></param>
+    ''' <remarks>Auto-updates intSeriesNumber to "1" if out of range</remarks>
+    Private Sub AssureValidSeriesNumber(ByRef intSeriesNumber As Integer)
+        If intSeriesNumber < 1 Or intSeriesNumber > ctlOxyPlot.Model.Series.Count Then intSeriesNumber = 1
+    End Sub
+
+    ''' <summary>
+    ''' Clear data on the specified series
+    ''' </summary>
+    ''' <param name="intSeriesToClear">Series number (series 1 is the first series)</param>
+    ''' <remarks></remarks>
+    Public Sub ClearData(intSeriesToClear As Integer)
+
+        If intSeriesToClear < 1 Or intSeriesToClear > ctlOxyPlot.Model.Series.Count Then Exit Sub
+
+        CType(ctlOxyPlot.Model.Series(intSeriesToClear - 1), LineSeries).Points.Clear()
+
+    End Sub
+
+    Public Sub GenerateSineWave(intSeriesNumber As Integer, blnXAxisLogBased As Boolean)
+
+        Const DATA_COUNT As Short = 1021
+        Dim dblDataX(DATA_COUNT - 1) As Double
+        Dim dblDataY(DATA_COUNT - 1) As Double
+        Dim intIndex As Integer
+
+        SetSeriesPlotMode(intSeriesNumber, pmPlotModeConstants.pmLines)
+
+        For intIndex = 0 To DATA_COUNT - 1
+            dblDataX(intIndex) = System.Math.Log(intIndex + 1)
+            dblDataY(intIndex) = System.Math.Sin(intIndex / 25.0#) * 100
+        Next intIndex
+
+        If blnXAxisLogBased Then
+            SetDataXvsY(intSeriesNumber, dblDataX, dblDataY, DATA_COUNT, "Sine wave, log X")
+        Else
+            SetDataYOnly(intSeriesNumber, dblDataY, DATA_COUNT, 1, 0.02, "Sine wave")
+        End If
+
+    End Sub
+
+    Public Function GetDataCount(intSeriesNumber As Integer) As Integer
+
+        Dim intSeriesIndex As Integer = intSeriesNumber - 1
+
+        If intSeriesNumber < 0 Or intSeriesNumber >= ctlOxyPlot.Model.Series.Count Then
+            Return 0
+        Else
+            Select Case mSeriesPlotMode(intSeriesIndex)
+                Case pmPlotModeConstants.pmBar
+                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
+                    Return oSeries.Items.Count
+                Case pmPlotModeConstants.pmSticksToZero
+                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                    Return oSeries.Points.Count
+                Case Else
+                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+                    Return oSeries.Points.Count
+            End Select
+        End If
+
+    End Function
+
+    Public Function GetDefaultSeriesColor(intSeriesNumber As Integer) As OxyPlot.OxyColor
+        Dim lstColors = ctlOxyPlot.Model.DefaultColors
+
+        If intSeriesNumber <= lstColors.Count Then
+            Return lstColors(intSeriesNumber - 1)
+        Else
+            Return lstColors(0)
+        End If
+
+    End Function
+
+    ''' <summary>
+    ''' Creates a new bar series (no data points)
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <returns></returns>
+    ''' <remarks>Will be an empty series without any data points</remarks>
+    Protected Function GetNewBarSeries(strTitle As String) As BarSeries
+
+        Return GetNewBarSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
+
+    End Function
+
+    ''' <summary>
+    ''' Creates a new bar series
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <param name="lstData">Data points (only the Y values will be used for the bar heights)</param>
+    ''' <returns></returns>
+    ''' <remarks>Will be an empty series without any data points</remarks>
+    Protected Function GetNewBarSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As BarSeries
+
+        Dim oSeries As BarSeries
+        oSeries = New BarSeries()
+        oSeries.Title = strTitle
 
-		Dim oSeries As BarSeries
-		oSeries = New BarSeries()
-		oSeries.Title = strTitle
+        Dim lstSortedData = From item In lstData Order By item.X
 
-		Dim lstSortedData = From item In lstData Order By item.X
+        For Each item In lstSortedData
+            oSeries.Items.Add(New OxyPlot.Series.BarItem(item.Y))
+        Next
 
-		For Each item In lstSortedData
-			oSeries.Items.Add(New OxyPlot.Series.BarItem(item.Y))
-		Next
+        Return oSeries
 
-		Return oSeries
+    End Function
 
-	End Function
+    ''' <summary>
+    ''' Creates a new line series (no data points)
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <returns></returns>
+    ''' <remarks>Will be an empty series without any data points</remarks>
+    Protected Function GetNewLineSeries(strTitle As String) As LineSeries
+        Return GetNewLineSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
+    End Function
 
-	''' <summary>
-	''' Creates a new line series (no data points)
-	''' </summary>
-	''' <param name="strTitle"></param>
-	''' <returns></returns>
-	''' <remarks>Will be an empty series without any data points</remarks>
-	Protected Function GetNewLineSeries(ByVal strTitle As String) As LineSeries
-		Return GetNewLineSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
-	End Function
+    ''' <summary>
+    ''' Creates a new line series
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <param name="lstData">Data points for the new series</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Protected Function GetNewLineSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As LineSeries
 
-	''' <summary>
-	''' Creates a new line series
-	''' </summary>
-	''' <param name="strTitle"></param>
-	''' <param name="lstData">Data points for the new series</param>
-	''' <returns></returns>
-	''' <remarks></remarks>
-	Protected Function GetNewLineSeries(ByVal strTitle As String, ByVal lstData As Generic.List(Of OxyPlot.DataPoint)) As LineSeries
+        Dim oSeries As LineSeries
+        oSeries = New LineSeries()
+        oSeries.Title = strTitle
 
-		Dim oSeries As LineSeries
-		oSeries = New LineSeries(strTitle)
+        For Each item In lstData
+            oSeries.Points.Add(item)
+        Next
 
-		For Each item In lstData
-			oSeries.Points.Add(item)
-		Next
+        Return oSeries
 
-		Return oSeries
+    End Function
 
-	End Function
+    ''' <summary>
+    ''' Creates a new stem series (no data points)
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <returns></returns>
+    ''' <remarks>Will be an empty series without any data points</remarks>
+    Protected Function GetNewStemSeries(strTitle As String) As StemSeries
 
-	''' <summary>
-	''' Creates a new stem series (no data points)
-	''' </summary>
-	''' <param name="strTitle"></param>
-	''' <returns></returns>
-	''' <remarks>Will be an empty series without any data points</remarks>
-	Protected Function GetNewStemSeries(ByVal strTitle As String) As StemSeries
+        Return GetNewStemSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
 
-		Return GetNewStemSeries(strTitle, New Generic.List(Of OxyPlot.DataPoint))
+    End Function
 
-	End Function
+    Public Function GetSeriesCount() As Integer
+        Return ctlOxyPlot.Model.Series.Count
+    End Function
 
-	Public Function GetSeriesCount() As Integer
-		Return ctlOxyPlot.Model.Series.Count
-	End Function
+    ''' <summary>
+    ''' Creates a new stem series
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <returns></returns>
+    ''' <remarks>Will be an empty series without any data points</remarks>
+    Protected Function GetNewStemSeries(strTitle As String, lstData As Generic.List(Of OxyPlot.DataPoint)) As StemSeries
 
-	''' <summary>
-	''' Creates a new stem series
-	''' </summary>
-	''' <param name="strTitle"></param>
-	''' <returns></returns>
-	''' <remarks>Will be an empty series without any data points</remarks>
-	Protected Function GetNewStemSeries(ByVal strTitle As String, ByVal lstData As Generic.List(Of OxyPlot.DataPoint)) As StemSeries
+        Dim oSeries As StemSeries
+        oSeries = New StemSeries()
+        oSeries.Title = strTitle
 
-		Dim oSeries As StemSeries
-		oSeries = New StemSeries(strTitle)
+        For Each item In lstData
+            oSeries.Points.Add(item)
+        Next
 
-		For Each item In lstData
-			oSeries.Points.Add(item)
-		Next
+        Return oSeries
 
-		Return oSeries
+    End Function
 
-	End Function
+    Protected Sub InitializePlotModel()
 
-	Protected Sub InitializePlotModel()
+        Dim oNewModel = New OxyPlot.PlotModel()
 
-		Dim oNewModel As OxyPlot.PlotModel = New OxyPlot.PlotModel()
+        Dim oXAxis As OxyPlot.Axes.Axis = New OxyPlot.Axes.LinearAxis()
+        oXAxis.Position = OxyPlot.Axes.AxisPosition.Bottom
+        oXAxis.Title = "X-axis"
 
-		Dim oXAxis As OxyPlot.Axes.Axis = New OxyPlot.Axes.LinearAxis(OxyPlot.Axes.AxisPosition.Bottom, "X-axis")
-		Dim oYAxis As OxyPlot.Axes.Axis = New OxyPlot.Axes.LinearAxis(OxyPlot.Axes.AxisPosition.Left, "Y-axis")
-		oNewModel.Axes.Add(oXAxis)
-		oNewModel.Axes.Add(oYAxis)
+        Dim oYAxis As OxyPlot.Axes.Axis = New OxyPlot.Axes.LinearAxis()
+        oXAxis.Position = OxyPlot.Axes.AxisPosition.Left
+        oXAxis.Title = "Y-axis"
 
-		ctlOxyPlot.Model = oNewModel
-	End Sub
+        oNewModel.Axes.Add(oXAxis)
+        oNewModel.Axes.Add(oYAxis)
 
-	Public Sub SetDataXvsY(ByRef intSeriesNumber As Integer, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, ByVal DataCount As Integer, Optional ByVal strSeriesTitle As String = "")
-		Dim intSeriesIndex As Integer
+        ctlOxyPlot.Model = oNewModel
+    End Sub
 
-		If DataCount < 1 Then Exit Sub
+    Public Sub SetDataXvsY(ByRef intSeriesNumber As Integer, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, DataCount As Integer, Optional ByVal strSeriesTitle As String = "")
+        Dim intSeriesIndex As Integer
 
-		Dim lstData As Generic.List(Of OxyPlot.DataPoint) = New Generic.List(Of OxyPlot.DataPoint)(DataCount)
+        If DataCount < 1 Then Exit Sub
 
-		For intIndex = 0 To DataCount - 1
-			lstData.Add(New OxyPlot.DataPoint(XDataZeroBased1DArray(intIndex), YDataZeroBased1DArray(intIndex)))
-		Next
+        Dim lstData = New Generic.List(Of OxyPlot.DataPoint)(DataCount)
 
-		If intSeriesNumber > ctlOxyPlot.Model.Series.Count Then
-			' Add a new series
-			ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle, lstData))
-			intSeriesNumber = ctlOxyPlot.Model.Series.Count
-		Else
-			AssureValidSeriesNumber(intSeriesNumber)
-			intSeriesIndex = intSeriesNumber - 1
-			ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewLineSeries(strSeriesTitle, lstData)
-		End If
+        For intIndex = 0 To DataCount - 1
+            lstData.Add(New OxyPlot.DataPoint(XDataZeroBased1DArray(intIndex), YDataZeroBased1DArray(intIndex)))
+        Next
 
-		SetSeriesVisible(intSeriesNumber, True)
+        If intSeriesNumber > ctlOxyPlot.Model.Series.Count Then
+            ' Add a new series
+            ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle, lstData))
+            intSeriesNumber = ctlOxyPlot.Model.Series.Count
+        Else
+            AssureValidSeriesNumber(intSeriesNumber)
+            intSeriesIndex = intSeriesNumber - 1
+            ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewLineSeries(strSeriesTitle, lstData)
+        End If
 
-		Select Case mSeriesPlotMode(intSeriesIndex)
-			Case pmPlotModeConstants.pmBar
-				mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
-			Case pmPlotModeConstants.pmSticksToZero
-				mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
-			Case Else
-				' Leave the plot mode unchanged
-		End Select
+        SetSeriesVisible(intSeriesNumber, True)
 
-		' Future ToDo: RecordZoomRange(True)
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
+            Case pmPlotModeConstants.pmSticksToZero
+                mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
+            Case Else
+                ' Leave the plot mode unchanged
+        End Select
 
-		' Future ToDo: UpdateAllDynamicAnnotationCaptions()
+        ' ToDo: RecordZoomRange(True)
 
-	End Sub
+        ' ToDo: UpdateAllDynamicAnnotationCaptions()
 
-	Public Sub SetDataYOnly(ByRef intSeriesNumber As Integer, ByRef YDataZeroBased1DArray() As Double, ByVal YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strSeriesTitle As String = "")
+    End Sub
 
-		If YDataCount < 1 Then Exit Sub
+    Public Sub SetDataYOnly(ByRef intSeriesNumber As Integer, ByRef YDataZeroBased1DArray() As Double, YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strSeriesTitle As String = "")
 
-		Dim XDataZeroBased1DArray() As Double
-		ReDim XDataZeroBased1DArray(YDataCount - 1)
+        If YDataCount < 1 Then Exit Sub
 
-		For intIndex As Integer = 0 To YDataCount - 1
-			XDataZeroBased1DArray(intIndex) = dblXFirst + dblIncrement * intIndex
-		Next
+        Dim XDataZeroBased1DArray() As Double
+        ReDim XDataZeroBased1DArray(YDataCount - 1)
 
-		SetDataXvsY(intSeriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, YDataCount, strSeriesTitle)
+        For intIndex = 0 To YDataCount - 1
+            XDataZeroBased1DArray(intIndex) = dblXFirst + dblIncrement * intIndex
+        Next
 
-	End Sub
+        SetDataXvsY(intSeriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, YDataCount, strSeriesTitle)
 
-	Public Sub SetLabelXAxis(ByVal strAxisLabel As String)
-		ctlOxyPlot.Model.Axes(0).Title = strAxisLabel		
-	End Sub
+    End Sub
 
-	Public Sub SetLabelYAxis(ByVal strAxisLabel As String)
-		ctlOxyPlot.Model.Axes(1).Title = strAxisLabel
-	End Sub
+    Public Sub SetLabelXAxis(strAxisLabel As String)
+        ctlOxyPlot.Model.Axes(0).Title = strAxisLabel
+    End Sub
 
-	Public Sub SetLabelTitle(ByVal strTitle As String)
-		ctlOxyPlot.Model.Title = strTitle
-	End Sub
+    Public Sub SetLabelYAxis(strAxisLabel As String)
+        ctlOxyPlot.Model.Axes(1).Title = strAxisLabel
+    End Sub
 
-	Public Sub SetLabelSubTitle(ByVal strSubTitle As String)
-		ctlOxyPlot.Model.Subtitle = strSubTitle
-	End Sub
+    Public Sub SetLabelTitle(strTitle As String)
+        ctlOxyPlot.Model.Title = strTitle
+    End Sub
 
-	Public Sub SetSeriesColor(ByVal intSeriesNumber As Integer, ByVal cNewColor As System.Drawing.Color)
-		SetSeriesColor(intSeriesNumber, OxyPlot.OxyColor.FromArgb(cNewColor.A, cNewColor.R, cNewColor.G, cNewColor.B))
-	End Sub
+    Public Sub SetLabelSubTitle(strSubTitle As String)
+        ctlOxyPlot.Model.Subtitle = strSubTitle
+    End Sub
 
-	Public Sub SetSeriesColor(ByVal intSeriesNumber As Integer, ByVal newOxyColor As OxyPlot.OxyColor)
-		AssureValidSeriesNumber(intSeriesNumber)
+    Public Sub SetSeriesColor(intSeriesNumber As Integer, cNewColor As Color)
+        SetSeriesColor(intSeriesNumber, OxyPlot.OxyColor.FromArgb(cNewColor.A, cNewColor.R, cNewColor.G, cNewColor.B))
+    End Sub
 
-		Dim intSeriesIndex As Integer = intSeriesNumber - 1
+    Public Sub SetSeriesColor(intSeriesNumber As Integer, newOxyColor As OxyPlot.OxyColor)
+        AssureValidSeriesNumber(intSeriesNumber)
 
-		Select Case mSeriesPlotMode(intSeriesIndex)
-			Case pmPlotModeConstants.pmBar
-				Dim oSeries As OxyPlot.Series.BarSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-				oSeries.FillColor = newOxyColor
-				oSeries.StrokeColor = newOxyColor
-			Case pmPlotModeConstants.pmSticksToZero
-				Dim oSeries As OxyPlot.Series.StemSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
-				oSeries.Color = newOxyColor
-				oSeries.MarkerFill = newOxyColor
-				oSeries.MarkerStroke = newOxyColor
-			Case Else
-				Dim oSeries As OxyPlot.Series.LineSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
-				oSeries.Color = newOxyColor
-				oSeries.MarkerFill = newOxyColor
-				oSeries.MarkerStroke = newOxyColor
-		End Select
+        Dim intSeriesIndex As Integer = intSeriesNumber - 1
 
-	End Sub
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
+                oSeries.FillColor = newOxyColor
+                oSeries.StrokeColor = newOxyColor
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                oSeries.Color = newOxyColor
+                oSeries.MarkerFill = newOxyColor
+                oSeries.MarkerStroke = newOxyColor
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+                oSeries.Color = newOxyColor
+                oSeries.MarkerFill = newOxyColor
+                oSeries.MarkerStroke = newOxyColor
+        End Select
 
-	Public Sub SetSeriesCount(ByVal intCount As Integer)
+    End Sub
 
-		If intCount < 1 Then intCount = 1
-		If intCount > MAX_SERIES_COUNT Then intCount = MAX_SERIES_COUNT
+    Public Sub SetSeriesCount(intCount As Integer)
 
-		Do While intCount < ctlOxyPlot.Model.Series.Count
-			ctlOxyPlot.Model.Series.RemoveAt(ctlOxyPlot.Model.Series.Count - 1)
-		Loop
+        If intCount < 1 Then intCount = 1
+        If intCount > MAX_SERIES_COUNT Then intCount = MAX_SERIES_COUNT
 
-		Do While intCount > ctlOxyPlot.Model.Series.Count
-			Dim strSeriesTitle As String = "Series " & ctlOxyPlot.Model.Series.Count + 1
+        Do While intCount < ctlOxyPlot.Model.Series.Count
+            ctlOxyPlot.Model.Series.RemoveAt(ctlOxyPlot.Model.Series.Count - 1)
+        Loop
 
-			Select Case mDefaultPlotMode
-				Case pmPlotModeConstants.pmSticksToZero
-					ctlOxyPlot.Model.Series.Add(GetNewStemSeries(strSeriesTitle))
-				Case pmPlotModeConstants.pmBar
-					ctlOxyPlot.Model.Series.Add(GetNewBarSeries(strSeriesTitle))
-				Case Else
-					ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle))
-			End Select
-		Loop
+        Do While intCount > ctlOxyPlot.Model.Series.Count
+            Dim strSeriesTitle As String = "Series " & ctlOxyPlot.Model.Series.Count + 1
 
-	End Sub
+            Select Case mDefaultPlotMode
+                Case pmPlotModeConstants.pmSticksToZero
+                    ctlOxyPlot.Model.Series.Add(GetNewStemSeries(strSeriesTitle))
+                Case pmPlotModeConstants.pmBar
+                    ctlOxyPlot.Model.Series.Add(GetNewBarSeries(strSeriesTitle))
+                Case Else
+                    ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle))
+            End Select
+        Loop
 
-	Public Sub SetSeriesLegendCaption(ByVal intSeriesNumber As Integer, ByVal strSeriesTitle As String)
-		AssureValidSeriesNumber(intSeriesNumber)
+    End Sub
 
-		ctlOxyPlot.Model.Series(intSeriesNumber - 1).Title = strSeriesTitle
+    Public Sub SetSeriesLegendCaption(intSeriesNumber As Integer, strSeriesTitle As String)
+        AssureValidSeriesNumber(intSeriesNumber)
 
-	End Sub
+        ctlOxyPlot.Model.Series(intSeriesNumber - 1).Title = strSeriesTitle
 
-	Public Sub SetSeriesPlotMode(ByVal intSeriesNumber As Integer, ByVal ePlotMode As pmPlotModeConstants, Optional ByVal blnMakeDefault As Boolean = False)
+    End Sub
 
-		Dim intSeriesIndex As Integer
-
-		AssureValidSeriesNumber(intSeriesNumber)
-
-		SetSeriesPlotModeWork(intSeriesNumber - 1, ePlotMode)
-
-
-		If blnMakeDefault Then
-			mDefaultPlotMode = ePlotMode
-
-			For intSeriesIndex = 1 To MAX_SERIES_COUNT
-				If mSeriesPlotMode(intSeriesIndex) <> ePlotMode Then
-					SetSeriesPlotModeWork(intSeriesNumber - 1, ePlotMode)
-				End If
-			Next intSeriesIndex
-		End If
-
-	End Sub
+    Public Sub SetSeriesPlotMode(intSeriesNumber As Integer, ePlotMode As pmPlotModeConstants, Optional ByVal blnMakeDefault As Boolean = False)
 
-	Private Sub SetSeriesPlotModeWork(ByVal intSeriesIndex As Integer, ByVal eNewPlotMode As pmPlotModeConstants)
-
-		Dim eCurrentPlotMode As pmPlotModeConstants
+        Dim intSeriesIndex As Integer
 
-		If TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.BarSeries Then
-			eCurrentPlotMode = pmPlotModeConstants.pmBar
-		ElseIf TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.StemSeries Then
-			eCurrentPlotMode = pmPlotModeConstants.pmSticksToZero
-		ElseIf TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.LineSeries Then
-			If mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmBar OrElse mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmSticksToZero Then
-				mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
-			Else
-				eCurrentPlotMode = mSeriesPlotMode(intSeriesIndex)
-			End If
-		End If
+        AssureValidSeriesNumber(intSeriesNumber)
+
+        SetSeriesPlotModeWork(intSeriesNumber - 1, ePlotMode)
+
+
+        If blnMakeDefault Then
+            mDefaultPlotMode = ePlotMode
+
+            For intSeriesIndex = 1 To MAX_SERIES_COUNT
+                If mSeriesPlotMode(intSeriesIndex) <> ePlotMode Then
+                    SetSeriesPlotModeWork(intSeriesNumber - 1, ePlotMode)
+                End If
+            Next intSeriesIndex
+        End If
 
-		If eCurrentPlotMode <> eNewPlotMode Then
+    End Sub
 
-			Dim lstData As Generic.List(Of OxyPlot.DataPoint) = New Generic.List(Of OxyPlot.DataPoint)
-			Dim strTitle As String
+    Private Sub SetSeriesPlotModeWork(intSeriesIndex As Integer, eNewPlotMode As pmPlotModeConstants)
 
-			Select Case eCurrentPlotMode
-				Case pmPlotModeConstants.pmBar
-					Dim oSeries As OxyPlot.Series.BarSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
-					strTitle = oSeries.Title
-					For intIndex As Integer = 0 To oSeries.Items.Count - 1
-						lstData.Add(New OxyPlot.DataPoint(intIndex + 1, oSeries.Items(intIndex).Value))
-					Next
-				Case pmPlotModeConstants.pmSticksToZero
-					Dim oSeries As OxyPlot.Series.StemSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
-					strTitle = oSeries.Title
-					For Each item In oSeries.Points
-						lstData.Add(CType(item, OxyPlot.DataPoint))
-					Next
+        Dim eCurrentPlotMode As pmPlotModeConstants
 
-				Case Else
-					Dim oSeries As OxyPlot.Series.LineSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
-					strTitle = oSeries.Title
-					For Each item In oSeries.Points
-						lstData.Add(CType(item, OxyPlot.DataPoint))
-					Next
-			End Select
+        If TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.BarSeries Then
+            eCurrentPlotMode = pmPlotModeConstants.pmBar
+        ElseIf TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.StemSeries Then
+            eCurrentPlotMode = pmPlotModeConstants.pmSticksToZero
+        ElseIf TypeOf (ctlOxyPlot.Model.Series(intSeriesIndex)) Is OxyPlot.Series.LineSeries Then
+            If mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmBar OrElse mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmSticksToZero Then
+                mSeriesPlotMode(intSeriesIndex) = pmPlotModeConstants.pmLines
+            Else
+                eCurrentPlotMode = mSeriesPlotMode(intSeriesIndex)
+            End If
+        End If
 
-			Select Case eNewPlotMode
-				Case pmPlotModeConstants.pmBar
-					ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewBarSeries(strTitle, lstData)
-				Case pmPlotModeConstants.pmSticksToZero
-					ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewStemSeries(strTitle, lstData)
-				Case Else
-					ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewLineSeries(strTitle, lstData)
-			End Select
+        If eCurrentPlotMode <> eNewPlotMode Then
 
-			mSeriesPlotMode(intSeriesIndex) = eNewPlotMode
-		End If
+            Dim lstData = New Generic.List(Of OxyPlot.DataPoint)
+            Dim strTitle As String
 
+            Select Case eCurrentPlotMode
+                Case pmPlotModeConstants.pmBar
+                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
+                    strTitle = oSeries.Title
+                    For intIndex = 0 To oSeries.Items.Count - 1
+                        lstData.Add(New OxyPlot.DataPoint(intIndex + 1, oSeries.Items(intIndex).Value))
+                    Next
+                Case pmPlotModeConstants.pmSticksToZero
+                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                    strTitle = oSeries.Title
+                    For Each item In oSeries.Points
+                        lstData.Add(CType(item, OxyPlot.DataPoint))
+                    Next
 
-		Select Case mSeriesPlotMode(intSeriesIndex)
-			Case pmPlotModeConstants.pmBar
-				Dim oSeries As OxyPlot.Series.BarSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
+                Case Else
+                    Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
+                    strTitle = oSeries.Title
+                    For Each item In oSeries.Points
+                        lstData.Add(CType(item, OxyPlot.DataPoint))
+                    Next
+            End Select
 
-				With oSeries
-					If .BarWidth < 1 Then .BarWidth = 1
-				End With
+            Select Case eNewPlotMode
+                Case pmPlotModeConstants.pmBar
+                    ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewBarSeries(strTitle, lstData)
+                Case pmPlotModeConstants.pmSticksToZero
+                    ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewStemSeries(strTitle, lstData)
+                Case Else
+                    ctlOxyPlot.Model.Series(intSeriesIndex) = GetNewLineSeries(strTitle, lstData)
+            End Select
 
-			Case pmPlotModeConstants.pmSticksToZero
-				Dim oSeries As OxyPlot.Series.StemSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
-				With oSeries
-					If .LineStyle = OxyPlot.LineStyle.None Then .LineStyle = OxyPlot.LineStyle.Solid
-					.MarkerType = OxyPlot.MarkerType.None
-				End With
+            mSeriesPlotMode(intSeriesIndex) = eNewPlotMode
+        End If
 
-			Case Else
-				Dim oSeries As OxyPlot.Series.LineSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
 
-				With oSeries
-					Select Case mSeriesPlotMode(intSeriesIndex)
-						Case pmPlotModeConstants.pmLines
-							If .LineStyle = OxyPlot.LineStyle.None Then .LineStyle = OxyPlot.LineStyle.Solid
-							.MarkerType = OxyPlot.MarkerType.None
-						Case pmPlotModeConstants.pmPoints
-							.LineStyle = OxyPlot.LineStyle.None
-							If .MarkerType = OxyPlot.MarkerType.None Then .MarkerType = OxyPlot.MarkerType.Square
-						Case pmPlotModeConstants.pmPointsAndLines
-							If .LineStyle = OxyPlot.LineStyle.None Then .LineStyle = OxyPlot.LineStyle.Solid
-							If .MarkerType = OxyPlot.MarkerType.None Then .MarkerType = OxyPlot.MarkerType.Square
-					End Select
-				End With
-		End Select
+        Select Case mSeriesPlotMode(intSeriesIndex)
+            Case pmPlotModeConstants.pmBar
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.BarSeries)
 
-	End Sub
+                With oSeries
+                    If .BarWidth < 1 Then .BarWidth = 1
+                End With
 
-	Public Sub SetSeriesVisible(ByVal intSeriesNumber As Integer, ByVal blnShowSeries As Boolean)
-		AssureValidSeriesNumber(intSeriesNumber)
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.StemSeries)
+                With oSeries
+                    If .LineStyle = OxyPlot.LineStyle.None Then .LineStyle = OxyPlot.LineStyle.Solid
+                    .MarkerType = OxyPlot.MarkerType.None
+                End With
 
-		ctlOxyPlot.Model.Series(intSeriesNumber - 1).IsVisible = blnShowSeries
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(intSeriesIndex), OxyPlot.Series.LineSeries)
 
-	End Sub
+                With oSeries
+                    Select Case mSeriesPlotMode(intSeriesIndex)
+                        Case pmPlotModeConstants.pmLines
+                            If .LineStyle = OxyPlot.LineStyle.None Then .LineStyle = OxyPlot.LineStyle.Solid
+                            .MarkerType = OxyPlot.MarkerType.None
+                        Case pmPlotModeConstants.pmPoints
+                            .LineStyle = OxyPlot.LineStyle.None
+                            If .MarkerType = OxyPlot.MarkerType.None Then .MarkerType = OxyPlot.MarkerType.Square
+                        Case pmPlotModeConstants.pmPointsAndLines
+                            If .LineStyle = OxyPlot.LineStyle.None Then .LineStyle = OxyPlot.LineStyle.Solid
+                            If .MarkerType = OxyPlot.MarkerType.None Then .MarkerType = OxyPlot.MarkerType.Square
+                    End Select
+                End With
+        End Select
 
-	Protected Sub ShowMessage(ByVal strMessage As String, Optional ByVal strCaption As String = "Info")
-		System.Windows.Forms.MessageBox.Show(strMessage, strCaption, MessageBoxButtons.OK, MessageBoxIcon.Information)
-	End Sub
+    End Sub
 
-	Public Sub ZoomOutFull(Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnAllowFixMinimumYAtZero As Boolean = True)
-		ShowMessage("Not yet implemented: ZoomOutFull")
-	End Sub
+    Public Sub SetSeriesVisible(intSeriesNumber As Integer, blnShowSeries As Boolean)
+        AssureValidSeriesNumber(intSeriesNumber)
 
-	Public Sub New()
+        ctlOxyPlot.Model.Series(intSeriesNumber - 1).IsVisible = blnShowSeries
 
-		' This call is required by the designer.
-		InitializeComponent()
+    End Sub
 
-		' Add any initialization after the InitializeComponent() call.
-		InitializePlotModel()
-	End Sub
+    Protected Sub ShowMessage(strMessage As String, Optional ByVal strCaption As String = "Info")
+        System.Windows.Forms.MessageBox.Show(strMessage, strCaption, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    End Sub
+
+    Public Sub ZoomOutFull(Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnAllowFixMinimumYAtZero As Boolean = True)
+        ctlOxyPlot.ActualModel.DefaultXAxis.Reset()
+        ctlOxyPlot.ActualModel.DefaultYAxis.Reset()
+        ctlOxyPlot.Invalidate()
+    End Sub
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        InitializePlotModel()
+    End Sub
+
+    Private Sub cmdZoomOut_Click(sender As Object, e As EventArgs) Handles cmdZoomOut.Click
+        ZoomOutFull()
+    End Sub
 End Class

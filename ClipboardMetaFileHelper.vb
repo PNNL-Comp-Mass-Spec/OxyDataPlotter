@@ -21,46 +21,46 @@ Imports System.Runtime.InteropServices
 
 Public Class ClipboardMetaFileHelper
 
-    <DllImport("user32.dll", EntryPoint:="OpenClipboard", _
-    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)> _
-        Friend Shared Function OpenClipboard(ByVal hWnd As IntPtr) As Boolean
+    <DllImport("user32.dll", EntryPoint:="OpenClipboard",
+    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)>
+    Friend Shared Function OpenClipboard(hWnd As IntPtr) As Boolean
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="EmptyClipboard", _
-    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)> _
-        Friend Shared Function EmptyClipboard() As Boolean
+    <DllImport("user32.dll", EntryPoint:="EmptyClipboard",
+    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)>
+    Friend Shared Function EmptyClipboard() As Boolean
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="SetClipboardData", _
-    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)> _
-        Friend Shared Function SetClipboardData(ByVal uFormat As Integer, ByVal hWnd As IntPtr) As IntPtr
+    <DllImport("user32.dll", EntryPoint:="SetClipboardData",
+    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)>
+    Friend Shared Function SetClipboardData(uFormat As Integer, hWnd As IntPtr) As IntPtr
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="CloseClipboard", _
-    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)> _
-        Friend Shared Function CloseClipboard() As Boolean
+    <DllImport("user32.dll", EntryPoint:="CloseClipboard",
+    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)>
+    Friend Shared Function CloseClipboard() As Boolean
     End Function
 
-    <DllImport("gdi32.dll", EntryPoint:="CopyEnhMetaFileA", _
-    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)> _
-        Friend Shared Function CopyEnhMetaFile(ByVal hemfSrc As IntPtr, ByVal hNULL As IntPtr) As IntPtr
+    <DllImport("gdi32.dll", EntryPoint:="CopyEnhMetaFileA",
+    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)>
+    Friend Shared Function CopyEnhMetaFile(hemfSrc As IntPtr, hNULL As IntPtr) As IntPtr
     End Function
 
-    <DllImport("gdi32.dll", EntryPoint:="DeleteEnhMetaFile", _
-    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)> _
-        Friend Shared Function DeleteEnhMetaFile(ByVal hemfSrc As IntPtr) As Boolean
+    <DllImport("gdi32.dll", EntryPoint:="DeleteEnhMetaFile",
+    SetLastError:=True, ExactSpelling:=True, CallingConvention:=CallingConvention.StdCall)>
+    Friend Shared Function DeleteEnhMetaFile(hemfSrc As IntPtr) As Boolean
     End Function
 
-    Public Shared Function PutEnhMetafileOnClipboard(ByVal hWnd As IntPtr, ByVal objImage As System.Drawing.Image) As Boolean
+    Public Shared Function PutEnhMetafileOnClipboard(hWnd As IntPtr, objImage As System.Drawing.Image) As Boolean
         Return PutMetafileOnClipboard(hWnd, objImage)
     End Function
 
-    Public Shared Function PutEnhMetafileOnClipboard(ByVal hWnd As IntPtr, ByVal objMetafile As System.Drawing.imaging.Metafile) As Boolean
+    Public Shared Function PutEnhMetafileOnClipboard(hWnd As IntPtr, objMetafile As System.Drawing.Imaging.Metafile) As Boolean
         Return PutMetafileOnClipboard(hWnd, objMetafile)
     End Function
 
     ' Metafile mf is set to an invalid state inside this function
-    Private Shared Function PutMetafileOnClipboard(ByVal hWnd As IntPtr, ByVal mf As System.Drawing.Imaging.Metafile) As Boolean
+    Private Shared Function PutMetafileOnClipboard(hWnd As IntPtr, mf As System.Drawing.Imaging.Metafile) As Boolean
         Dim bResult As New Boolean
         bResult = False
 
