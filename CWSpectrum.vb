@@ -1,5 +1,5 @@
 Option Strict On
-Option Explicit On 
+Option Explicit On
 
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
@@ -9,18 +9,18 @@ Option Explicit On
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
 ' Website: http://ncrr.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
-' 
+'
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
-' in compliance with the License.  You may obtain a copy of the License at 
+' in compliance with the License.  You may obtain a copy of the License at
 ' http://www.apache.org/licenses/LICENSE-2.0
 '
-' Notice: This computer software was prepared by Battelle Memorial Institute, 
-' hereinafter the Contractor, under Contract No. DE-AC05-76RL0 1830 with the 
-' Department of Energy (DOE).  All rights in the computer software are reserved 
-' by DOE on behalf of the United States Government and the Contractor as 
-' provided in the Contract.  NEITHER THE GOVERNMENT NOR THE CONTRACTOR MAKES ANY 
-' WARRANTY, EXPRESS OR IMPLIED, OR ASSUMES ANY LIABILITY FOR THE USE OF THIS 
-' SOFTWARE.  This notice including this sentence must appear on any copies of 
+' Notice: This computer software was prepared by Battelle Memorial Institute,
+' hereinafter the Contractor, under Contract No. DE-AC05-76RL0 1830 with the
+' Department of Energy (DOE).  All rights in the computer software are reserved
+' by DOE on behalf of the United States Government and the Contractor as
+' provided in the Contract.  NEITHER THE GOVERNMENT NOR THE CONTRACTOR MAKES ANY
+' WARRANTY, EXPRESS OR IMPLIED, OR ASSUMES ANY LIABILITY FOR THE USE OF THIS
+' SOFTWARE.  This notice including this sentence must appear on any copies of
 ' this computer software.
 
 Module modCWSpectrum
@@ -153,16 +153,16 @@ Module modCWSpectrum
         ' Determines the height and width of the desktop, in pixels
         ' Returns the width
 
-        'Dim rectTemp As System.Drawing.Rectangle = System.Windows.Forms.Screen.GetWorkingArea(rectTemp)
+        'Dim rectTemp As System.Drawing.Rectangle = Screen.GetWorkingArea(rectTemp)
 
         ' Determine the size of the desktop, in pixels
-        lngHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height
-        lngWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+        lngHeight = Screen.PrimaryScreen.Bounds.Height
+        lngWidth = Screen.PrimaryScreen.Bounds.Width
 
         Return lngWidth
     End Function
 
-    Public Sub SizeAndCenterWindow(ByRef frmThisForm As System.Windows.Forms.Form, Optional ByVal eCenterMode As wpcWindowPosContants = wpcWindowPosContants.ExactCenter, Optional ByVal lngWindowWidth As Integer = -1, Optional ByVal lngWindowHeight As Integer = -1, Optional ByVal blnSizeAndCenterOnlyOncePerProgramSession As Boolean = True, Optional ByVal intDualMonitorToUse As Short = -1)
+    Public Sub SizeAndCenterWindow(ByRef frmThisForm As Form, Optional ByVal eCenterMode As wpcWindowPosContants = wpcWindowPosContants.ExactCenter, Optional ByVal lngWindowWidth As Integer = -1, Optional ByVal lngWindowHeight As Integer = -1, Optional ByVal blnSizeAndCenterOnlyOncePerProgramSession As Boolean = True, Optional ByVal intDualMonitorToUse As Short = -1)
         ' Sub revision 1.3
 
         ' This sub routine properly recognizes dual monitors, centering the form to just one monitor
@@ -212,7 +212,7 @@ Module modCWSpectrum
 
         ' Resize Window
         With frmThisForm
-            .WindowState = System.Windows.Forms.FormWindowState.Normal
+            .WindowState = FormWindowState.Normal
             If lngWindowWidth > 0 Then .Width = lngWindowWidth
             If lngWindowHeight > 0 Then .Height = lngWindowHeight
         End With
@@ -242,8 +242,8 @@ Module modCWSpectrum
             If dblAspectRatio > 2 Then
                 ' Aspect ratio greater than 2 - using horizontal dual monitors
                 blnHorizontalDual = True
-                lngWorkingAreaWidth = CInt(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width / 2)
-                lngWorkingAreaHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+                lngWorkingAreaWidth = CInt(Screen.PrimaryScreen.Bounds.Width / 2)
+                lngWorkingAreaHeight = Screen.PrimaryScreen.Bounds.Height
 
                 If frmThisForm.Left > lngWorkingAreaWidth Then
                     ' Form window on second monitor
@@ -255,8 +255,8 @@ Module modCWSpectrum
             Else
                 ' Aspect ratio must be less than 1 - using vertical dual monitors
                 blnHorizontalDual = False
-                lngWorkingAreaWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width
-                lngWorkingAreaHeight = CInt(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 2)
+                lngWorkingAreaWidth = Screen.PrimaryScreen.Bounds.Width
+                lngWorkingAreaHeight = CInt(Screen.PrimaryScreen.Bounds.Height / 2)
 
                 If frmThisForm.Top > lngWorkingAreaHeight Then
                     ' Main app window on second monitor
@@ -270,8 +270,8 @@ Module modCWSpectrum
             ' Aspect ratio between 1 and 2
             ' Using a single monitor
             blnDualMonitor = False
-            lngWorkingAreaWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width
-            lngWorkingAreaHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+            lngWorkingAreaWidth = Screen.PrimaryScreen.Bounds.Width
+            lngWorkingAreaHeight = Screen.PrimaryScreen.Bounds.Height
         End If
 
         With frmThisForm
@@ -325,12 +325,12 @@ Module modCWSpectrum
             End If
 
             ' Actually position the window
-            .SetBounds(lngWindowLeftToSet, lngWindowTopToSet, 0, 0, Windows.Forms.BoundsSpecified.Location)
+            .SetBounds(lngWindowLeftToSet, lngWindowTopToSet, 0, 0, BoundsSpecified.Location)
         End With
 
     End Sub
 
-    Public Sub TextBoxGotFocusHandler(ByRef txtThisTextBox As System.Windows.Forms.TextBox, Optional ByRef blnSelectAll As Boolean = True)
+    Public Sub TextBoxGotFocusHandler(ByRef txtThisTextBox As TextBox, Optional ByRef blnSelectAll As Boolean = True)
         ' Selects the text in the given textbox if blnSelectAll = true
 
         If blnSelectAll Then
@@ -339,7 +339,7 @@ Module modCWSpectrum
         End If
     End Sub
 
-    Public Sub VerifyValidWindowPos(ByRef frmThisForm As System.Windows.Forms.Form, Optional ByVal lngMinWidth As Integer = 33, Optional ByVal lngMinHeight As Integer = 33, Optional ByVal MinVisibleFormArea As Integer = 33)
+    Public Sub VerifyValidWindowPos(ByRef frmThisForm As Form, Optional ByVal lngMinWidth As Integer = 33, Optional ByVal lngMinHeight As Integer = 33, Optional ByVal MinVisibleFormArea As Integer = 33)
         ' Make sure the window isn't too small and is visible on the desktop
 
         Dim lngReturn As Integer
@@ -347,18 +347,18 @@ Module modCWSpectrum
 
         lngReturn = GetDesktopSize(lngScreenHeight, lngScreenWidth)
 
-        If lngScreenHeight < System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height Then
-            lngScreenHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+        If lngScreenHeight < Screen.PrimaryScreen.Bounds.Height Then
+            lngScreenHeight = Screen.PrimaryScreen.Bounds.Height
         End If
 
-        If lngScreenWidth < System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width Then
-            lngScreenWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+        If lngScreenWidth < Screen.PrimaryScreen.Bounds.Width Then
+            lngScreenWidth = Screen.PrimaryScreen.Bounds.Width
         End If
 
         Try
             With frmThisForm
-                If .WindowState = System.Windows.Forms.FormWindowState.Minimized Then
-                    .WindowState = System.Windows.Forms.FormWindowState.Normal
+                If .WindowState = FormWindowState.Minimized Then
+                    .WindowState = FormWindowState.Normal
                 End If
 
                 If .Width < lngMinWidth Then .Width = lngMinWidth
