@@ -68,6 +68,11 @@ Public Class ctlOxyPlotControl
         mAnnotationsBySeries = New Dictionary(Of Integer, List(Of Annotation))
 
         InitializePlotModel()
+
+        lblMouseHints.Text = "Zoom using the scroll wheel near an axis or in the middle of the plot" + ControlChars.NewLine +
+            "Alternatively, draw a rectangle with the middle mouse button or via Ctrl+Alt+LeftClick" + ControlChars.NewLine +
+            "Zoom out by double clicking the middle mouse button or using Ctrl+Alt+LeftDoubleClick" + ControlChars.NewLine +
+            "Pan by right clicking and drawing a rectangle"
     End Sub
 
     Private Sub AddSeriesAnnotationToCache(seriesNumber As Integer, oAnnotation As Annotation)

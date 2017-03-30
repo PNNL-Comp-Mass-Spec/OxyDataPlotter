@@ -71,6 +71,7 @@ Partial Class ctlOxyPlotControl
         Me.cmdRollUpHide = New System.Windows.Forms.Button()
         Me.fraOptionsShadow = New System.Windows.Forms.Panel()
         Me.ctlOxyPlot = New OxyPlot.WindowsForms.PlotView()
+        Me.lblMouseHints = New System.Windows.Forms.Label()
         Me.fraLegend.SuspendLayout()
         Me.fraControls.SuspendLayout()
         Me.fraPosition.SuspendLayout()
@@ -110,15 +111,16 @@ Partial Class ctlOxyPlotControl
         Me.fraLegend.Controls.Add(Me.linLegendSeriesColor1)
         Me.fraLegend.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.fraLegend.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.fraLegend.Location = New System.Drawing.Point(512, 0)
+        Me.fraLegend.Location = New System.Drawing.Point(580, 24)
         Me.fraLegend.Margin = New System.Windows.Forms.Padding(4)
         Me.fraLegend.Name = "fraLegend"
         Me.fraLegend.Padding = New System.Windows.Forms.Padding(4)
         Me.fraLegend.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.fraLegend.Size = New System.Drawing.Size(244, 114)
+        Me.fraLegend.Size = New System.Drawing.Size(240, 114)
         Me.fraLegend.TabIndex = 2
         Me.fraLegend.TabStop = False
-        Me.fraLegend.Text = "Legend"
+        Me.fraLegend.Text = "Legend (Hidden)"
+        Me.fraLegend.Visible = False
         '
         'lblLegendCaption1
         '
@@ -145,7 +147,7 @@ Partial Class ctlOxyPlotControl
         Me.lblOriginalMaximumIntensity2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblOriginalMaximumIntensity2.Name = "lblOriginalMaximumIntensity2"
         Me.lblOriginalMaximumIntensity2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.lblOriginalMaximumIntensity2.Size = New System.Drawing.Size(180, 21)
+        Me.lblOriginalMaximumIntensity2.Size = New System.Drawing.Size(176, 21)
         Me.lblOriginalMaximumIntensity2.TabIndex = 5
         '
         'lblOriginalMaximumIntensity1
@@ -160,7 +162,7 @@ Partial Class ctlOxyPlotControl
         Me.lblOriginalMaximumIntensity1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblOriginalMaximumIntensity1.Name = "lblOriginalMaximumIntensity1"
         Me.lblOriginalMaximumIntensity1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.lblOriginalMaximumIntensity1.Size = New System.Drawing.Size(180, 21)
+        Me.lblOriginalMaximumIntensity1.Size = New System.Drawing.Size(176, 21)
         Me.lblOriginalMaximumIntensity1.TabIndex = 2
         '
         'lblLegendCaption2
@@ -234,14 +236,15 @@ Partial Class ctlOxyPlotControl
         Me.fraControls.Controls.Add(Me.fraLegend)
         Me.fraControls.Controls.Add(Me.fraPosition)
         Me.fraControls.Controls.Add(Me.fraMouseAction)
+        Me.fraControls.Controls.Add(Me.lblMouseHints)
         Me.fraControls.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.fraControls.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.fraControls.Location = New System.Drawing.Point(11, 375)
+        Me.fraControls.Location = New System.Drawing.Point(11, 349)
         Me.fraControls.Margin = New System.Windows.Forms.Padding(4)
         Me.fraControls.Name = "fraControls"
         Me.fraControls.Padding = New System.Windows.Forms.Padding(4)
         Me.fraControls.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.fraControls.Size = New System.Drawing.Size(757, 114)
+        Me.fraControls.Size = New System.Drawing.Size(753, 114)
         Me.fraControls.TabIndex = 39
         Me.fraControls.TabStop = False
         '
@@ -255,15 +258,16 @@ Partial Class ctlOxyPlotControl
         Me.fraPosition.Controls.Add(Me.lblDeltaPosFromCursor)
         Me.fraPosition.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.fraPosition.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.fraPosition.Location = New System.Drawing.Point(213, 0)
+        Me.fraPosition.Location = New System.Drawing.Point(435, 59)
         Me.fraPosition.Margin = New System.Windows.Forms.Padding(4)
         Me.fraPosition.Name = "fraPosition"
         Me.fraPosition.Padding = New System.Windows.Forms.Padding(4)
         Me.fraPosition.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.fraPosition.Size = New System.Drawing.Size(311, 114)
+        Me.fraPosition.Size = New System.Drawing.Size(259, 114)
         Me.fraPosition.TabIndex = 1
         Me.fraPosition.TabStop = False
-        Me.fraPosition.Text = "Position"
+        Me.fraPosition.Text = "Position (Hidden)"
+        Me.fraPosition.Visible = False
         '
         'cmdOptionsToggle
         '
@@ -782,7 +786,7 @@ Partial Class ctlOxyPlotControl
         Me.cmdRollUpShow.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdRollUpShow.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdRollUpShow.Image = CType(resources.GetObject("cmdRollUpShow.Image"), System.Drawing.Image)
-        Me.cmdRollUpShow.Location = New System.Drawing.Point(781, 475)
+        Me.cmdRollUpShow.Location = New System.Drawing.Point(777, 449)
         Me.cmdRollUpShow.Margin = New System.Windows.Forms.Padding(4)
         Me.cmdRollUpShow.Name = "cmdRollUpShow"
         Me.cmdRollUpShow.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -799,7 +803,7 @@ Partial Class ctlOxyPlotControl
         Me.cmdRollUpHide.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdRollUpHide.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdRollUpHide.Image = CType(resources.GetObject("cmdRollUpHide.Image"), System.Drawing.Image)
-        Me.cmdRollUpHide.Location = New System.Drawing.Point(781, 455)
+        Me.cmdRollUpHide.Location = New System.Drawing.Point(777, 429)
         Me.cmdRollUpHide.Margin = New System.Windows.Forms.Padding(4)
         Me.cmdRollUpHide.Name = "cmdRollUpHide"
         Me.cmdRollUpHide.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -833,11 +837,23 @@ Partial Class ctlOxyPlotControl
         Me.ctlOxyPlot.Margin = New System.Windows.Forms.Padding(4)
         Me.ctlOxyPlot.Name = "ctlOxyPlot"
         Me.ctlOxyPlot.PanCursor = System.Windows.Forms.Cursors.Hand
-        Me.ctlOxyPlot.Size = New System.Drawing.Size(779, 350)
+        Me.ctlOxyPlot.Size = New System.Drawing.Size(741, 324)
         Me.ctlOxyPlot.TabIndex = 43
         Me.ctlOxyPlot.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE
         Me.ctlOxyPlot.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE
         Me.ctlOxyPlot.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS
+        '
+        'lblMouseHints
+        '
+        Me.lblMouseHints.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblMouseHints.Font = New System.Drawing.Font("Arial", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMouseHints.Location = New System.Drawing.Point(226, 20)
+        Me.lblMouseHints.Name = "lblMouseHints"
+        Me.lblMouseHints.Size = New System.Drawing.Size(509, 84)
+        Me.lblMouseHints.TabIndex = 45
+        Me.lblMouseHints.Text = "Mouse hints"
         '
         'ctlOxyPlotControl
         '
@@ -850,7 +866,7 @@ Partial Class ctlOxyPlotControl
         Me.Controls.Add(Me.ctlOxyPlot)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "ctlOxyPlotControl"
-        Me.Size = New System.Drawing.Size(807, 498)
+        Me.Size = New System.Drawing.Size(803, 472)
         Me.fraLegend.ResumeLayout(False)
         Me.fraControls.ResumeLayout(False)
         Me.fraPosition.ResumeLayout(False)
@@ -915,5 +931,5 @@ Partial Class ctlOxyPlotControl
     Friend WithEvents cmdRollUpHide As System.Windows.Forms.Button
     Friend WithEvents fraOptionsShadow As System.Windows.Forms.Panel
     Friend WithEvents ctlOxyPlot As OxyPlot.WindowsForms.PlotView
-
+    Friend WithEvents lblMouseHints As Label
 End Class
