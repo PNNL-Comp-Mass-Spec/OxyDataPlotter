@@ -625,14 +625,12 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.SetAnnotationDensityToleranceAutoAdjust(blnEnableAutoAdjust)
     End Sub
 
-    Public Sub SetAutoscaleXAxis(blnEnableAutoscale As Boolean)
-        Throw New NotImplementedException("Not implemented: SetAutoscaleXAxis")
-        ' ToDo: SpectrumForm.ctlOxyPlot.SetAutoscaleXAxis(blnEnableAutoscale)
+    Public Sub SetAutoscaleXAxis(enableAutoscale As Boolean)
+        SpectrumForm.ctlOxyPlot.AutoscaleXAxis = enableAutoscale
     End Sub
 
-    Public Sub SetAutoscaleYAxis(blnEnableAutoscale As Boolean)
-        Throw New NotImplementedException("Not implemented: SetAutoscaleYAxis")
-        ' ToDo: SpectrumForm.ctlOxyPlot.SetAutoscaleYAxis(blnEnableAutoscale)
+    Public Sub SetAutoscaleYAxis(enableAutoscale As Boolean)
+        SpectrumForm.ctlOxyPlot.AutoscaleYAxis = enableAutoscale
     End Sub
 
     Public Sub SetAutoAdjustScalingToIncludeCaptions(blnEnable As Boolean)
@@ -699,14 +697,20 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.SetDataYOnly(seriesNumber, YDataZeroBased1DArray, YDataCount, dblXFirst, dblIncrement, strSeriesTitle)
     End Sub
 
-    Public Sub SetDisplayPrecisionX(intPrecision As Short)
-        Throw New NotImplementedException("Not implemented: SetDisplayPrecisionX")
-        ' ToDo: SpectrumForm.ctlOxyPlot.SetDisplayPrecisionX(intPrecision)
+    ''' <summary>
+    ''' Define the number of digits to show after the decimal point for tick mark labels on the X axis
+    ''' </summary>
+    ''' <param name="precision"></param>
+    Public Sub SetDisplayPrecisionX(precision As Short)
+        SpectrumForm.ctlOxyPlot.SetDisplayPrecisionX(precision)
     End Sub
 
-    Public Sub SetDisplayPrecisionY(intPrecision As Short)
-        Throw New NotImplementedException("Not implemented: SetDisplayPrecisionY")
-        ' ToDo: SpectrumForm.ctlOxyPlot.SetDisplayPrecisionY(intPrecision)
+    ''' <summary>
+    ''' Define the number of digits to show after the decimal point for tick mark labels on the Y axis
+    ''' </summary>
+    ''' <param name="precision"></param>
+    Public Sub SetDisplayPrecisionY(precision As Short)
+        SpectrumForm.ctlOxyPlot.SetDisplayPrecisionY(precision)
     End Sub
 
     Public Sub SetGridLinesStyleX(majorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle)
@@ -828,6 +832,10 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.SetSeriesPointColor(seriesNumber, cNewColor)
     End Sub
 
+    Public Sub SetSeriesPointSize(seriesNumber As Integer, pointSize As Double)
+        SpectrumForm.ctlOxyPlot.SetSeriesPointSize(seriesNumber, pointSize)
+    End Sub
+
     Public Sub SetSeriesPointStyle(seriesNumber As Integer, ePointStyle As OxyPlot.MarkerType)
         SpectrumForm.ctlOxyPlot.SetSeriesPointStyle(seriesNumber, ePointStyle)
     End Sub
@@ -917,8 +925,8 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.UpdateAllDynamicAnnotationCaptions()
     End Sub
 
-    Public Sub ZoomOutFull(Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnAllowFixMinimumYAtZero As Boolean = True)
-        SpectrumForm.ctlOxyPlot.ZoomOutFull(blnAddToZoomHistory, blnAllowFixMinimumYAtZero)
+    Public Sub ZoomOutFull()
+        SpectrumForm.ctlOxyPlot.ZoomOutFull()
     End Sub
 
     Public Sub ZoomToPrevious()

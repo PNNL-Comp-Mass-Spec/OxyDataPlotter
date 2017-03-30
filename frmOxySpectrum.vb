@@ -58,7 +58,7 @@ Public Class frmOxySpectrum
 
         SetCurrentSeriesNumber(3)
 
-        ctlOxyPlot.ZoomOutFull(True)
+        ctlOxyPlot.ZoomOutFull()
 
     End Sub
 

@@ -35,6 +35,13 @@ Public Class ctlOxyPlotControl
 
 #End Region
 
+#Region "Properties"
+    Public Property AutoscaleXAxis As Boolean = True
+
+    Public Property AutoscaleYAxis As Boolean = True
+
+#End Region
+
 #Region "Member variables"
 
     Private mDefaultPlotMode As pmPlotModeConstants
@@ -221,7 +228,7 @@ Public Class ctlOxyPlotControl
 
         Dim seriesIndex As Integer = seriesNumber - 1
 
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Return 0
         Else
             Select Case mSeriesPlotMode(seriesIndex)
@@ -369,7 +376,7 @@ Public Class ctlOxyPlotControl
 
     Public Function GetSeriesPointOxyColor(seriesNumber As Integer) As OxyColor
 
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -389,7 +396,7 @@ Public Class ctlOxyPlotControl
 
     Public Function GetSeriesPointStyle(seriesNumber As Integer) As MarkerType
 
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -546,6 +553,7 @@ Public Class ctlOxyPlotControl
 
         Dim oAnnotation = New ArrowAnnotation() With {
             .StartPoint = DataPoint,
+            .EndPoint = DataPoint,
             .LineStyle = eLineStyle,
             .StrokeThickness = lineWidth,
             .Text = caption,
@@ -571,6 +579,7 @@ Public Class ctlOxyPlotControl
 
         Dim oAnnotation = New ArrowAnnotation() With {
             .StartPoint = dataPoint,
+            .EndPoint = dataPoint,
             .LineStyle = eLineStyle,
             .StrokeThickness = lineWidth,
             .Text = caption,
@@ -581,6 +590,14 @@ Public Class ctlOxyPlotControl
 
         AddSeriesAnnotationToCache(seriesNumber, oAnnotation)
 
+    End Sub
+
+    Private Sub SetAxisDisplayPrecision(oXaxis As Axis, precision As Short)
+
+        ' formatString will be of the form {0:F2}
+        Dim formatString As String = "{0:F" & precision & "}"
+
+        oXaxis.LabelFormatter = Function(d) String.Format(formatString, d)
     End Sub
 
     ''' <summary>
@@ -633,7 +650,15 @@ Public Class ctlOxyPlotControl
                 ' Leave the plot mode unchanged
         End Select
 
-        ZoomOutFull()
+        If AutoscaleXAxis Then
+            mXAxis.Reset()
+        End If
+
+        If AutoscaleYAxis Then
+            mYAxis.Reset()
+        End If
+
+        InvalidatePlot()
 
         ' ToDo: RecordZoomRange(True)
 
@@ -654,6 +679,14 @@ Public Class ctlOxyPlotControl
 
         SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, YDataCount, strSeriesTitle)
 
+    End Sub
+
+    Public Sub SetDisplayPrecisionX(precision As Short)
+        SetAxisDisplayPrecision(mXAxis, precision)
+    End Sub
+
+    Public Sub SetDisplayPrecisionY(precision As Short)
+        SetAxisDisplayPrecision(mYAxis, precision)
     End Sub
 
     Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle)
@@ -775,7 +808,7 @@ Public Class ctlOxyPlotControl
     End Sub
 
     Public Sub SetSeriesLineColor(seriesNumber As Integer, cNewColor As Color)
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -793,7 +826,7 @@ Public Class ctlOxyPlotControl
     End Sub
 
     Public Sub SetSeriesLineStyle(seriesNumber As Integer, eLineStyle As LineStyle)
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -811,7 +844,7 @@ Public Class ctlOxyPlotControl
     End Sub
 
     Public Sub SetSeriesLineWidth(seriesNumber As Integer, lineWidth As Double)
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -830,7 +863,7 @@ Public Class ctlOxyPlotControl
 
     Public Sub SetSeriesPointColor(seriesNumber As Integer, cNewColor As Color)
 
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -848,9 +881,29 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
+    Public Sub SetSeriesPointSize(seriesNumber As Integer, pointSize As Double)
+
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
+        End If
+
+        Dim seriesIndex = seriesNumber - 1
+
+        Select Case mSeriesPlotMode(seriesIndex)
+            Case pmPlotModeConstants.pmSticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
+                oSeries.MarkerSize = pointSize
+
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
+                oSeries.MarkerSize = pointSize
+
+        End Select
+    End Sub
+
     Public Sub SetSeriesPointStyle(seriesNumber As Integer, ePointStyle As MarkerType)
 
-        If seriesNumber < 1 Or seriesNumber >= ctlOxyPlot.Model.Series.Count Then
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
         End If
 
@@ -863,15 +916,7 @@ Public Class ctlOxyPlotControl
 
             Case Else
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
-
-                Select Case mSeriesPlotMode(seriesIndex)
-                    Case pmPlotModeConstants.pmLines
-                        oSeries.MarkerType = ePointStyle
-                    Case pmPlotModeConstants.pmPoints
-                        oSeries.MarkerType = ePointStyle
-                    Case pmPlotModeConstants.pmPointsAndLines
-                        oSeries.MarkerType = ePointStyle
-                End Select
+                oSeries.MarkerType = ePointStyle
 
         End Select
 
@@ -890,6 +935,7 @@ Public Class ctlOxyPlotControl
                 If seriesToCheck >= ctlOxyPlot.Model.Series.Count Then
                     Exit For
                 End If
+
                 If seriesNumber = seriesToCheck Then Continue For
 
                 Dim seriesIndexToCheck = seriesToCheck - 1
@@ -1020,7 +1066,7 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
-    Public Sub ZoomOutFull(Optional ByVal blnAddToZoomHistory As Boolean = True, Optional ByVal blnAllowFixMinimumYAtZero As Boolean = True)
+    Public Sub ZoomOutFull()
         mXAxis.Reset()
         mYAxis.Reset()
         ctlOxyPlot.InvalidatePlot(True)
