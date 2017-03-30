@@ -1,13 +1,16 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Collections.Generic
+Imports System.Runtime.InteropServices
+Imports OxyPlot
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
 ' Upgraded to VB.NET from VB6 in October 2003
 ' Copyright 2005, Battelle Memorial Institute.  All Rights Reserved.
 
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
-' Website: http://ncrr.pnl.gov/ or http://www.sysbio.org/resources/staff/
+' Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
 '
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
@@ -33,6 +36,8 @@ Public Class Spectrum
     ''	asmFloating = 2
     ''End Enum
 
+#Region "Structures"
+
     Public Structure udtAutoLabelPeaksOptionsType
         Public IsContinuousData As Boolean ' When False, means Is Discrete Data
         Public DisplayXPos As Boolean
@@ -46,14 +51,14 @@ Public Class Spectrum
         Public PeakLabelCountMaximum As Integer
     End Structure
 
+#End Region
+
+#Region "Member variables"
     ' Actual spectrum form
     Private WithEvents SpectrumForm As frmOxySpectrum
     Private mSpectrumLoaded As Boolean
-    '
 
-    Public Sub AutoLabelPeaks(intSeriesNumber As Integer, blnShowXPos As Boolean, blnShowYPos As Boolean, Optional ByVal lngCaptionAngle As Integer = 0, Optional ByVal blnIncludeArrow As Boolean = False, Optional ByVal blnHideInDenseRegions As Boolean = True, Optional ByVal lngMaxPeakCount As Integer = 100, Optional ByVal blnForceAsContinuousData As Boolean = False, Optional ByVal blnForceAsDiscreteData As Boolean = False)
-        Throw New NotImplementedException
-        ' ToDo: SpectrumForm.ctlOxyPlot.AutoLabelPeaks(intSeriesNumber, blnShowXPos, blnShowYPos, lngCaptionAngle, blnIncludeArrow, blnHideInDenseRegions, lngMaxPeakCount, blnForceAsContinuousData, blnForceAsDiscreteData)
+#End Region
 
     ''' <summary>
     ''' Constructor
