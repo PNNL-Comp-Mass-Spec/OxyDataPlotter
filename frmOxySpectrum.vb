@@ -108,7 +108,6 @@ Public Class frmOxySpectrum
         End Get
     End Property
 
-
     Public Function FindMaximumAndNormalizeData(ByRef dblArray() As Double, ByRef intLowIndex As Integer, ByRef intHighIndex As Integer, ByRef dblNormalizationConstant As Double, ByRef blnPerformNormalization As Boolean, ByRef dblOriginalMaximumValue As Double) As Boolean
         ' Normalizes dblArray() to range from 0 dblNormalizationConstant
         ' Treats negative data as if it were positive data when finding dblOriginalMaximumValue
@@ -143,14 +142,14 @@ Public Class frmOxySpectrum
 
     End Function
 
-    Public Sub SetCurrentSeriesNumber(ByRef intSeriesNumber As Integer)
+    Public Sub SetCurrentSeriesNumber(ByRef seriesNumber As Integer)
 
         Try
-            If intSeriesNumber < 1 Or intSeriesNumber > ctlOxyPlot.GetSeriesCount() Then
-                intSeriesNumber = 1
+            If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.GetSeriesCount() Then
+                seriesNumber = 1
             End If
 
-            mActiveSeriesNumber = intSeriesNumber
+            mActiveSeriesNumber = seriesNumber
 
             ' Make sure the correct series number menus are loaded and visible,
             '  and the mActiveSeriesNumber'th one is checked
@@ -159,6 +158,21 @@ Public Class frmOxySpectrum
             ShowError("Error in SetCurrentSeriesNumber: " & ex.Message)
         End Try
 
+    End Sub
+
+    Public Sub SetWindowCaption(strTitle As String)
+        Me.Text = strTitle
+    End Sub
+
+    Public Sub SetWindowPos(topLeftX As Integer, topLeftY As Integer)
+        SetWindowPos(topLeftX, topLeftY, Me.Height, Me.Width)
+    End Sub
+
+    Public Sub SetWindowPos(topLeftX As Integer, topLeftY As Integer, windowHeight As Integer, windowWidth As Integer)
+        Dim topLeft = New Point(topLeftX, topLeftY)
+        Me.Location = topLeft
+        Me.Width = windowWidth
+        Me.Height = windowHeight
     End Sub
 
     Protected Sub ShowError(strMessage As String)
@@ -247,6 +261,7 @@ Public Class frmOxySpectrum
     Private Sub mnuAbout_Click(sender As Object, e As EventArgs) Handles mnuAbout.Click
         ShowAboutBox()
     End Sub
+
 #End Region
 
 End Class
