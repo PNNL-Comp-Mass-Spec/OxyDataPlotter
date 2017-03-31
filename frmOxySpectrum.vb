@@ -1,4 +1,6 @@
-﻿Imports System.Reflection
+﻿Imports System.IO
+Imports System.Reflection
+Imports System.Text
 
 Public Class frmOxySpectrum
 
@@ -73,7 +75,138 @@ Public Class frmOxySpectrum
 
     End Sub
 
-    Public Sub DeleteDataActiveSeries(Optional ByRef blnConfirmDeletion As Boolean = True)
+    Public Sub CopyAllDataToClipboard(Optional strDelim As String = vbTab)
+
+        Dim seriesCount = ctlOxyPlot.GetSeriesCount()
+
+        If seriesCount = 0 Then
+            MessageBox.Show("The plot is empty; nothing to copy.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Return
+        End If
+
+        Dim maxDataCount = 0
+
+        Me.Cursor = Cursors.WaitCursor
+
+        For seriesNumber = 1 To seriesCount
+            Dim dataCount = ctlOxyPlot.GetDataCount(seriesNumber)
+
+            If dataCount > maxDataCount Then maxDataCount = dataCount
+        Next
+
+        Dim strExport As String()
+        ReDim strExport(maxDataCount + 1)
+
+        For seriesNumber = 1 To seriesCount
+            Dim seriesData = ctlOxyPlot.GetDataXvsY(seriesNumber)
+
+            If seriesNumber = 1 Then
+                strExport(0) = "Series " & seriesNumber & strDelim
+                strExport(1) = "X" & strDelim & "Y"
+            Else
+                strExport(0) &= strDelim & "Series " & seriesNumber & strDelim
+                strExport(1) &= strDelim & "X" & strDelim & "Y"
+            End If
+
+            Dim rowIndex = 2
+
+            For Each dataItem In seriesData
+                If seriesNumber = 1 Then
+                    strExport(rowIndex) = NumToString(dataItem.X) & strDelim & NumToString(dataItem.Y)
+                Else
+                    strExport(rowIndex) &= strDelim & NumToString(dataItem.X) & strDelim & NumToString(dataItem.Y)
+                End If
+
+                rowIndex += 1
+            Next
+
+            For extraRowIndex = seriesData.Count + 1 To maxDataCount
+                If seriesNumber = 1 Then
+                    strExport(rowIndex) = strDelim
+                Else
+                    strExport(rowIndex) &= strDelim
+                End If
+                rowIndex += 1
+            Next
+
+        Next
+
+        If String.IsNullOrWhiteSpace(strExport(0)) Then
+            strExport(0) = "No data to copy"
+        End If
+
+        Try
+            Clipboard.SetDataObject(String.Join(vbCrLf, strExport))
+        Catch ex As Exception
+            ShowMessage("Error copying text to clipboard in CopyDataPointsToClipboardOrToString: " & ex.Message)
+        End Try
+
+        Me.Cursor = Cursors.Default
+
+    End Sub
+
+    Private Sub CopyOneSeriesClipboard()
+
+        Dim seriesCount = ctlOxyPlot.GetSeriesCount()
+
+        If seriesCount = 0 Then
+            MessageBox.Show("The plot is empty; nothing to copy.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Return
+        End If
+
+        Dim seriesNumber As Integer
+
+        If seriesCount > 1 Then
+            Dim result = InputBox("Series number to export (between 1 and " & seriesCount & ")", "Select Series", "1")
+
+            If String.IsNullOrWhiteSpace(result) Then Return
+
+            If Not Integer.TryParse(result, seriesNumber) Then
+                MessageBox.Show("Invalid series number: " & result, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            End If
+
+            If seriesNumber > seriesCount Then
+                seriesNumber = seriesCount
+            End If
+
+        Else
+            seriesNumber = 1
+        End If
+
+        CopyOneSeriesClipboard(seriesNumber, vbTab)
+
+    End Sub
+
+    Public Sub CopyOneSeriesClipboard(seriesNumber As Integer, Optional strDelim As String = vbTab)
+
+        Me.Cursor = Cursors.WaitCursor
+
+        Dim seriesData = ctlOxyPlot.GetDataXvsY(seriesNumber)
+
+        Dim strExport As String()
+        ReDim strExport(seriesData.Count + 1)
+
+        strExport(0) = "Series " & seriesNumber
+        strExport(1) = "X" & strDelim & "Y"
+
+        Dim rowIndex = 2
+
+        For Each dataItem In seriesData
+            strExport(rowIndex) = NumToString(dataItem.X) & strDelim & NumToString(dataItem.Y)
+            rowIndex += 1
+        Next
+
+        Try
+            Clipboard.SetDataObject(String.Join(vbCrLf, strExport))
+        Catch ex As Exception
+            ShowMessage("Error copying text to clipboard in CopyDataPointsToClipboardOrToString: " & ex.Message)
+        End Try
+
+        Me.Cursor = Cursors.Default
+
+    End Sub
+
+    Public Sub DeleteDataActiveSeries(Optional blnConfirmDeletion As Boolean = True)
         Dim eResponse As DialogResult
         Dim intDataCount As Integer
 
@@ -153,6 +286,28 @@ Public Class frmOxySpectrum
 
     End Function
 
+    Private Function NumToString(value As Double) As String
+        Dim posValue = Math.Abs(value)
+
+        If posValue < Single.Epsilon Then
+            Return "0"
+        End If
+
+        If posValue < 0.01 Then
+            Return value.ToString("E2")
+        End If
+
+        If posValue < 10 Then
+            Return value.ToString("0.00")
+        End If
+
+        If posValue < 1000 Then
+            Return value.ToString("0.0")
+        End If
+
+        Return value.ToString("0")
+
+    End Function
 
     Private Sub SavePlotAsPNG()
         Try
@@ -352,6 +507,14 @@ Public Class frmOxySpectrum
 
     Private Sub mnuFileSaveGraphAsPNG_Click(sender As Object, e As EventArgs) Handles mnuFileSaveGraphAsPNG.Click
         SavePlotAsPNG()
+    End Sub
+
+    Private Sub mnuEditCopyAllData_Click(sender As Object, e As EventArgs) Handles mnuEditCopyAllData.Click
+        CopyAllDataToClipboard()
+    End Sub
+
+    Private Sub mnuEditCopyOneSeries_Click(sender As Object, e As EventArgs) Handles mnuEditCopyOneSeries.Click
+        CopyOneSeriesClipboard()
     End Sub
     End Sub
 
