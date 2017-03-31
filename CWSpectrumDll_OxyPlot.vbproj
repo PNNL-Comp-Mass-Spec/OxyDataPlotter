@@ -11,7 +11,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>CWSpectrumDLLNET</AssemblyName>
+    <AssemblyName>OxyDataPlotter</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
@@ -23,7 +23,7 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
-    <RootNamespace>CWSpectrumDLLNET</RootNamespace>
+    <RootNamespace>OxyDataPlotter</RootNamespace>
     <StartupObject>CWSpectrumDLLNET.%28None%29</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>CWSpectrumDLLNET.xml</DocumentationFile>
+    <DocumentationFile>OxyDataPlotter.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -71,7 +71,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>CWSpectrumDLLNET.xml</DocumentationFile>
+    <DocumentationFile>OxyDataPlotter.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -105,6 +105,9 @@
     <Reference Include="SharedVBNetRoutines">
       <Name>SharedVBNetRoutines</Name>
       <HintPath>lib\SharedVBNetRoutines.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg, Version=2.2.1.39233, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>packages\Svg.2.3.0\lib\net35\Svg.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>

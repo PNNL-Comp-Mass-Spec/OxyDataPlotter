@@ -1,26 +1,20 @@
-﻿Public Class frmTestOxyPlot
+﻿Imports OxyDataPlotter
 
-    Private WithEvents mOxyPlot As CWSpectrumDLLNET.frmOxySpectrum
+Public Class frmTestOxyPlot
 
-    Private Sub cmdShowSpectrum_Click()
-        mOxyPlot.Show()
-    End Sub
-
-    Private Sub objCWSpectrum_SpectrumFormClosed()
-        ' If we need to do something now that the form has closed, we can do it here
-    End Sub
+    Private WithEvents mOxyPlot As frmOxySpectrum
 
     Private Sub InitializeOxySpectrum()
 
         Try
-            mOxyPlot = New CWSpectrumDLLNET.frmOxySpectrum
+            mOxyPlot = New frmOxySpectrum
 
             mOxyPlot.Text = "Test Plot"
 
             mOxyPlot.Show()
 
         Catch ex As Exception
-            System.Windows.Forms.MessageBox.Show("Error initializing CWSpectrumDLLNET.frmOxySpectrum: " & ex.Message)
+            MessageBox.Show("Error initializing CWSpectrumDLLNET.frmOxySpectrum: " & ex.Message)
         End Try
     End Sub
 
@@ -32,7 +26,7 @@
         Try
             Me.Close()
         Catch ex As Exception
-            System.Windows.Forms.MessageBox.Show("Exception in cmdExit_Click: " & ex.Message)
+            MessageBox.Show("Exception in cmdExit_Click: " & ex.Message)
         End Try
     End Sub
 
@@ -45,7 +39,7 @@
         InitializeOxySpectrum()
     End Sub
 
-    Private Sub cmdShowPlot_Click(sender As System.Object, e As System.EventArgs) Handles cmdShowPlot.Click
+    Private Sub cmdShowPlot_Click(sender As System.Object, e As EventArgs) Handles cmdShowPlot.Click
         If mOxyPlot Is Nothing Then
             InitializeOxySpectrum()
         Else
