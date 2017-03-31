@@ -4,9 +4,11 @@ Option Explicit On
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
 Imports OxyPlot
+
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
 ' Upgraded to VB.NET from VB6 in October 2003
+' Converted to use OxyPlot in 2017
 ' Copyright 2005, Battelle Memorial Institute.  All Rights Reserved.
 
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
@@ -239,30 +241,31 @@ Public Class Spectrum
     End Function
 
     Public Sub GetAutoLabelPeaksOptions(ByRef udtAutoLabelPeaksOptions As udtAutoLabelPeaksOptionsType)
-
-        Dim udtAutoLabelPeaksOptionsInternal As udtAutoLabelPeaksOptionsInternalType
-
         Throw New NotImplementedException("Not implemented: GetAutoLabelPeaksOptions")
-        ' ToDo: SpectrumForm.StoreAutoLabelPeaksOptionsInModule()
 
-        AutoLabelOptionsRetrieve(udtAutoLabelPeaksOptionsInternal)
+        'Dim udtAutoLabelPeaksOptionsInternal As udtAutoLabelPeaksOptionsInternalType
 
-        With udtAutoLabelPeaksOptionsInternal
-            udtAutoLabelPeaksOptions.CaptionAngle = .CaptionAngle
-            udtAutoLabelPeaksOptions.DisplayXPos = .DisplayXPos
-            udtAutoLabelPeaksOptions.DisplayYPos = .DisplayYPos
-            udtAutoLabelPeaksOptions.HideInDenseRegions = .HideInDenseRegions
-            udtAutoLabelPeaksOptions.IncludeArrow = .IncludeArrow
-            udtAutoLabelPeaksOptions.IntensityThresholdMinimum = .IntensityThresholdMinimum
-            If .DataMode = modCWSpectrum.dmDataModeConstants.dmContinuous Then
-                udtAutoLabelPeaksOptions.IsContinuousData = True
-            Else
-                udtAutoLabelPeaksOptions.IsContinuousData = False
-            End If
-            udtAutoLabelPeaksOptions.MinimumIntensityPercentageOfMaximum = .MinimumIntensityPercentageOfMaximum
-            udtAutoLabelPeaksOptions.PeakLabelCountMaximum = .PeakLabelCountMaximum
-            udtAutoLabelPeaksOptions.PeakWidthMinimumPoints = .PeakWidthMinimumPoints
-        End With
+        'Throw New NotImplementedException("Not implemented: GetAutoLabelPeaksOptions")
+        '' ToDo: SpectrumForm.StoreAutoLabelPeaksOptionsInModule()
+
+        'AutoLabelOptionsRetrieve(udtAutoLabelPeaksOptionsInternal)
+
+        'With udtAutoLabelPeaksOptionsInternal
+        '    udtAutoLabelPeaksOptions.CaptionAngle = .CaptionAngle
+        '    udtAutoLabelPeaksOptions.DisplayXPos = .DisplayXPos
+        '    udtAutoLabelPeaksOptions.DisplayYPos = .DisplayYPos
+        '    udtAutoLabelPeaksOptions.HideInDenseRegions = .HideInDenseRegions
+        '    udtAutoLabelPeaksOptions.IncludeArrow = .IncludeArrow
+        '    udtAutoLabelPeaksOptions.IntensityThresholdMinimum = .IntensityThresholdMinimum
+        '    If .DataMode = modCWSpectrum.dmDataModeConstants.dmContinuous Then
+        '        udtAutoLabelPeaksOptions.IsContinuousData = True
+        '    Else
+        '        udtAutoLabelPeaksOptions.IsContinuousData = False
+        '    End If
+        '    udtAutoLabelPeaksOptions.MinimumIntensityPercentageOfMaximum = .MinimumIntensityPercentageOfMaximum
+        '    udtAutoLabelPeaksOptions.PeakLabelCountMaximum = .PeakLabelCountMaximum
+        '    udtAutoLabelPeaksOptions.PeakWidthMinimumPoints = .PeakWidthMinimumPoints
+        'End With
 
     End Sub
 
@@ -490,6 +493,7 @@ Public Class Spectrum
     ''' </summary>
     ''' <param name="searchPosX"></param>
     ''' <param name="searchPosY"></param>
+    ''' <param name="xAxisOnly">When true, only compare locationX to X axis values in the data</param>
     ''' <param name="seriesNumber">Either the series to search if limitToGivenSeriesNumber is true, or the matched series number of limitToGivenSeriesNumber is false</param>
     ''' <param name="distanceToClosestSeriesNumberDataPoint">Output: distance from the search point to the matched point</param>
     ''' <param name="limitToGivenSeriesNumber">When true, only examine data for series seriesNumber</param>
@@ -651,26 +655,28 @@ Public Class Spectrum
     End Sub
 
     Public Sub SetAutoLabelPeaksOptions(udtNewAutoLabelOptions As udtAutoLabelPeaksOptionsType)
-        Dim udtAutoLabelPeaksOptionsInternal As udtAutoLabelPeaksOptionsInternalType
+        Throw New NotImplementedException("Not implemented: SetAutoLabelPeaksOptions")
 
-        With udtNewAutoLabelOptions
-            udtAutoLabelPeaksOptionsInternal.CaptionAngle = .CaptionAngle
-            udtAutoLabelPeaksOptionsInternal.DisplayXPos = .DisplayXPos
-            udtAutoLabelPeaksOptionsInternal.DisplayYPos = .DisplayYPos
-            udtAutoLabelPeaksOptionsInternal.HideInDenseRegions = .HideInDenseRegions
-            udtAutoLabelPeaksOptionsInternal.IncludeArrow = .IncludeArrow
-            udtAutoLabelPeaksOptionsInternal.IntensityThresholdMinimum = .IntensityThresholdMinimum
-            If .IsContinuousData Then
-                udtAutoLabelPeaksOptionsInternal.DataMode = modCWSpectrum.dmDataModeConstants.dmContinuous
-            Else
-                udtAutoLabelPeaksOptionsInternal.DataMode = modCWSpectrum.dmDataModeConstants.dmDiscrete
-            End If
-            udtAutoLabelPeaksOptionsInternal.MinimumIntensityPercentageOfMaximum = .MinimumIntensityPercentageOfMaximum
-            udtAutoLabelPeaksOptionsInternal.PeakLabelCountMaximum = .PeakLabelCountMaximum
-            udtAutoLabelPeaksOptionsInternal.PeakWidthMinimumPoints = .PeakWidthMinimumPoints
-        End With
+        'Dim udtAutoLabelPeaksOptionsInternal As udtAutoLabelPeaksOptionsInternalType
 
-        AutoLabelOptionsStore(udtAutoLabelPeaksOptionsInternal)
+        'With udtNewAutoLabelOptions
+        '    udtAutoLabelPeaksOptionsInternal.CaptionAngle = .CaptionAngle
+        '    udtAutoLabelPeaksOptionsInternal.DisplayXPos = .DisplayXPos
+        '    udtAutoLabelPeaksOptionsInternal.DisplayYPos = .DisplayYPos
+        '    udtAutoLabelPeaksOptionsInternal.HideInDenseRegions = .HideInDenseRegions
+        '    udtAutoLabelPeaksOptionsInternal.IncludeArrow = .IncludeArrow
+        '    udtAutoLabelPeaksOptionsInternal.IntensityThresholdMinimum = .IntensityThresholdMinimum
+        '    If .IsContinuousData Then
+        '        udtAutoLabelPeaksOptionsInternal.DataMode = modCWSpectrum.dmDataModeConstants.dmContinuous
+        '    Else
+        '        udtAutoLabelPeaksOptionsInternal.DataMode = modCWSpectrum.dmDataModeConstants.dmDiscrete
+        '    End If
+        '    udtAutoLabelPeaksOptionsInternal.MinimumIntensityPercentageOfMaximum = .MinimumIntensityPercentageOfMaximum
+        '    udtAutoLabelPeaksOptionsInternal.PeakLabelCountMaximum = .PeakLabelCountMaximum
+        '    udtAutoLabelPeaksOptionsInternal.PeakWidthMinimumPoints = .PeakWidthMinimumPoints
+        'End With
+
+        'AutoLabelOptionsStore(udtAutoLabelPeaksOptionsInternal)
 
         ' ToDo: SpectrumForm.RetrieveAutoLabelPeaksOptionsFromModule()
 
