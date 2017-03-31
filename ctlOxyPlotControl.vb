@@ -262,21 +262,23 @@ Public Class ctlOxyPlotControl
 
     Public Function GetDataXvsY(seriesNumber As Integer) As List(Of DataPoint)
 
+        If ctlOxyPlot.Model.Series.Count = 0 Then
+            Return New List(Of DataPoint)
+        End If
+
         Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
 
-        Dim oSeries As LineSeries = Nothing
+        Dim oSeries As LineSeries
 
         Select Case mSeriesPlotMode(seriesIndex)
             Case pmPlotModeConstants.pmSticksToZero
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
 
-            Case pmPlotModeConstants.pmLines
-            Case pmPlotModeConstants.pmPoints
-            Case pmPlotModeConstants.pmPointsAndLines
+            Case pmPlotModeConstants.pmLines, pmPlotModeConstants.pmPoints, pmPlotModeConstants.pmPointsAndLines
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
 
             Case Else
-                Throw New NotSupportedException("Unrecognized plot mode in FindNearestDataPoint")
+                Throw New NotSupportedException("Unrecognized plot mode in GetDataXvsY")
         End Select
 
         Return oSeries.Points
