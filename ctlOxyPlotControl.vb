@@ -763,6 +763,11 @@ Public Class ctlOxyPlotControl
         ctlOxyPlot.Model.Subtitle = strSubTitle
     End Sub
 
+    Public Sub SetLegendVisibility(isVisible As Boolean)
+        ctlOxyPlot.Model.IsLegendVisible = isVisible
+        InvalidatePlot()
+    End Sub
+
     Public Sub SetPlotBackgroundColor(cNewColor As Color)
         ctlOxyPlot.Model.Background = ColorToOxyColor(cNewColor)
     End Sub
