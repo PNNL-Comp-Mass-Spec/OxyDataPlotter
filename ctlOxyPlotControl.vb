@@ -1191,6 +1191,14 @@ Public Class ctlOxyPlotControl
         ZoomOutFull()
     End Sub
 
+    Private Sub ctlOxyPlotControl_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown, ctlOxyPlot.KeyDown
+        If e.Control Then
+            If e.KeyCode = Keys.A Then
+                ZoomOutFull()
+            End If
+        End If
+    End Sub
+
 #End Region
 
 End Class
