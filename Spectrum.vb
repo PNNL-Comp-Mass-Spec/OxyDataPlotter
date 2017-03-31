@@ -495,8 +495,14 @@ Public Class Spectrum
     ''' <param name="limitToGivenSeriesNumber">When true, only examine data for series seriesNumber</param>
     ''' <returns>Data point index in series seriesNumber</returns>
     ''' <remarks>Data for the series is accessible via GetDataXvsY</remarks>
-    Public Function LookupNearestPointNumber(searchPosX As Double, searchPosY As Double, ByRef seriesNumber As Integer, <Out()> ByRef distanceToClosestSeriesNumberDataPoint As Double, Optional limitToGivenSeriesNumber As Boolean = False) As Integer
-        Return SpectrumForm.ctlOxyPlot.LookupNearestPointNumber(searchPosX, searchPosY, seriesNumber, distanceToClosestSeriesNumberDataPoint, limitToGivenSeriesNumber)
+    Public Function LookupNearestPointNumber(
+      searchPosX As Double,
+      searchPosY As Double,
+      xAxisOnly As Boolean,
+      ByRef seriesNumber As Integer,
+      <Out()> ByRef distanceToClosestSeriesNumberDataPoint As Double,
+      Optional limitToGivenSeriesNumber As Boolean = False) As Integer
+        Return SpectrumForm.ctlOxyPlot.LookupNearestPointNumber(searchPosX, searchPosY, xAxisOnly, seriesNumber, distanceToClosestSeriesNumberDataPoint, limitToGivenSeriesNumber)
     End Function
 
     Public Sub PasteDataFromClipboard(Optional ByVal blnShowMessages As Boolean = True, Optional ByVal blnAllowCommaDelimeter As Boolean = True)
@@ -559,16 +565,19 @@ Public Class Spectrum
     ''' <param name="locationX"></param>
     ''' <param name="locationY"></param>
     ''' <param name="caption"></param>
+    ''' <param name="arrowLengthPixels"></param>
     ''' <param name="eLineStyle"></param>
     ''' <param name="lineWidth"></param>
     ''' <param name="fontSize"></param>
     Public Sub SetAnnotationByXY(
       locationX As Double, locationY As Double, caption As String,
+      Optional captionOffsetDirection As ctlOxyPlotControl.eCaptionOffsetDirection = ctlOxyPlotControl.eCaptionOffsetDirection.TopLeft,
+      Optional arrowLengthPixels As Integer = 15,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
-      Optional lineWidth As Integer = 32,
+      Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        SpectrumForm.ctlOxyPlot.SetAnnotationByXY(locationX, locationY, caption, eLineStyle, lineWidth, fontSize)
+        SpectrumForm.ctlOxyPlot.SetAnnotationByXY(locationX, locationY, caption, captionOffsetDirection, arrowLengthPixels, eLineStyle, lineWidth, fontSize)
     End Sub
 
     ''' <summary>
@@ -578,16 +587,19 @@ Public Class Spectrum
     ''' <param name="locationX"></param>
     ''' <param name="locationY"></param>
     ''' <param name="caption"></param>
+    ''' <param name="arrowLengthPixels"></param>
     ''' <param name="eLineStyle"></param>
     ''' <param name="lineWidth"></param>
     ''' <param name="fontSize"></param>
     Public Sub SetAnnotationForDataPoint(
       seriesNumber As Integer, locationX As Double, locationY As Double, caption As String,
+      Optional captionOffsetDirection As ctlOxyPlotControl.eCaptionOffsetDirection = ctlOxyPlotControl.eCaptionOffsetDirection.TopLeft,
+      Optional arrowLengthPixels As Integer = 15,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
-      Optional lineWidth As Integer = 32,
+      Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        SpectrumForm.ctlOxyPlot.SetAnnotationForDataPoint(seriesNumber, locationX, locationY, caption, eLineStyle, lineWidth, fontSize)
+        SpectrumForm.ctlOxyPlot.SetAnnotationForDataPoint(seriesNumber, locationX, locationY, caption, captionOffsetDirection, arrowLengthPixels, eLineStyle, lineWidth, fontSize)
     End Sub
 
     Public Sub SetAnnotationFontColor(seriesNumber As Integer, cNewColor As Color, blnMakeDefaultForAll As Boolean)

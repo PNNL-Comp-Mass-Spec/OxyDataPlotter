@@ -2,6 +2,7 @@
 Option Explicit On
 
 Imports System.Collections.Generic
+Imports System.IO
 Imports System.Runtime.InteropServices
 Imports OxyPlot
 Imports OxyPlot.Annotations
@@ -22,6 +23,15 @@ Public Class ctlOxyPlotControl
         pmSticksToZero = 1          ' StemSeries
         pmPoints = 2                ' LineSeries
         pmPointsAndLines = 3        ' LineSeries
+    End Enum
+
+    Public Enum eCaptionOffsetDirection
+        TopLeft = 0
+        TopCenter = 1
+        TopRight = 2
+        BottomLeft = 3
+        BottomCenter = 4
+        BottomRight = 5
     End Enum
 #End Region
 
@@ -139,30 +149,31 @@ Public Class ctlOxyPlotControl
     End Function
 
     ''' <summary>
-    ''' Find the data point closes to locationX,locationY in series seriesIndex
+    ''' Find the data point closest to locationX,locationY in series seriesIndex
     ''' </summary>
     ''' <param name="seriesIndex">Index of the series to search</param>
     ''' <param name="locationX">Target X</param>
     ''' <param name="locationY">Target Y</param>
+    ''' <param name="xAxisOnly">When true, only compare locationX to X axis values in the data</param>
     ''' <param name="closesetDataPointIndex">Output: index of the closest data point</param>
     ''' <param name="closestDistance">Output: euclidean distance to the closest data point</param>
     ''' <returns>The closest data point</returns>
+    ''' <remarks>Set xAxisOnly to only find the data point whose x-axis value is closest to locationX</remarks>
     Private Function FindNearestDataPoint(
       seriesIndex As Integer,
       locationX As Double,
       locationY As Double,
+      xAxisOnly As Boolean,
       <Out()> ByRef closesetDataPointIndex As Integer,
       <Out()> ByRef closestDistance As Double) As DataPoint
 
-        Dim oSeries As LineSeries = Nothing
+        Dim oSeries As LineSeries
 
         Select Case mSeriesPlotMode(seriesIndex)
             Case pmPlotModeConstants.pmSticksToZero
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
 
-            Case pmPlotModeConstants.pmLines
-            Case pmPlotModeConstants.pmPoints
-            Case pmPlotModeConstants.pmPointsAndLines
+            Case pmPlotModeConstants.pmLines, pmPlotModeConstants.pmPoints, pmPlotModeConstants.pmPointsAndLines
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
 
             Case Else
@@ -176,7 +187,13 @@ Public Class ctlOxyPlotControl
         Dim dataPointIndex = 0
 
         For Each dataPoint In oSeries.Points
-            Dim distance = Math.Sqrt((dataPoint.X - locationX) ^ 2 + (dataPoint.Y - locationY) ^ 2)
+            Dim distance As Double
+            If xAxisOnly Then
+                distance = Math.Abs(dataPoint.X - locationX)
+            Else
+                distance = Math.Sqrt((dataPoint.X - locationX) ^ 2 + (dataPoint.Y - locationY) ^ 2)
+            End If
+
             If distance < closestDistance Then
                 closesetDataPoint = dataPoint
                 closesetDataPointIndex = dataPointIndex
@@ -454,14 +471,19 @@ Public Class ctlOxyPlotControl
     ''' </summary>
     ''' <param name="searchPosX"></param>
     ''' <param name="searchPosY"></param>
+    ''' <param name="xAxisOnly">When true, only compare locationX to X axis values in the data</param>
     ''' <param name="seriesNumber">Either the series to search if limitToGivenSeriesNumber is true, or the matched series number of limitToGivenSeriesNumber is false</param>
     ''' <param name="distanceToClosestSeriesNumberDataPoint">Output: distance from the search point to the matched point</param>
     ''' <param name="limitToGivenSeriesNumber">When true, only examine data for series seriesNumber</param>
     ''' <returns>Data point index in series seriesNumber</returns>
-    ''' <remarks>Data for the series is accessible via GetDataXvsY</remarks>
+    ''' <remarks>
+    ''' Data for the series is accessible via GetDataXvsY
+    ''' Set xAxisOnly to only find the data point whose x-axis value is closest to locationX
+    ''' </remarks>
     Public Function LookupNearestPointNumber(
       searchPosX As Double,
       searchPosY As Double,
+      xAxisOnly As Boolean,
       ByRef seriesNumber As Integer,
       <Out()> ByRef distanceToClosestSeriesNumberDataPoint As Double,
       limitToGivenSeriesNumber As Boolean) As Integer
@@ -487,7 +509,7 @@ Public Class ctlOxyPlotControl
 
             Dim candidateDataPointIndex As Integer
             Dim candidateDistance As Double
-            Dim matchedDataPoint = FindNearestDataPoint(seriesIndex, searchPosX, searchPosY, candidateDataPointIndex, candidateDistance)
+            Dim matchedDataPoint = FindNearestDataPoint(seriesIndex, searchPosX, searchPosY, xAxisOnly, candidateDataPointIndex, candidateDistance)
 
             If candidateDistance < distanceToClosestSeriesNumberDataPoint Then
                 closestSeriesNumber = seriesNumberToCheck
@@ -575,18 +597,28 @@ Public Class ctlOxyPlotControl
         End Using
 
     End Sub
+
     Public Sub SetAnnotationByXY(
       locationX As Double, locationY As Double, caption As String,
+      Optional captionOffsetDirection As eCaptionOffsetDirection = eCaptionOffsetDirection.TopLeft,
+      Optional arrowLengthPixels As Integer = 15,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
-      Optional lineWidth As Integer = 32,
+      Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        Dim DataPoint = New DataPoint(locationX, locationY)
+        Dim xyPoint = New DataPoint(locationX, locationY)
+
+        If arrowLengthPixels < 0 Then
+            arrowLengthPixels = 0
+        End If
+
+        Dim arrowDirection As ScreenVector = GetArrowVector(captionOffsetDirection, arrowLengthPixels)
 
         Dim oAnnotation = New ArrowAnnotation() With {
-            .StartPoint = DataPoint,
-            .EndPoint = DataPoint,
+            .StartPoint = xyPoint,
+            .EndPoint = xyPoint,
             .LineStyle = eLineStyle,
+            .ArrowDirection = arrowDirection,
             .StrokeThickness = lineWidth,
             .Text = caption,
             .FontSize = fontSize
@@ -596,10 +628,45 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
+    ''' <summary>
+    ''' Get a vector for placing an annotation at a position relative to a data point
+    ''' </summary>
+    ''' <param name="captionOffsetDirection"></param>
+    ''' <param name="arrowLengthPixels"></param>
+    ''' <returns></returns>
+    Private Function GetArrowVector(captionOffsetDirection As eCaptionOffsetDirection, arrowLengthPixels As Integer) As ScreenVector
+        Select Case captionOffsetDirection
+            Case eCaptionOffsetDirection.TopLeft
+                Return New ScreenVector(arrowLengthPixels, arrowLengthPixels)
+
+            Case eCaptionOffsetDirection.TopCenter
+                Return New ScreenVector(0, arrowLengthPixels)
+
+            Case eCaptionOffsetDirection.TopRight
+                Return New ScreenVector(-arrowLengthPixels, arrowLengthPixels)
+
+            Case eCaptionOffsetDirection.BottomLeft
+                Return New ScreenVector(arrowLengthPixels, -arrowLengthPixels)
+
+            Case eCaptionOffsetDirection.BottomCenter
+                Return New ScreenVector(0, -arrowLengthPixels)
+
+            Case eCaptionOffsetDirection.BottomRight
+                Return New ScreenVector(-arrowLengthPixels, -arrowLengthPixels)
+
+            Case Else
+                ' Same as eCaptionOffsetDirection.TopLeft
+                Return New ScreenVector(arrowLengthPixels, arrowLengthPixels)
+        End Select
+
+    End Function
+
     Public Sub SetAnnotationForDataPoint(
       seriesNumber As Integer, locationX As Double, locationY As Double, caption As String,
+      Optional captionOffsetDirection As eCaptionOffsetDirection = eCaptionOffsetDirection.TopLeft,
+      Optional arrowLengthPixels As Integer = 15,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
-      Optional lineWidth As Integer = 32,
+      Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
         Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
@@ -607,12 +674,21 @@ Public Class ctlOxyPlotControl
         Dim closesetDataPointIndex As Integer
         Dim closestDistance As Double
 
-        Dim dataPoint As DataPoint = FindNearestDataPoint(seriesIndex, locationX, locationY, closesetDataPointIndex, closestDistance)
+        Const xAxisOnly = True
+
+        Dim nearestPoint As DataPoint = FindNearestDataPoint(seriesIndex, locationX, locationY, xAxisOnly, closesetDataPointIndex, closestDistance)
+
+        If arrowLengthPixels < 0 Then
+            arrowLengthPixels = 0
+        End If
+
+        Dim arrowDirection = GetArrowVector(captionOffsetDirection, arrowLengthPixels)
 
         Dim oAnnotation = New ArrowAnnotation() With {
-            .StartPoint = dataPoint,
-            .EndPoint = dataPoint,
+            .StartPoint = nearestPoint,
+            .EndPoint = nearestPoint,
             .LineStyle = eLineStyle,
+            .ArrowDirection = arrowDirection,
             .StrokeThickness = lineWidth,
             .Text = caption,
             .FontSize = fontSize
@@ -1009,14 +1085,14 @@ Public Class ctlOxyPlotControl
                     Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                     strTitle = oSeries.Title
                     For Each item In oSeries.Points
-                        lstData.Add(CType(item, DataPoint))
+                        lstData.Add(item)
                     Next
 
                 Case Else
                     Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                     strTitle = oSeries.Title
                     For Each item In oSeries.Points
-                        lstData.Add(CType(item, DataPoint))
+                        lstData.Add(item)
                     Next
             End Select
 
