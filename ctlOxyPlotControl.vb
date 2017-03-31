@@ -543,6 +543,38 @@ Public Class ctlOxyPlotControl
         InvalidatePlot()
     End Sub
 
+    Public Sub SavePlotAsPNG(filePath As String)
+
+        Dim svgCode = ctlOxyPlot.Model.ToSvg(Me.Width, Me.Height, True)
+
+        Dim tempFilePath = Path.GetTempFileName()
+
+        Using writer = New StreamWriter(New FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            writer.WriteLine(svgCode)
+        End Using
+
+        Dim doc = Svg.SvgDocument.Open(tempFilePath)
+
+        Dim bitmap = doc.Draw()
+        bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png)
+
+        Try
+            File.Delete(tempFilePath)
+        Catch ex As Exception
+            ' Ignore errors here
+        End Try
+
+    End Sub
+
+    Public Sub SavePlotAsSvg(filePath As String)
+
+        Dim svgCode = ctlOxyPlot.Model.ToSvg(Me.Width, Me.Height, True)
+
+        Using writer = New StreamWriter(New FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            writer.WriteLine(svgCode)
+        End Using
+
+    End Sub
     Public Sub SetAnnotationByXY(
       locationX As Double, locationY As Double, caption As String,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,

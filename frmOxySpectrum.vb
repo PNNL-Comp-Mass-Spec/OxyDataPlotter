@@ -10,12 +10,23 @@ Public Class frmOxySpectrum
     Private Const SPECTRUM_DLL_DATE As String = "March 29, 2017"
 
 #End Region
+#Region "Enums"
+
+    Private Enum eImageFormats
+        SVG = 0
+        PNG = 1
+    End Enum
+
+#End Region
 
 #Region "Member Variables"
     Private mActiveSeriesNumber As Integer
 
     Private mNormalizeOnLoadOrPaste As Boolean
     Private mNormalizationConstant As Double
+
+    Private mMostRecentDirectory As String = String.Empty
+
 #End Region
 
 #Region "Events"
@@ -142,6 +153,81 @@ Public Class frmOxySpectrum
 
     End Function
 
+
+    Private Sub SavePlotAsPNG()
+        Try
+            Dim outputFile As FileInfo = GetFileInfoForOutputImage(eImageFormats.PNG)
+            If outputFile Is Nothing Then Return
+
+            ctlOxyPlot.SavePlotAsPNG(outputFile.FullName)
+
+            MessageBox.Show("Saved plot as " & outputFile.FullName, "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        Catch ex As Exception
+            ShowError("Error saving the plot to disk: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub SavePlotAsSVG()
+        Try
+            Dim outputFile As FileInfo = GetFileInfoForOutputImage(eImageFormats.SVG)
+            If outputFile Is Nothing Then Return
+
+            ctlOxyPlot.SavePlotAsSvg(outputFile.FullName)
+
+            MessageBox.Show("Saved plot as " & outputFile.FullName, "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        Catch ex As Exception
+            ShowError("Error saving the plot to disk: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Private Function GetFileInfoForOutputImage(imageFormat As eImageFormats) As FileInfo
+
+        Dim fileType As String
+
+        Select Case imageFormat
+            Case eImageFormats.SVG
+                fileType = "svg"
+            Case eImageFormats.PNG
+                fileType = "png"
+            Case Else
+                Return Nothing
+        End Select
+
+        Dim oDialog = New SaveFileDialog() With {
+            .Title = "Save as " & fileType.ToUpper(),
+            .DefaultExt = fileType,
+            .OverwritePrompt = True,
+            .AddExtension = True,
+            .FileName = "Spectrum." & fileType
+        }
+
+        If Not String.IsNullOrWhiteSpace(mMostRecentDirectory) Then
+            oDialog.InitialDirectory = mMostRecentDirectory
+        End If
+
+        Dim result = oDialog.ShowDialog()
+
+        If result <> DialogResult.OK Then
+            Return Nothing
+        End If
+
+        Dim filePath = oDialog.FileName
+        If String.IsNullOrWhiteSpace(filePath) Then
+            Return Nothing
+        End If
+
+        Dim outputFile = New FileInfo(filePath)
+
+        mMostRecentDirectory = outputFile.DirectoryName
+
+        Return outputFile
+
+    End Function
+
     Public Sub SetCurrentSeriesNumber(ByRef seriesNumber As Integer)
 
         Try
@@ -260,6 +346,13 @@ Public Class frmOxySpectrum
 
     Private Sub mnuAbout_Click(sender As Object, e As EventArgs) Handles mnuAbout.Click
         ShowAboutBox()
+    Private Sub mnuFileSaveGraphAsSVG_Click(sender As Object, e As EventArgs) Handles mnuFileSaveGraphAsSVG.Click
+        SavePlotAsSVG()
+    End Sub
+
+    Private Sub mnuFileSaveGraphAsPNG_Click(sender As Object, e As EventArgs) Handles mnuFileSaveGraphAsPNG.Click
+        SavePlotAsPNG()
+    End Sub
     End Sub
 
 #End Region

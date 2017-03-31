@@ -22,16 +22,21 @@ Partial Class frmOxySpectrum
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.ctlOxyPlot = New CWSpectrumDLLNET.ctlOxyPlotControl()
+        Me.ctlOxyPlot = New ctlOxyPlotControl()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveGraphAsPictureToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFileSaveGraphAsSVG = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFileSaveGraphAsPNG = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuFileExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuEdit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuEditAddSampleData = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuEditCopyAllData = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuEditCopyOneSeries = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.mnuEditLegendIsVisible = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAboutAddSampleData = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -61,44 +66,69 @@ Partial Class frmOxySpectrum
         '
         'mnuFile
         '
-        Me.mnuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveGraphAsPictureToolStripMenuItem, Me.ToolStripSeparator1, Me.mnuFileExit})
+        Me.mnuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFileSaveGraphAsSVG, Me.mnuFileSaveGraphAsPNG, Me.ToolStripSeparator1, Me.mnuFileExit})
         Me.mnuFile.Name = "mnuFile"
         Me.mnuFile.Size = New System.Drawing.Size(44, 24)
         Me.mnuFile.Text = "&File"
         '
-        'SaveGraphAsPictureToolStripMenuItem
+        'mnuFileSaveGraphAsSVG
         '
-        Me.SaveGraphAsPictureToolStripMenuItem.Name = "SaveGraphAsPictureToolStripMenuItem"
-        Me.SaveGraphAsPictureToolStripMenuItem.Size = New System.Drawing.Size(239, 26)
-        Me.SaveGraphAsPictureToolStripMenuItem.Text = "Save Graph as Picture ..."
+        Me.mnuFileSaveGraphAsSVG.Name = "mnuFileSaveGraphAsSVG"
+        Me.mnuFileSaveGraphAsSVG.Size = New System.Drawing.Size(223, 26)
+        Me.mnuFileSaveGraphAsSVG.Text = "Save Graph as &SVG ..."
+        '
+        'mnuFileSaveGraphAsPNG
+        '
+        Me.mnuFileSaveGraphAsPNG.Name = "mnuFileSaveGraphAsPNG"
+        Me.mnuFileSaveGraphAsPNG.Size = New System.Drawing.Size(223, 26)
+        Me.mnuFileSaveGraphAsPNG.Text = "Save Graph as &PNG ..."
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(236, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(220, 6)
         '
         'mnuFileExit
         '
         Me.mnuFileExit.Name = "mnuFileExit"
-        Me.mnuFileExit.Size = New System.Drawing.Size(239, 26)
+        Me.mnuFileExit.Size = New System.Drawing.Size(223, 26)
         Me.mnuFileExit.Text = "E&xit"
         '
         'mnuEdit
         '
-        Me.mnuEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEditAddSampleData})
+        Me.mnuEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEditCopyAllData, Me.mnuEditCopyOneSeries, Me.ToolStripSeparator2, Me.mnuEditLegendIsVisible})
         Me.mnuEdit.Name = "mnuEdit"
         Me.mnuEdit.Size = New System.Drawing.Size(47, 24)
         Me.mnuEdit.Text = "&Edit"
         '
-        'mnuEditAddSampleData
+        'mnuEditCopyAllData
         '
-        Me.mnuEditAddSampleData.Name = "mnuEditAddSampleData"
-        Me.mnuEditAddSampleData.Size = New System.Drawing.Size(198, 26)
-        Me.mnuEditAddSampleData.Text = "Add sample data"
+        Me.mnuEditCopyAllData.Name = "mnuEditCopyAllData"
+        Me.mnuEditCopyAllData.Size = New System.Drawing.Size(315, 26)
+        Me.mnuEditCopyAllData.Text = "Copy &all data to clipboard (as text)"
+        '
+        'mnuEditCopyOneSeries
+        '
+        Me.mnuEditCopyOneSeries.Name = "mnuEditCopyOneSeries"
+        Me.mnuEditCopyOneSeries.Size = New System.Drawing.Size(315, 26)
+        Me.mnuEditCopyOneSeries.Text = "Copy &single series to clipboard"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(312, 6)
+        '
+        'mnuEditLegendIsVisible
+        '
+        Me.mnuEditLegendIsVisible.Checked = True
+        Me.mnuEditLegendIsVisible.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuEditLegendIsVisible.Name = "mnuEditLegendIsVisible"
+        Me.mnuEditLegendIsVisible.Size = New System.Drawing.Size(315, 26)
+        Me.mnuEditLegendIsVisible.Text = "Show &Legend"
         '
         'mnuHelp
         '
-        Me.mnuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAbout})
+        Me.mnuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAbout, Me.mnuAboutAddSampleData})
         Me.mnuHelp.Name = "mnuHelp"
         Me.mnuHelp.Size = New System.Drawing.Size(53, 24)
         Me.mnuHelp.Text = "&Help"
@@ -106,34 +136,45 @@ Partial Class frmOxySpectrum
         'mnuAbout
         '
         Me.mnuAbout.Name = "mnuAbout"
-        Me.mnuAbout.Size = New System.Drawing.Size(125, 26)
+        Me.mnuAbout.Size = New System.Drawing.Size(198, 26)
         Me.mnuAbout.Text = "&About"
+        '
+        'mnuAboutAddSampleData
+        '
+        Me.mnuAboutAddSampleData.Name = "mnuAboutAddSampleData"
+        Me.mnuAboutAddSampleData.Size = New System.Drawing.Size(198, 26)
+        Me.mnuAboutAddSampleData.Text = "Add sample data"
         '
         'frmOxySpectrum
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1215, 650)
         Me.Controls.Add(Me.ctlOxyPlot)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmOxySpectrum"
         Me.Text = "frmOxySpectrum"
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        Me.MenuStrip1.ResumeLayout(false)
+        Me.MenuStrip1.PerformLayout
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
-    Public WithEvents ctlOxyPlot As CWSpectrumDLLNET.ctlOxyPlotControl
+End Sub
+    Public WithEvents ctlOxyPlot As ctlOxyPlotControl
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
     Friend WithEvents mnuFile As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuEdit As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuHelp As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents SaveGraphAsPictureToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFileSaveGraphAsSVG As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuFileExit As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents mnuEditAddSampleData As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAbout As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuEditCopyAllData As ToolStripMenuItem
+    Friend WithEvents mnuAboutAddSampleData As ToolStripMenuItem
+    Friend WithEvents mnuEditCopyOneSeries As ToolStripMenuItem
+    Friend WithEvents mnuFileSaveGraphAsPNG As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents mnuEditLegendIsVisible As ToolStripMenuItem
 End Class
