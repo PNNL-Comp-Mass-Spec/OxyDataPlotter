@@ -223,7 +223,7 @@ Public Class frmOxySpectrum
 
     End Sub
 
-    Public Sub DeleteDataForAllSeries(Optional ByVal blnConfirmDeletion As Boolean = True)
+    Public Sub DeleteDataForAllSeries(Optional blnConfirmDeletion As Boolean = True)
         Dim eResponse As DialogResult
         Dim intSeriesIndex As Integer
 
@@ -458,11 +458,12 @@ Public Class frmOxySpectrum
     End Sub
 
     Protected Sub ShowAboutBox()
+
         Dim strMessage As String
 
         strMessage = String.Empty
 
-        strMessage &= "Program written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA) in 2003" & ControlChars.NewLine
+        strMessage &= "Program written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA) in 2017" & ControlChars.NewLine
 
         strMessage &= "This is version " & Me.DllVersion & " (" & Me.DllDate & ")" & ControlChars.NewLine & ControlChars.NewLine
 
@@ -476,11 +477,17 @@ Public Class frmOxySpectrum
 
     End Sub
 
-    Protected Sub ShowMessage(strMessage As String, Optional ByVal strCaption As String = "Info")
+    Protected Sub ShowMessage(strMessage As String, Optional strCaption As String = "Info")
         MessageBox.Show(strMessage, strCaption, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
+    Private Sub UpdateLegendVisibility()
+        Dim isVisible = mnuEditLegendIsVisible.Checked
+        ctlOxyPlot.SetLegendVisibility(isVisible)
+    End Sub
+
 #Region "Form Events"
+
     Private Sub frmOxySpectrum_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         If e.CloseReason = CloseReason.UserClosing Then
             Me.Hide()
@@ -495,12 +502,14 @@ Public Class frmOxySpectrum
         Me.Hide()
     End Sub
 
-    Private Sub mnuEditAddSampleData_Click(sender As Object, e As EventArgs) Handles mnuEditAddSampleData.Click
+    Private Sub mnuAbout_Click(sender As Object, e As EventArgs) Handles mnuAbout.Click
+        ShowAboutBox()
+    End Sub
+
+    Private Sub mnuAboutAddSampleData_Click_1(sender As Object, e As EventArgs) Handles mnuAboutAddSampleData.Click
         AddSampleData()
     End Sub
 
-    Private Sub mnuAbout_Click(sender As Object, e As EventArgs) Handles mnuAbout.Click
-        ShowAboutBox()
     Private Sub mnuFileSaveGraphAsSVG_Click(sender As Object, e As EventArgs) Handles mnuFileSaveGraphAsSVG.Click
         SavePlotAsSVG()
     End Sub
@@ -516,6 +525,10 @@ Public Class frmOxySpectrum
     Private Sub mnuEditCopyOneSeries_Click(sender As Object, e As EventArgs) Handles mnuEditCopyOneSeries.Click
         CopyOneSeriesClipboard()
     End Sub
+
+    Private Sub mnuEditLegendIsVisible_Click(sender As Object, e As EventArgs) Handles mnuEditLegendIsVisible.Click
+        mnuEditLegendIsVisible.Checked = Not mnuEditLegendIsVisible.Checked
+        UpdateLegendVisibility()
     End Sub
 
 #End Region
