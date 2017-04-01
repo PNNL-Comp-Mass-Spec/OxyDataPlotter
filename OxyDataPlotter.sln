@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CWSpectrumDll_OxyPlot", "CWSpectrumDll_OxyPlot.vbproj", "{1DD7DFE2-07F6-46B5-8C76-E26D6597722D}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "OxyDataPlotter", "OxyDataPlotter.vbproj", "{1DD7DFE2-07F6-46B5-8C76-E26D6597722D}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CWSpectrumDllTest", "CWSpectrumDllTest\CWSpectrumDllTest.vbproj", "{F3C1E977-86EA-4E53-8D46-4B17F5A9A0B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotterTest", "OxyPlotterTest\OxyPlotterTest.csproj", "{D20BA43C-3D3D-4B54-967A-3402980FDBF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		{1DD7DFE2-07F6-46B5-8C76-E26D6597722D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DD7DFE2-07F6-46B5-8C76-E26D6597722D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DD7DFE2-07F6-46B5-8C76-E26D6597722D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3C1E977-86EA-4E53-8D46-4B17F5A9A0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3C1E977-86EA-4E53-8D46-4B17F5A9A0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3C1E977-86EA-4E53-8D46-4B17F5A9A0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3C1E977-86EA-4E53-8D46-4B17F5A9A0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D20BA43C-3D3D-4B54-967A-3402980FDBF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D20BA43C-3D3D-4B54-967A-3402980FDBF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D20BA43C-3D3D-4B54-967A-3402980FDBF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20BA43C-3D3D-4B54-967A-3402980FDBF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
