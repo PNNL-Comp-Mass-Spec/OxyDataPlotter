@@ -48,6 +48,100 @@ Public Class Spectrum
 
 #End Region
 
+
+#Region "Properties"
+    Public Property AutoscaleXAxis As Boolean
+        Get
+            Return SpectrumForm.ctlOxyPlot.AutoscaleXAxis
+        End Get
+        Set(value As Boolean)
+            SpectrumForm.ctlOxyPlot.AutoscaleXAxis = value
+        End Set
+    End Property
+
+    Public Property AutoscaleYAxis As Boolean
+        Get
+            Return SpectrumForm.ctlOxyPlot.AutoscaleYAxis
+        End Get
+        Set(value As Boolean)
+            SpectrumForm.ctlOxyPlot.AutoscaleYAxis = value
+        End Set
+    End Property
+
+    Public Property XAxisAbsoluteMinimum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.XAxisAbsoluteMinimum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.XAxisAbsoluteMinimum = value
+        End Set
+    End Property
+
+    Public Property XAxisAbsoluteMaximum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.XAxisAbsoluteMaximum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.XAxisAbsoluteMaximum = value
+        End Set
+    End Property
+
+    Public Property YAxisAbsoluteMinimum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.YAxisAbsoluteMinimum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.YAxisAbsoluteMinimum = value
+        End Set
+    End Property
+
+    Public Property YAxisAbsoluteMaximum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.YAxisAbsoluteMaximum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.YAxisAbsoluteMaximum = value
+        End Set
+    End Property
+
+    Public Property XAxisPaddingMinimum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.XAxisPaddingMinimum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.XAxisPaddingMinimum = value
+        End Set
+    End Property
+
+    Public Property XAxisPaddingMaximum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.XAxisPaddingMaximum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.XAxisPaddingMaximum = value
+        End Set
+    End Property
+
+    Public Property YAxisPaddingMinimum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.YAxisPaddingMinimum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.YAxisPaddingMinimum = value
+        End Set
+    End Property
+
+    Public Property YAxisPaddingMaximum As Double
+        Get
+            Return SpectrumForm.ctlOxyPlot.YAxisPaddingMaximum
+        End Get
+        Set(value As Double)
+            SpectrumForm.ctlOxyPlot.YAxisPaddingMaximum = value
+        End Set
+    End Property
+
+#End Region
+
 #Region "Member variables"
     ' Actual spectrum form
     Private WithEvents SpectrumForm As frmOxySpectrum
