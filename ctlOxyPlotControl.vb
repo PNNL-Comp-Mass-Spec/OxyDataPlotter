@@ -807,12 +807,27 @@ Public Class ctlOxyPlotControl
         If dataCount < 1 Then Exit Sub
 
         Dim lstData = New List(Of DataPoint)(dataCount)
-        Dim minimumYValue As Double = 0
+
+        Dim minimumXValue As Double = Double.MaxValue
+        Dim maximumXValue As Double = Double.MinValue
+
+        Dim minimumYValue As Double = Double.MaxValue
+        Dim maximumYValue As Double = Double.MinValue
 
         For index = 0 To dataCount - 1
             lstData.Add(New DataPoint(XDataZeroBased1DArray(index), YDataZeroBased1DArray(index)))
+            If XDataZeroBased1DArray(index) < minimumXValue Then
+                minimumXValue = XDataZeroBased1DArray(index)
+            End If
+            If XDataZeroBased1DArray(index) > maximumXValue Then
+                maximumXValue = XDataZeroBased1DArray(index)
+            End If
+
             If YDataZeroBased1DArray(index) < minimumYValue Then
                 minimumYValue = YDataZeroBased1DArray(index)
+            End If
+            If YDataZeroBased1DArray(index) > maximumYValue Then
+                maximumYValue = YDataZeroBased1DArray(index)
             End If
         Next
 
@@ -832,6 +847,27 @@ Public Class ctlOxyPlotControl
             ctlOxyPlot.Model.Series(seriesIndex) = GetNewLineSeries(strSeriesTitle, lstData)
         End If
 
+        For index = 0 To ctlOxyPlot.Model.Series.Count - 1
+            If index <> seriesIndex Then
+                Dim seriesPoints = GetDataXvsY(index + 1)
+                For Each dataItem In seriesPoints
+                    If dataItem.X < minimumXValue Then
+                        minimumXValue = dataItem.X
+                    End If
+                    If dataItem.X > maximumXValue Then
+                        maximumXValue = dataItem.X
+                    End If
+
+                    If dataItem.Y < minimumYValue Then
+                        minimumYValue = dataItem.Y
+                    End If
+                    If dataItem.Y > maximumYValue Then
+                        maximumYValue = dataItem.Y
+                    End If
+                Next
+            End If
+        Next
+
         SetSeriesVisible(seriesNumber, True, False)
 
         Select Case mSeriesPlotMode(seriesIndex)
@@ -841,7 +877,11 @@ Public Class ctlOxyPlotControl
                 ' Leave the plot mode unchanged
         End Select
 
-        mYAxis.AbsoluteMinimum = minimumYValue
+        mXAxis.AbsoluteMinimum = minimumXValue - (maximumXValue - minimumXValue) * 0.25
+        mXAxis.AbsoluteMaximum = maximumXValue + (maximumXValue - minimumXValue) * 0.25
+
+        mYAxis.AbsoluteMinimum = minimumYValue - (maximumYValue - minimumYValue) * 0.25
+        mYAxis.AbsoluteMaximum = maximumYValue + (maximumYValue - minimumYValue) * 0.25
 
         If AutoscaleXAxis Then
             mXAxis.Reset()
