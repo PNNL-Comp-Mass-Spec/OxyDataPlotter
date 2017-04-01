@@ -446,6 +446,44 @@ Public Class ctlOxyPlotControl
     End Function
 
     ''' <summary>
+
+    ''' <summary>
+    ''' Get a vector for placing an annotation at a position relative to a data point
+    ''' </summary>
+    ''' <param name="captionOffsetDirection"></param>
+    ''' <param name="offsetPixels"></param>
+    ''' <returns></returns>
+    Private Function GetOffsetVector(
+      captionOffsetDirection As CaptionOffsetDirection,
+      offsetPixels As Integer) As ScreenVector
+
+        Select Case captionOffsetDirection
+            Case CaptionOffsetDirection.TopLeft
+                Return New ScreenVector(offsetPixels, offsetPixels)
+
+            Case CaptionOffsetDirection.TopCenter
+                Return New ScreenVector(0, offsetPixels)
+
+            Case CaptionOffsetDirection.TopRight
+                Return New ScreenVector(-offsetPixels, offsetPixels)
+
+            Case CaptionOffsetDirection.BottomLeft
+                Return New ScreenVector(offsetPixels, -offsetPixels)
+
+            Case CaptionOffsetDirection.BottomCenter
+                Return New ScreenVector(0, -offsetPixels)
+
+            Case CaptionOffsetDirection.BottomRight
+                Return New ScreenVector(-offsetPixels, -offsetPixels)
+
+            Case Else
+                ' Same as CaptionOffsetDirection.TopLeft
+                Return New ScreenVector(offsetPixels, offsetPixels)
+        End Select
+
+    End Function
+
+    ''' <summary>
     ''' Update minimum and maximum with the range of the X axis
     ''' </summary>
     ''' <param name="visibleDataOnly">
@@ -703,106 +741,176 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
+    ''' <summary>
+    ''' Create an annotation for the given data point
+    ''' </summary>
+    ''' <param name="xyPoint"></param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="seriesNumber">Series number associated with targetDataPoint; 0 if not associated with a series</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="includeArrow">True to include an arrow</param>
+    ''' <param name="eLineStyle">Arrow line style if includeArrow is true; ignored if includeArrow is false</param>
+    ''' <param name="lineWidth">Arrow line width if includeArrow is true, otherwise rectangle border width</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    Public Sub SetAnnotation(
+      xyPoint As DataPoint,
+      caption As String,
+      seriesNumber As Integer,
+      captionOffsetDirection As CaptionOffsetDirection,
+      offsetPixels As Integer,
+      includeArrow As Boolean,
+      eLineStyle As LineStyle,
+      lineWidth As Integer,
+      fontSize As Integer)
+
+        If offsetPixels < 0 Then
+            offsetPixels = 0
+        End If
+
+        Dim arrowDirection = GetOffsetVector(captionOffsetDirection, offsetPixels)
+
+        Dim oAnnotation As Annotation
+
+        If includeArrow Then
+            oAnnotation = New ArrowAnnotation() With {
+                .StartPoint = xyPoint,
+                .EndPoint = xyPoint,
+                .LineStyle = eLineStyle,
+                .ArrowDirection = arrowDirection,
+                .StrokeThickness = lineWidth,
+                .Text = caption,
+                .FontSize = fontSize
+                }
+        Else
+            oAnnotation = New TextAnnotation() With {
+                .TextPosition = xyPoint,
+                .StrokeThickness = lineWidth,
+                .Text = caption,
+                .FontSize = fontSize
+                }
+        End If
+
+        ctlOxyPlot.Model.Annotations.Add(oAnnotation)
+
+        If seriesNumber > 0 Then
+            AddSeriesAnnotationToCache(seriesNumber, oAnnotation)
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Add an annotation at a specific position on the plot, optionally including an arrow
+    ''' </summary>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="includeArrow">True to include an arrow</param>
+    ''' <param name="eLineStyle">Arrow line style if includeArrow is true; ignored if includeArrow is false</param>
+    ''' <param name="lineWidth">Arrow line width if includeArrow is true, otherwise rectangle border width</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    ''' <remarks>Searches all series to find the closest matching point</remarks>
     Public Sub SetAnnotationByXY(
-      locationX As Double, locationY As Double, caption As String,
-      Optional captionOffsetDirection As eCaptionOffsetDirection = eCaptionOffsetDirection.TopLeft,
-      Optional arrowLengthPixels As Integer = 15,
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional includeArrow As Boolean = True,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
       Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
         Dim xyPoint = New DataPoint(locationX, locationY)
 
-        If arrowLengthPixels < 0 Then
-            arrowLengthPixels = 0
-        End If
-
-        Dim arrowDirection As ScreenVector = GetArrowVector(captionOffsetDirection, arrowLengthPixels)
-
-        Dim oAnnotation = New ArrowAnnotation() With {
-            .StartPoint = xyPoint,
-            .EndPoint = xyPoint,
-            .LineStyle = eLineStyle,
-            .ArrowDirection = arrowDirection,
-            .StrokeThickness = lineWidth,
-            .Text = caption,
-            .FontSize = fontSize
-        }
-
-        ctlOxyPlot.Model.Annotations.Add(oAnnotation)
+        SetAnnotation(xyPoint, caption, 0, captionOffsetDirection, offsetPixels, includeArrow, eLineStyle, lineWidth, fontSize)
 
     End Sub
 
     ''' <summary>
-    ''' Get a vector for placing an annotation at a position relative to a data point
+    ''' Add an annotation for a data point, optionally including an arrow
     ''' </summary>
-    ''' <param name="captionOffsetDirection"></param>
-    ''' <param name="arrowLengthPixels"></param>
-    ''' <returns></returns>
-    Private Function GetArrowVector(captionOffsetDirection As eCaptionOffsetDirection, arrowLengthPixels As Integer) As ScreenVector
-        Select Case captionOffsetDirection
-            Case eCaptionOffsetDirection.TopLeft
-                Return New ScreenVector(arrowLengthPixels, arrowLengthPixels)
-
-            Case eCaptionOffsetDirection.TopCenter
-                Return New ScreenVector(0, arrowLengthPixels)
-
-            Case eCaptionOffsetDirection.TopRight
-                Return New ScreenVector(-arrowLengthPixels, arrowLengthPixels)
-
-            Case eCaptionOffsetDirection.BottomLeft
-                Return New ScreenVector(arrowLengthPixels, -arrowLengthPixels)
-
-            Case eCaptionOffsetDirection.BottomCenter
-                Return New ScreenVector(0, -arrowLengthPixels)
-
-            Case eCaptionOffsetDirection.BottomRight
-                Return New ScreenVector(-arrowLengthPixels, -arrowLengthPixels)
-
-            Case Else
-                ' Same as eCaptionOffsetDirection.TopLeft
-                Return New ScreenVector(arrowLengthPixels, arrowLengthPixels)
-        End Select
-
-    End Function
-
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="seriesNumber">Series whose data should be searched; use 0 to search all series and use the closest matching point</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="includeArrow">True to include an arrow</param>
+    ''' <param name="eLineStyle">Arrow line style if includeArrow is true; ignored if includeArrow is false</param>
+    ''' <param name="lineWidth">Arrow line width if includeArrow is true, otherwise rectangle border width</param>
+    ''' <param name="fontSize">Annotation text size</param>
     Public Sub SetAnnotationForDataPoint(
-      seriesNumber As Integer, locationX As Double, locationY As Double, caption As String,
-      Optional captionOffsetDirection As eCaptionOffsetDirection = eCaptionOffsetDirection.TopLeft,
-      Optional arrowLengthPixels As Integer = 15,
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      Optional seriesNumber As Integer = 0,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional includeArrow As Boolean = True,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
       Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
-
-        Dim closesetDataPointIndex As Integer
-        Dim closestDistance As Double
-
         Const xAxisOnly = True
 
-        Dim nearestPoint As DataPoint = FindNearestDataPoint(seriesIndex, locationX, locationY, xAxisOnly, closesetDataPointIndex, closestDistance)
+        Dim searchResult As udtDataPointSearchResult
 
-        If arrowLengthPixels < 0 Then
-            arrowLengthPixels = 0
+        If seriesNumber = 0 Then
+            searchResult = LookupNearestPointNumber(locationX, locationY, xAxisOnly, seriesNumber, limitToGivenSeriesNumber:=False)
+        Else
+            Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
+            searchResult = FindNearestDataPoint(seriesIndex, locationX, locationY, xAxisOnly)
         End If
 
-        Dim arrowDirection = GetArrowVector(captionOffsetDirection, arrowLengthPixels)
+        SetAnnotation(searchResult.MatchedDataPoint, caption, seriesNumber, captionOffsetDirection, offsetPixels, includeArrow, eLineStyle, lineWidth, fontSize)
 
-        Dim oAnnotation = New ArrowAnnotation() With {
-            .StartPoint = nearestPoint,
-            .EndPoint = nearestPoint,
-            .LineStyle = eLineStyle,
-            .ArrowDirection = arrowDirection,
-            .StrokeThickness = lineWidth,
-            .Text = caption,
-            .FontSize = fontSize
-        }
+    End Sub
 
-        ctlOxyPlot.Model.Annotations.Add(oAnnotation)
+    ''' <summary>
+    ''' Add an annotation for a data point (no arrow)
+    ''' </summary>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="seriesNumber">Series whose data should be searched; use 0 to search all series and use the closest matching point</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    ''' <param name="lineWidth">Rectangle border width</param>
+    Public Sub SetTextAnnotationByDataPoint(
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      seriesNumber As Integer,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional fontSize As Integer = 12,
+      Optional lineWidth As Integer = 1)
+        SetAnnotationForDataPoint(locationX, locationY, caption, seriesNumber, captionOffsetDirection, offsetPixels, False, LineStyle.None, lineWidth, fontSize)
+    End Sub
 
-        AddSeriesAnnotationToCache(seriesNumber, oAnnotation)
-
+    ''' <summary>
+    ''' Add an annotation at a specific position on the plot (no arrow)
+    ''' </summary>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    ''' <param name="lineWidth">Rectangle border width</param>
+    Public Sub SetTextAnnotationByXY(
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional fontSize As Integer = 12,
+      Optional lineWidth As Integer = 1)
+        SetAnnotationByXY(locationX, locationY, caption, captionOffsetDirection, offsetPixels, False, LineStyle.None, lineWidth, fontSize)
     End Sub
 
     Private Sub SetAxisDisplayPrecision(oXaxis As Axis, precision As Short)
