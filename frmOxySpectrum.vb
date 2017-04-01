@@ -46,8 +46,6 @@ Public Class frmOxySpectrum
 
         DeleteDataForAllSeries(False)
 
-        ctlOxyPlot.SetSeriesCount(3)
-
         ctlOxyPlot.GenerateSineWave(1, True)
         ctlOxyPlot.SetSeriesColor(1, ctlOxyPlot.GetDefaultSeriesColor(1))
 
@@ -64,8 +62,7 @@ Public Class frmOxySpectrum
 
         FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
 
-        ctlOxyPlot.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, "")
-        ctlOxyPlot.SetSeriesPlotMode(3, ctlOxyPlotControl.pmPlotModeConstants.pmSticksToZero)
+        ctlOxyPlot.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "")
         ctlOxyPlot.SetSeriesColor(3, ctlOxyPlot.GetDefaultSeriesColor(3))
 
         SetCurrentSeriesNumber(3)
