@@ -5,12 +5,10 @@ Public Class frmOxySpectrum
 
 #Region "Constants"
 
-    Private Const DEFAULT_FONT_NAME As String = "Arial"
-    Private Const DEFAULT_FONT_SIZE As Short = 11
-
-    Private Const SPECTRUM_DLL_DATE As String = "March 29, 2017"
+    Private Const OXYPLOTTER_DATE As String = "April 1, 2017"
 
 #End Region
+
 #Region "Enums"
 
     Private Enum eImageFormats
@@ -238,13 +236,13 @@ Public Class frmOxySpectrum
 
     Public ReadOnly Property DllDate() As String
         Get
-            DllDate = SPECTRUM_DLL_DATE
+            DllDate = OXYPLOTTER_DATE
         End Get
     End Property
 
     Public ReadOnly Property DllVersion() As String
         Get
-            Return Assembly.GetCallingAssembly.GetName.Version.ToString
+            Return Assembly.GetCallingAssembly.GetName.Version.ToString()
         End Get
     End Property
 
@@ -431,9 +429,9 @@ Public Class frmOxySpectrum
         '	mSeriesNumberMenuLoadedCount = mSeriesNumberMenuLoadedCount + 1S
         '	mnuEditCurrentSeriesSelected.Load(mSeriesNumberMenuLoadedCount)
         '	With mnuEditCurrentSeriesSelected(mSeriesNumberMenuLoadedCount)
-        '		.Text = mSeriesNumberMenuLoadedCount.ToString.Trim
+        '		.Text = mSeriesNumberMenuLoadedCount.ToString().Trim()
         '		If mSeriesNumberMenuLoadedCount < 10 Then
-        '			.Text = .Text & vbTab & "Ctrl+" & mSeriesNumberMenuLoadedCount.ToString.Trim
+        '			.Text = .Text & vbTab & "Ctrl+" & mSeriesNumberMenuLoadedCount.ToString().Trim()
         '		End If
         '	End With
         'Loop

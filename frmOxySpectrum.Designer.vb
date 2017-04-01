@@ -22,7 +22,7 @@ Partial Class frmOxySpectrum
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.ctlOxyPlot = New ctlOxyPlotControl()
+        Me.ctlOxyPlot = New OxyDataPlotter.ctlOxyPlotControl()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileSaveGraphAsSVG = New System.Windows.Forms.ToolStripMenuItem()
@@ -50,6 +50,14 @@ Partial Class frmOxySpectrum
         Me.ctlOxyPlot.Location = New System.Drawing.Point(0, 33)
         Me.ctlOxyPlot.Margin = New System.Windows.Forms.Padding(5)
         Me.ctlOxyPlot.Name = "ctlOxyPlot"
+        Me.ctlOxyPlot.SetXAxisAbsoluteMaximum = 1.7976931348623157E+308R
+        Me.ctlOxyPlot.SetXAxisAbsoluteMinimum = -1.7976931348623157E+308R
+        Me.ctlOxyPlot.SetXAxisPaddingMaximum = 0.01R
+        Me.ctlOxyPlot.SetXAxisPaddingMinimum = 0.01R
+        Me.ctlOxyPlot.SetYAxisAbsoluteMaximum = 1.7976931348623157E+308R
+        Me.ctlOxyPlot.SetYAxisAbsoluteMinimum = 0R
+        Me.ctlOxyPlot.SetYAxisPaddingMaximum = 0.05R
+        Me.ctlOxyPlot.SetYAxisPaddingMinimum = 0.05R
         Me.ctlOxyPlot.Size = New System.Drawing.Size(1201, 603)
         Me.ctlOxyPlot.TabIndex = 0
         '
@@ -143,7 +151,7 @@ Partial Class frmOxySpectrum
         '
         Me.mnuAboutAddSampleData.Name = "mnuAboutAddSampleData"
         Me.mnuAboutAddSampleData.Size = New System.Drawing.Size(198, 26)
-        Me.mnuAboutAddSampleData.Text = "Add sample data"
+        Me.mnuAboutAddSampleData.Text = "Add &sample data"
         '
         'frmOxySpectrum
         '
