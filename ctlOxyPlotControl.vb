@@ -18,14 +18,14 @@ Public Class ctlOxyPlotControl
 
 #Region "Enums"
 
-    Public Enum pmPlotModeConstants
-        pmLines = 0                 ' LineSeries
-        pmSticksToZero = 1          ' StemSeries
-        pmPoints = 2                ' LineSeries
-        pmPointsAndLines = 3        ' LineSeries
+    Public Enum SeriesPlotMode
+        Lines = 0                 ' LineSeries
+        SticksToZero = 1          ' StemSeries
+        Points = 2                ' LineSeries
+        PointsAndLines = 3        ' LineSeries
     End Enum
 
-    Public Enum eCaptionOffsetDirection
+    Public Enum CaptionOffsetDirection
         TopLeft = 0
         TopCenter = 1
         TopRight = 2
@@ -127,10 +127,8 @@ Public Class ctlOxyPlotControl
 
 #Region "Member variables"
 
-    Private mDefaultPlotMode As pmPlotModeConstants
-
     ' 0-based array
-    Private ReadOnly mSeriesPlotMode(MAX_SERIES_COUNT) As pmPlotModeConstants
+    Private ReadOnly mSeriesPlotMode(MAX_SERIES_COUNT) As SeriesPlotMode
 
     Private ReadOnly mXAxis As Axis
     Private ReadOnly mYAxis As Axis
@@ -247,10 +245,10 @@ Public Class ctlOxyPlotControl
         Dim oSeries As LineSeries
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
 
-            Case pmPlotModeConstants.pmLines, pmPlotModeConstants.pmPoints, pmPlotModeConstants.pmPointsAndLines
+            Case SeriesPlotMode.Lines, SeriesPlotMode.Points, SeriesPlotMode.PointsAndLines
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
 
             Case Else
@@ -291,17 +289,15 @@ Public Class ctlOxyPlotControl
         Dim dblDataY(DATA_COUNT - 1) As Double
         Dim index As Integer
 
-        SetSeriesPlotMode(seriesNumber, pmPlotModeConstants.pmLines)
-
         For index = 0 To DATA_COUNT - 1
             dblDataX(index) = Math.Log(index + 1)
             dblDataY(index) = Math.Sin(index / 25.0#) * 100
         Next index
 
         If blnXAxisLogBased Then
-            SetDataXvsY(seriesNumber, dblDataX, dblDataY, DATA_COUNT, "Sine wave, log X")
+            SetDataXvsY(seriesNumber, dblDataX, dblDataY, DATA_COUNT, SeriesPlotMode.Lines, "Sine wave, log X")
         Else
-            SetDataYOnly(seriesNumber, dblDataY, DATA_COUNT, 1, 0.02, "Sine wave")
+            SetDataYOnly(seriesNumber, dblDataY, DATA_COUNT, SeriesPlotMode.Lines, 1, 0.02, "Sine wave")
         End If
 
     End Sub
@@ -326,7 +322,7 @@ Public Class ctlOxyPlotControl
             Return 0
         Else
             Select Case mSeriesPlotMode(seriesIndex)
-                Case pmPlotModeConstants.pmSticksToZero
+                Case SeriesPlotMode.SticksToZero
                     Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                     Return oSeries.Points.Count
                 Case Else
@@ -348,10 +344,10 @@ Public Class ctlOxyPlotControl
         Dim oSeries As LineSeries
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
 
-            Case pmPlotModeConstants.pmLines, pmPlotModeConstants.pmPoints, pmPlotModeConstants.pmPointsAndLines
+            Case SeriesPlotMode.Lines, SeriesPlotMode.Points, SeriesPlotMode.PointsAndLines
                 oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
 
             Case Else
@@ -1053,7 +1049,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.Color = ColorToOxyColor(cNewColor)
 
@@ -1061,6 +1057,7 @@ Public Class ctlOxyPlotControl
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                 oSeries.Color = ColorToOxyColor(cNewColor)
         End Select
+
     End Sub
 
     Public Sub SetSeriesLineStyle(seriesNumber As Integer, eLineStyle As LineStyle)
@@ -1071,7 +1068,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.LineStyle = eLineStyle
 
@@ -1079,6 +1076,7 @@ Public Class ctlOxyPlotControl
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                 oSeries.LineStyle = eLineStyle
         End Select
+
     End Sub
 
     Public Sub SetSeriesLineWidth(seriesNumber As Integer, lineWidth As Double)
@@ -1089,7 +1087,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.StrokeThickness = lineWidth
 
@@ -1097,6 +1095,7 @@ Public Class ctlOxyPlotControl
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                 oSeries.StrokeThickness = lineWidth
         End Select
+
     End Sub
 
     Public Sub SetSeriesPointColor(seriesNumber As Integer, cNewColor As Color)
@@ -1108,7 +1107,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.MarkerFill = ColorToOxyColor(cNewColor)
 
@@ -1128,15 +1127,15 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.MarkerSize = pointSize
 
             Case Else
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                 oSeries.MarkerSize = pointSize
-
         End Select
+
     End Sub
 
     Public Sub SetSeriesPointStyle(seriesNumber As Integer, ePointStyle As MarkerType)
@@ -1148,53 +1147,36 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.MarkerType = ePointStyle
 
             Case Else
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                 oSeries.MarkerType = ePointStyle
-
         End Select
 
     End Sub
 
-    Public Sub SetSeriesPlotMode(seriesNumber As Integer, ePlotMode As pmPlotModeConstants, Optional ByVal blnMakeDefault As Boolean = False)
+    <Obsolete("This method should typically not be needed. Instead use SetDataXvsY or SetDataYOnly with parameter ePlotMode")>
+    Public Sub SetSeriesPlotMode(seriesNumber As Integer, ePlotMode As SeriesPlotMode)
 
         Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
 
         SetSeriesPlotModeWork(seriesIndex, ePlotMode)
 
-        If blnMakeDefault Then
-            mDefaultPlotMode = ePlotMode
-
-            For seriesToCheck = 1 To MAX_SERIES_COUNT
-                If seriesToCheck >= ctlOxyPlot.Model.Series.Count Then
-                    Exit For
-                End If
-
-                If seriesNumber = seriesToCheck Then Continue For
-
-                Dim seriesIndexToCheck = seriesToCheck - 1
-
-                If mSeriesPlotMode(seriesIndexToCheck) <> ePlotMode Then
-                    SetSeriesPlotModeWork(seriesIndexToCheck, ePlotMode)
-                End If
-            Next
-        End If
-
     End Sub
 
-    Private Sub SetSeriesPlotModeWork(seriesIndex As Integer, eNewPlotMode As pmPlotModeConstants)
+    <Obsolete("This method can likely be deprecated")>
+    Private Sub SetSeriesPlotModeWork(seriesIndex As Integer, eNewPlotMode As SeriesPlotMode)
 
-        Dim eCurrentPlotMode As pmPlotModeConstants
+        Dim eCurrentPlotMode As SeriesPlotMode
 
         If TypeOf (ctlOxyPlot.Model.Series(seriesIndex)) Is StemSeries Then
-            eCurrentPlotMode = pmPlotModeConstants.pmSticksToZero
+            eCurrentPlotMode = SeriesPlotMode.SticksToZero
         ElseIf TypeOf (ctlOxyPlot.Model.Series(seriesIndex)) Is LineSeries Then
-            If mSeriesPlotMode(seriesIndex) = pmPlotModeConstants.pmSticksToZero Then
-                mSeriesPlotMode(seriesIndex) = pmPlotModeConstants.pmLines
+            If mSeriesPlotMode(seriesIndex) = SeriesPlotMode.SticksToZero Then
+                mSeriesPlotMode(seriesIndex) = SeriesPlotMode.Lines
             Else
                 eCurrentPlotMode = mSeriesPlotMode(seriesIndex)
             End If
@@ -1206,7 +1188,7 @@ Public Class ctlOxyPlotControl
             Dim strTitle As String
 
             Select Case eCurrentPlotMode
-                Case pmPlotModeConstants.pmSticksToZero
+                Case SeriesPlotMode.SticksToZero
                     Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                     strTitle = oSeries.Title
                     For Each item In oSeries.Points
@@ -1222,7 +1204,7 @@ Public Class ctlOxyPlotControl
             End Select
 
             Select Case eNewPlotMode
-                Case pmPlotModeConstants.pmSticksToZero
+                Case SeriesPlotMode.SticksToZero
                     ctlOxyPlot.Model.Series(seriesIndex) = GetNewStemSeries(strTitle, lstData)
                 Case Else
                     ctlOxyPlot.Model.Series(seriesIndex) = GetNewLineSeries(strTitle, lstData)
@@ -1232,7 +1214,7 @@ Public Class ctlOxyPlotControl
         End If
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 With oSeries
                     If .LineStyle = LineStyle.None Then .LineStyle = LineStyle.Solid
@@ -1244,13 +1226,13 @@ Public Class ctlOxyPlotControl
 
                 With oSeries
                     Select Case mSeriesPlotMode(seriesIndex)
-                        Case pmPlotModeConstants.pmLines
+                        Case SeriesPlotMode.Lines
                             If .LineStyle = LineStyle.None Then .LineStyle = LineStyle.Solid
                             .MarkerType = MarkerType.None
-                        Case pmPlotModeConstants.pmPoints
+                        Case SeriesPlotMode.Points
                             .LineStyle = LineStyle.None
                             If .MarkerType = MarkerType.None Then .MarkerType = MarkerType.Square
-                        Case pmPlotModeConstants.pmPointsAndLines
+                        Case SeriesPlotMode.PointsAndLines
                             If .LineStyle = LineStyle.None Then .LineStyle = LineStyle.Solid
                             If .MarkerType = MarkerType.None Then .MarkerType = MarkerType.Square
                     End Select
@@ -1267,10 +1249,6 @@ Public Class ctlOxyPlotControl
         If redrawPlot Then
             InvalidatePlot()
         End If
-    End Sub
-
-    Private Sub ShowMessage(strMessage As String, Optional ByVal strCaption As String = "Info")
-        MessageBox.Show(strMessage, strCaption, MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
     Private Sub UpdateGridlines(oAxis As Axis, showGridLines As Boolean, includeMinorGridLines As Boolean)
