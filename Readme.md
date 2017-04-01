@@ -22,6 +22,9 @@ SVG Rendering Library
 
 ![OxyDataPlotter](Docs/OxyDataPlotter_SampleData.png)
 
+![File Menu](Docs/OxyDataPlotter_FileMenu.png)
+![Edit Menu](Docs/OxyDataPlotter_EditMenu.png)
+
 ### Example Usage
 
 ```csharp
@@ -29,7 +32,7 @@ var spectrum = new OxyDataPlotter.Spectrum();
 
 spectrum.SetDataXvsY(1, xData, yData, dataCount, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Test Series");
 spectrum.SetDataXvsY(2, xPoints, yPoints, pointCount, ctlOxyPlotControl.SeriesPlotMode.Points, "Test Points");
-spectrum.SetDataXvsY(2, mzValues, intensities, mzDataCount, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "MS Data");
+spectrum.SetDataXvsY(3, mzValues, intensities, mzDataCount, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "MS Data");
 
 spectrum.SetSeriesLineStyle(1, OxyPlot.LineStyle.Automatic);
 spectrum.SetSeriesLineStyle(2, OxyPlot.LineStyle.Automatic);
@@ -50,7 +53,7 @@ spectrum.ShowSpectrum();
 ```
 
 -------------------------------------------------------------------------------
-Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
+Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA) \
 Copyright 2017, Battelle Memorial Institute.  All Rights Reserved.
 
 E-mail: matthew.monroe@pnnl.gov or matt@alchemistmatt.com \
