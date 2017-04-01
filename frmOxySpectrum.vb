@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports System.Reflection
-Imports System.Text
 
 Public Class frmOxySpectrum
 

@@ -30,7 +30,7 @@ Imports OxyPlot
 
 Public Class Spectrum
 
-    Private Const SPECTRUM_DLL_DATE As String = "March 29, 2017"
+    Private Const SPECTRUM_DLL_DATE As String = "March 31, 2017"
 
     ''Public Enum asmAnnotationSnapModeConstants
     ''	asmFixedToAnyPoint = 0

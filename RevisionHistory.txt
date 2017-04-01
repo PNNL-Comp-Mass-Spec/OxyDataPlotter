@@ -1,4 +1,9 @@
-CWSpectrumDLL Change Log
+OxyDataPlotter Change Log
+
+Version 3.0.6299; March 31, 2017
+	- Replaced CWUIControlsLib with OxyPlot
+		- Renamed to OxyDataPlotter
+	- Updated to .NET 4.6.2
 
 Version 2.42.4626; August 31, 2012
 	- Updated to .NET 4.0
