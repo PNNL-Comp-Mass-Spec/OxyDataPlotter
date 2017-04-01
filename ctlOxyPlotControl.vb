@@ -706,6 +706,21 @@ Public Class ctlOxyPlotControl
         Next
 
         InvalidatePlot()
+
+    End Sub
+
+    Public Sub RemoveSeries(seriesNumber As Integer)
+        Dim seriesCount = GetSeriesCount()
+
+        If seriesNumber < 1 Or seriesNumber > seriesCount Then
+            Throw New ArgumentOutOfRangeException(NameOf(seriesNumber))
+        End If
+
+        Dim seriesIndex = seriesNumber - 1
+        ctlOxyPlot.Model.Series.RemoveAt(seriesIndex)
+
+        InvalidatePlot()
+
     End Sub
 
     Public Sub SavePlotAsPNG(filePath As String)
@@ -1146,28 +1161,6 @@ Public Class ctlOxyPlotControl
                 oSeries.MarkerFill = newOxyColor
                 oSeries.MarkerStroke = newOxyColor
         End Select
-
-    End Sub
-
-    Public Sub SetSeriesCount(intCount As Integer)
-
-        If intCount < 1 Then intCount = 1
-        If intCount > MAX_SERIES_COUNT Then intCount = MAX_SERIES_COUNT
-
-        Do While intCount < ctlOxyPlot.Model.Series.Count
-            ctlOxyPlot.Model.Series.RemoveAt(ctlOxyPlot.Model.Series.Count - 1)
-        Loop
-
-        Do While intCount > ctlOxyPlot.Model.Series.Count
-            Dim strSeriesTitle As String = "Series " & ctlOxyPlot.Model.Series.Count + 1
-
-            Select Case mDefaultPlotMode
-                Case pmPlotModeConstants.pmSticksToZero
-                    ctlOxyPlot.Model.Series.Add(GetNewStemSeries(strSeriesTitle))
-                Case Else
-                    ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle))
-            End Select
-        Loop
 
     End Sub
 
