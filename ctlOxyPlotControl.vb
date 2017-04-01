@@ -85,7 +85,7 @@ Public Class ctlOxyPlotControl
 
     Public Property AutoscaleYAxis As Boolean = True
 
-    Public Property SetXAxisAbsoluteMinimum As Double
+    Public Property XAxisAbsoluteMinimum As Double
         Get
             Return mXAxis.AbsoluteMinimum
         End Get
@@ -94,7 +94,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetXAxisAbsoluteMaximum As Double
+    Public Property XAxisAbsoluteMaximum As Double
         Get
             Return mXAxis.AbsoluteMaximum
         End Get
@@ -103,7 +103,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetYAxisAbsoluteMinimum As Double
+    Public Property YAxisAbsoluteMinimum As Double
         Get
             Return mYAxis.AbsoluteMinimum
         End Get
@@ -112,7 +112,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetYAxisAbsoluteMaximum As Double
+    Public Property YAxisAbsoluteMaximum As Double
         Get
             Return mYAxis.AbsoluteMaximum
         End Get
@@ -121,7 +121,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetXAxisPaddingMinimum As Double
+    Public Property XAxisPaddingMinimum As Double
         Get
             Return mXAxis.MinimumPadding
         End Get
@@ -130,7 +130,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetXAxisPaddingMaximum As Double
+    Public Property XAxisPaddingMaximum As Double
         Get
             Return mXAxis.MaximumPadding
         End Get
@@ -139,7 +139,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetYAxisPaddingMinimum As Double
+    Public Property YAxisPaddingMinimum As Double
         Get
             Return mYAxis.MinimumPadding
         End Get
@@ -148,7 +148,7 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
-    Public Property SetYAxisPaddingMaximum As Double
+    Public Property YAxisPaddingMaximum As Double
         Get
             Return mYAxis.MaximumPadding
         End Get

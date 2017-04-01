@@ -50,14 +50,14 @@ Partial Class frmOxySpectrum
         Me.ctlOxyPlot.Location = New System.Drawing.Point(0, 33)
         Me.ctlOxyPlot.Margin = New System.Windows.Forms.Padding(5)
         Me.ctlOxyPlot.Name = "ctlOxyPlot"
-        Me.ctlOxyPlot.SetXAxisAbsoluteMaximum = 1.7976931348623157E+308R
-        Me.ctlOxyPlot.SetXAxisAbsoluteMinimum = -1.7976931348623157E+308R
-        Me.ctlOxyPlot.SetXAxisPaddingMaximum = 0.01R
-        Me.ctlOxyPlot.SetXAxisPaddingMinimum = 0.01R
-        Me.ctlOxyPlot.SetYAxisAbsoluteMaximum = 1.7976931348623157E+308R
-        Me.ctlOxyPlot.SetYAxisAbsoluteMinimum = 0R
-        Me.ctlOxyPlot.SetYAxisPaddingMaximum = 0.05R
-        Me.ctlOxyPlot.SetYAxisPaddingMinimum = 0.05R
+        Me.ctlOxyPlot.XAxisAbsoluteMaximum = 1.7976931348623157E+308R
+        Me.ctlOxyPlot.XAxisAbsoluteMinimum = -1.7976931348623157E+308R
+        Me.ctlOxyPlot.XAxisPaddingMaximum = 0.01R
+        Me.ctlOxyPlot.XAxisPaddingMinimum = 0.01R
+        Me.ctlOxyPlot.YAxisAbsoluteMaximum = 1.7976931348623157E+308R
+        Me.ctlOxyPlot.YAxisAbsoluteMinimum = 0R
+        Me.ctlOxyPlot.YAxisPaddingMaximum = 0.05R
+        Me.ctlOxyPlot.YAxisPaddingMinimum = 0.05R
         Me.ctlOxyPlot.Size = New System.Drawing.Size(1201, 603)
         Me.ctlOxyPlot.TabIndex = 0
         '
