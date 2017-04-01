@@ -188,6 +188,7 @@ Public Class ctlOxyPlotControl
 
         mYAxis = New LinearAxis() With {
             .AbsoluteMinimum = 0,
+            .MinimumPadding = 0.05,
             .MaximumPadding = 0.05
         }
 
@@ -314,6 +315,36 @@ Public Class ctlOxyPlotControl
 
     End Function
 
+    Private Sub FormatSeries(seriesIndex As Integer)
+
+        Select Case mSeriesPlotMode(seriesIndex)
+            Case SeriesPlotMode.SticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
+                With oSeries
+                    If .LineStyle = LineStyle.None Then .LineStyle = LineStyle.Solid
+                    .MarkerType = MarkerType.None
+                End With
+
+            Case Else
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
+
+                With oSeries
+                    Select Case mSeriesPlotMode(seriesIndex)
+                        Case SeriesPlotMode.Lines
+                            If .LineStyle = LineStyle.None Then .LineStyle = LineStyle.Solid
+                            .MarkerType = MarkerType.None
+                        Case SeriesPlotMode.Points
+                            .LineStyle = LineStyle.None
+                            If .MarkerType = MarkerType.None Then .MarkerType = MarkerType.Square
+                        Case SeriesPlotMode.PointsAndLines
+                            If .LineStyle = LineStyle.None Then .LineStyle = LineStyle.Solid
+                            If .MarkerType = MarkerType.None Then .MarkerType = MarkerType.Square
+                    End Select
+                End With
+        End Select
+
+    End Sub
+
     Public Sub GenerateSineWave(seriesNumber As Integer, blnXAxisLogBased As Boolean)
 
         Const DATA_COUNT As Short = 1021
@@ -393,6 +424,10 @@ Public Class ctlOxyPlotControl
     Public Function GetDefaultSeriesColor(seriesNumber As Integer) As OxyColor
         Dim lstColors = ctlOxyPlot.Model.DefaultColors
 
+        Do While seriesNumber > lstColors.Count
+            seriesNumber -= lstColors.Count
+        Loop
+
         If seriesNumber <= lstColors.Count Then
             Return lstColors(seriesNumber - 1)
         Else
@@ -418,12 +453,12 @@ Public Class ctlOxyPlotControl
     ''' <param name="lstData">Data points for the new series</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function GetNewLineSeries(strTitle As String, lstData As List(Of DataPoint)) As LineSeries
+    Private Function GetNewLineSeries(strTitle As String, lstData As IEnumerable(Of DataPoint)) As LineSeries
 
-        Dim oSeries As LineSeries
-        oSeries = New LineSeries()
-        oSeries.Title = strTitle
-        oSeries.CanTrackerInterpolatePoints = False
+        Dim oSeries = New LineSeries() With {
+            .Title = strTitle,
+            .CanTrackerInterpolatePoints = False
+        }
 
         For Each item In lstData
             oSeries.Points.Add(item)
@@ -446,6 +481,25 @@ Public Class ctlOxyPlotControl
     End Function
 
     ''' <summary>
+    ''' Creates a new stem series
+    ''' </summary>
+    ''' <param name="strTitle"></param>
+    ''' <returns></returns>
+    ''' <remarks>Will be an empty series without any data points</remarks>
+    Private Function GetNewStemSeries(strTitle As String, lstData As IEnumerable(Of DataPoint)) As StemSeries
+
+        Dim oSeries = New StemSeries() With {
+            .Title = strTitle,
+            .CanTrackerInterpolatePoints = False
+        }
+
+        For Each item In lstData
+            oSeries.Points.Add(item)
+        Next
+
+        Return oSeries
+
+    End Function
 
     ''' <summary>
     ''' Get a vector for placing an annotation at a position relative to a data point
@@ -545,7 +599,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 Return oSeries.MarkerFill
 
@@ -565,7 +619,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = seriesNumber - 1
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 Return oSeries.MarkerType
 
@@ -573,26 +627,6 @@ Public Class ctlOxyPlotControl
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
                 Return oSeries.MarkerType
         End Select
-
-    End Function
-
-    ''' <summary>
-    ''' Creates a new stem series
-    ''' </summary>
-    ''' <param name="strTitle"></param>
-    ''' <returns></returns>
-    ''' <remarks>Will be an empty series without any data points</remarks>
-    Private Function GetNewStemSeries(strTitle As String, lstData As List(Of DataPoint)) As StemSeries
-
-        Dim oSeries As StemSeries
-        oSeries = New StemSeries()
-        oSeries.Title = strTitle
-
-        For Each item In lstData
-            oSeries.Points.Add(item)
-        Next
-
-        Return oSeries
 
     End Function
 
@@ -939,19 +973,22 @@ Public Class ctlOxyPlotControl
     ''' <summary>
     ''' Add new X/Y Data, either replacing an existing series, or adding as a new series
     ''' </summary>
-    ''' <param name="seriesNumber">Series number to replace; set to higher than GetSeriesCount() to add a new series</param>
+    ''' <param name="seriesNumber">
+    ''' Series number to use/replace (starting with 1)
+    ''' Set to higher than GetSeriesCount() to add a new series
+    ''' </param>
     ''' <param name="XDataZeroBased1DArray"></param>
     ''' <param name="YDataZeroBased1DArray"></param>
     ''' <param name="dataCount"></param>
-    ''' <param name="strSeriesTitle"></param>
+    ''' <param name="ePlotMode">Plot mode for the series</param>
+    ''' <param name="seriesTitle">Title (for legend)</param>
     Public Sub SetDataXvsY(
       seriesNumber As Integer,
       XDataZeroBased1DArray() As Double,
       YDataZeroBased1DArray() As Double,
       dataCount As Integer,
-      Optional ByVal strSeriesTitle As String = "")
-
-        Dim seriesIndex As Integer
+      Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
+      Optional seriesTitle As String = "")
 
         If dataCount < 1 Then Exit Sub
 
@@ -965,6 +1002,8 @@ Public Class ctlOxyPlotControl
 
         For index = 0 To dataCount - 1
             lstData.Add(New DataPoint(XDataZeroBased1DArray(index), YDataZeroBased1DArray(index)))
+
+            ' Keep track of the minima and maxima
             If XDataZeroBased1DArray(index) < minimumXValue Then
                 minimumXValue = XDataZeroBased1DArray(index)
             End If
@@ -980,9 +1019,21 @@ Public Class ctlOxyPlotControl
             End If
         Next
 
+        Dim oSeries As Series
+        Select Case ePlotMode
+            Case SeriesPlotMode.SticksToZero
+                oSeries = GetNewStemSeries(seriesTitle, lstData)
+            Case SeriesPlotMode.Lines, SeriesPlotMode.Points, SeriesPlotMode.PointsAndLines
+                oSeries = GetNewLineSeries(seriesTitle, lstData)
+            Case Else
+                Throw New NotSupportedException("Unrecognized plot mode in SetDataXvsY")
+        End Select
+
+        Dim seriesIndex As Integer
+
         If seriesNumber > ctlOxyPlot.Model.Series.Count Then
             ' Add a new series
-            ctlOxyPlot.Model.Series.Add(GetNewLineSeries(strSeriesTitle, lstData))
+            ctlOxyPlot.Model.Series.Add(oSeries)
             seriesNumber = ctlOxyPlot.Model.Series.Count
             seriesIndex = seriesNumber - 1
         Else
@@ -993,10 +1044,14 @@ Public Class ctlOxyPlotControl
                 RemoveAnnotationsForSeries(seriesNumber)
             End If
 
-            ctlOxyPlot.Model.Series(seriesIndex) = GetNewLineSeries(strSeriesTitle, lstData)
+            ctlOxyPlot.Model.Series(seriesIndex) = oSeries
         End If
 
+        mSeriesPlotMode(seriesIndex) = ePlotMode
+
+        ' Determine the global minimum and maximum across all series
         For index = 0 To ctlOxyPlot.Model.Series.Count - 1
+            ' Skip the current series since it has already been checked
             If index <> seriesIndex Then
                 Dim seriesPoints = GetDataXvsY(index + 1)
                 For Each dataItem In seriesPoints
@@ -1017,20 +1072,20 @@ Public Class ctlOxyPlotControl
             End If
         Next
 
+        FormatSeries(seriesIndex)
+
         SetSeriesVisible(seriesNumber, True, False)
 
-        Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
-                mSeriesPlotMode(seriesIndex) = pmPlotModeConstants.pmLines
-            Case Else
-                ' Leave the plot mode unchanged
-        End Select
+        ' Pad the absolute minima by 25% of the data range
+        If maximumXValue > minimumXValue Then
+            mXAxis.AbsoluteMinimum = minimumXValue - (maximumXValue - minimumXValue) * 0.25
+            mXAxis.AbsoluteMaximum = maximumXValue + (maximumXValue - minimumXValue) * 0.25
+        End If
 
-        mXAxis.AbsoluteMinimum = minimumXValue - (maximumXValue - minimumXValue) * 0.25
-        mXAxis.AbsoluteMaximum = maximumXValue + (maximumXValue - minimumXValue) * 0.25
-
-        mYAxis.AbsoluteMinimum = minimumYValue - (maximumYValue - minimumYValue) * 0.25
-        mYAxis.AbsoluteMaximum = maximumYValue + (maximumYValue - minimumYValue) * 0.25
+        If maximumYValue > minimumYValue Then
+            mYAxis.AbsoluteMinimum = minimumYValue - (maximumYValue - minimumYValue) * 0.25
+            mYAxis.AbsoluteMaximum = maximumYValue + (maximumYValue - minimumYValue) * 0.25
+        End If
 
         If AutoscaleXAxis Then
             mXAxis.Reset()
@@ -1048,7 +1103,27 @@ Public Class ctlOxyPlotControl
 
     End Sub
 
-    Public Sub SetDataYOnly(ByRef seriesNumber As Integer, ByRef YDataZeroBased1DArray() As Double, YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strSeriesTitle As String = "")
+    ''' <summary>
+    ''' Add new data with auto generated X values based on xFirst and xIncrement, either replacing an existing series, or adding as a new series
+    ''' </summary>
+    ''' <param name="seriesNumber">
+    ''' Series number to use/replace (starting with 1)
+    ''' Set to higher than GetSeriesCount() to add a new series
+    ''' </param>
+    ''' <param name="YDataZeroBased1DArray"></param>
+    ''' <param name="YDataCount"></param>
+    ''' <param name="ePlotMode">Plot mode for the series</param>
+    ''' <param name="xFirst">Starting X value</param>
+    ''' <param name="xIncrement">Distance in X between each data point</param>
+    ''' <param name="seriesTitle">Title (for legend)</param>
+    Public Sub SetDataYOnly(
+      ByRef seriesNumber As Integer,
+      ByRef YDataZeroBased1DArray() As Double,
+      YDataCount As Integer,
+      Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
+      Optional xFirst As Double = 0,
+      Optional xIncrement As Double = 1,
+      Optional seriesTitle As String = "")
 
         If YDataCount < 1 Then Exit Sub
 
@@ -1056,10 +1131,10 @@ Public Class ctlOxyPlotControl
         ReDim XDataZeroBased1DArray(YDataCount - 1)
 
         For index = 0 To YDataCount - 1
-            XDataZeroBased1DArray(index) = dblXFirst + dblIncrement * index
+            XDataZeroBased1DArray(index) = xFirst + xIncrement * index
         Next
 
-        SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, YDataCount, strSeriesTitle)
+        SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, YDataCount, ePlotMode, seriesTitle)
 
     End Sub
 
@@ -1150,7 +1225,7 @@ Public Class ctlOxyPlotControl
         Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
 
         Select Case mSeriesPlotMode(seriesIndex)
-            Case pmPlotModeConstants.pmSticksToZero
+            Case SeriesPlotMode.SticksToZero
                 Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
                 oSeries.Color = newOxyColor
                 oSeries.MarkerFill = newOxyColor
