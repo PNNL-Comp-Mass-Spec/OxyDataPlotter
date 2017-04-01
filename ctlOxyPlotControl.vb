@@ -50,6 +50,79 @@ Public Class ctlOxyPlotControl
 
     Public Property AutoscaleYAxis As Boolean = True
 
+    Public Property SetXAxisAbsoluteMinimum As Double
+        Get
+            Return mXAxis.AbsoluteMinimum
+        End Get
+        Set(value As Double)
+            mXAxis.AbsoluteMinimum = value
+        End Set
+    End Property
+
+    Public Property SetXAxisAbsoluteMaximum As Double
+        Get
+            Return mXAxis.AbsoluteMaximum
+        End Get
+        Set(value As Double)
+            mXAxis.AbsoluteMaximum = value
+        End Set
+    End Property
+
+    Public Property SetYAxisAbsoluteMinimum As Double
+        Get
+            Return mYAxis.AbsoluteMinimum
+        End Get
+        Set(value As Double)
+            mYAxis.AbsoluteMinimum = value
+        End Set
+    End Property
+
+    Public Property SetYAxisAbsoluteMaximum As Double
+        Get
+            Return mYAxis.AbsoluteMaximum
+        End Get
+        Set(value As Double)
+            mYAxis.AbsoluteMaximum = value
+        End Set
+    End Property
+
+
+    Public Property SetXAxisPaddingMinimum As Double
+        Get
+            Return mXAxis.MinimumPadding
+        End Get
+        Set(value As Double)
+            mXAxis.MinimumPadding = value
+        End Set
+    End Property
+
+    Public Property SetXAxisPaddingMaximum As Double
+        Get
+            Return mXAxis.MaximumPadding
+        End Get
+        Set(value As Double)
+            mXAxis.MaximumPadding = value
+        End Set
+    End Property
+
+    Public Property SetYAxisPaddingMinimum As Double
+        Get
+            Return mYAxis.MinimumPadding
+        End Get
+        Set(value As Double)
+            mYAxis.MinimumPadding = value
+        End Set
+    End Property
+
+    Public Property SetYAxisPaddingMaximum As Double
+        Get
+            Return mYAxis.MaximumPadding
+        End Get
+        Set(value As Double)
+            mYAxis.MaximumPadding = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Member variables"
@@ -80,7 +153,11 @@ Public Class ctlOxyPlotControl
         ctlOxyPlot.Model = oNewModel
 
         mXAxis = New LinearAxis()
-        mYAxis = New LinearAxis()
+
+        mYAxis = New LinearAxis() With {
+            .AbsoluteMinimum = 0,
+            .MaximumPadding = 0.05
+        }
 
         mAnnotationsBySeries = New Dictionary(Of Integer, List(Of Annotation))
 
@@ -730,9 +807,13 @@ Public Class ctlOxyPlotControl
         If dataCount < 1 Then Exit Sub
 
         Dim lstData = New List(Of DataPoint)(dataCount)
+        Dim minimumYValue As Double = 0
 
         For index = 0 To dataCount - 1
             lstData.Add(New DataPoint(XDataZeroBased1DArray(index), YDataZeroBased1DArray(index)))
+            If YDataZeroBased1DArray(index) < minimumYValue Then
+                minimumYValue = YDataZeroBased1DArray(index)
+            End If
         Next
 
         If seriesNumber > ctlOxyPlot.Model.Series.Count Then
@@ -759,6 +840,8 @@ Public Class ctlOxyPlotControl
             Case Else
                 ' Leave the plot mode unchanged
         End Select
+
+        mYAxis.AbsoluteMinimum = minimumYValue
 
         If AutoscaleXAxis Then
             mXAxis.Reset()
