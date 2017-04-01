@@ -20,7 +20,7 @@ SVG Rendering Library
 
 ### Screenshots
 
-![OxyDataPlotter](OxyDataPlotter/Docs/OxyDataPlotter_SampleData.png)
+![OxyDataPlotter](Docs/OxyDataPlotter_SampleData.png)
 
 ### Example Usage
 
