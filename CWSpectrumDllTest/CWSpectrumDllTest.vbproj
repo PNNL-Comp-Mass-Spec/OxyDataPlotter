@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -24,7 +24,7 @@
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
     <RootNamespace>CWSpectrumDllTest</RootNamespace>
-    <StartupObject>CWSpectrumDllTest.frmTestOxyPlot</StartupObject>
+    <StartupObject>CWSpectrumDllTest.frmTestCWSpectrum</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
@@ -82,12 +82,6 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OxyPlot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
-      <HintPath>..\packages\OxyPlot.Core.1.0.0\lib\net45\OxyPlot.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.WindowsForms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=245eacd6b5d2d338, processorArchitecture=MSIL">
-      <HintPath>..\packages\OxyPlot.WindowsForms.1.0.0\lib\net45\OxyPlot.WindowsForms.dll</HintPath>
-    </Reference>
     <Reference Include="ProgressFormNET">
       <HintPath>..\lib\ProgressFormNET.dll</HintPath>
     </Reference>
@@ -120,15 +114,6 @@
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="frmTestOxyPlot.Designer.vb">
-      <DependentUpon>frmTestOxyPlot.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmTestOxyPlot.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <EmbeddedResource Include="frmTestOxyPlot.resx">
-      <DependentUpon>frmTestOxyPlot.vb</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
@@ -136,12 +121,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CWSpectrumDll_OxyPlot.vbproj">
-      <Project>{1dd7dfe2-07f6-46b5-8c76-e26d6597722d}</Project>
-      <Name>CWSpectrumDll_OxyPlot</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
