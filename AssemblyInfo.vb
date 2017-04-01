@@ -10,9 +10,9 @@ Imports System.Runtime.InteropServices
 ' TODO: Review the values of the assembly attributes
 
 
-<Assembly: AssemblyTitle("")>
+<Assembly: AssemblyTitle("OxyDataPlotter")>
 <Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("PNNL")>
+<Assembly: AssemblyCompany("Pacific Northwest National Laboratory")>
 <Assembly: AssemblyProduct("")>
 <Assembly: AssemblyCopyright("")>
 <Assembly: AssemblyTrademark("")>
