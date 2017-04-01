@@ -43,6 +43,41 @@ Public Class ctlOxyPlotControl
         Public GridlineThickness As Double
     End Structure
 
+    ''' <summary>
+    ''' Describes a data point found by FindNearestDataPoint or LookupNearestPointNumber
+    ''' </summary>
+    Public Structure udtDataPointSearchResult
+        ''' <summary>
+        ''' DataPoint closest to coordinate SearchX, SearchY
+        ''' </summary>
+        Public MatchedDataPoint As DataPoint
+
+        ''' <summary>
+        ''' Series number for the data point
+        ''' </summary>
+        Public SeriesNumber As Integer
+
+        ''' <summary>
+        ''' Data point index
+        ''' </summary>
+        Public DataPointIndex As Integer
+
+        ''' <summary>
+        ''' Distance of the data point to coordinate SearchX,SearchY
+        ''' </summary>
+        Public DistanceFromSearchCoords As Double
+
+        ''' <summary>
+        ''' X value of the desired coordinate
+        ''' </summary>
+        Public SearchX As Double
+
+        ''' <summary>
+        ''' Y value of the desired coordinate
+        ''' </summary>
+        Public SearchY As Double
+
+    End Structure
 #End Region
 
 #Region "Properties"
@@ -85,7 +120,6 @@ Public Class ctlOxyPlotControl
             mYAxis.AbsoluteMaximum = value
         End Set
     End Property
-
 
     Public Property SetXAxisPaddingMinimum As Double
         Get
@@ -227,20 +261,15 @@ Public Class ctlOxyPlotControl
     ''' Find the data point closest to locationX,locationY in series seriesIndex
     ''' </summary>
     ''' <param name="seriesIndex">Index of the series to search</param>
-    ''' <param name="locationX">Target X</param>
-    ''' <param name="locationY">Target Y</param>
+    ''' <param name="searchPosX">Target X</param>
+    ''' <param name="searchPosY">Target Y</param>
     ''' <param name="xAxisOnly">When true, only compare locationX to X axis values in the data</param>
-    ''' <param name="closesetDataPointIndex">Output: index of the closest data point</param>
-    ''' <param name="closestDistance">Output: euclidean distance to the closest data point</param>
-    ''' <returns>The closest data point</returns>
-    ''' <remarks>Set xAxisOnly to only find the data point whose x-axis value is closest to locationX</remarks>
+    ''' <returns>Structure describing the closest data point</returns>
     Private Function FindNearestDataPoint(
       seriesIndex As Integer,
-      locationX As Double,
-      locationY As Double,
-      xAxisOnly As Boolean,
-      <Out()> ByRef closesetDataPointIndex As Integer,
-      <Out()> ByRef closestDistance As Double) As DataPoint
+      searchPosX As Double,
+      searchPosY As Double,
+      xAxisOnly As Boolean) As udtDataPointSearchResult
 
         Dim oSeries As LineSeries
 
@@ -255,30 +284,33 @@ Public Class ctlOxyPlotControl
                 Throw New NotSupportedException("Unrecognized plot mode in FindNearestDataPoint")
         End Select
 
-        Dim closesetDataPoint As DataPoint = Nothing
-        closestDistance = Double.MaxValue
-        closesetDataPointIndex = 0
+        Dim searchResult = New udtDataPointSearchResult() With {
+            .SeriesNumber = seriesIndex + 1,
+            .DistanceFromSearchCoords = Double.MaxValue,
+            .SearchX = searchPosX,
+            .SearchY = searchPosY
+        }
 
         Dim dataPointIndex = 0
 
         For Each dataPoint In oSeries.Points
             Dim distance As Double
             If xAxisOnly Then
-                distance = Math.Abs(dataPoint.X - locationX)
+                distance = Math.Abs(dataPoint.X - searchPosX)
             Else
-                distance = Math.Sqrt((dataPoint.X - locationX) ^ 2 + (dataPoint.Y - locationY) ^ 2)
+                distance = Math.Sqrt((dataPoint.X - searchPosX) ^ 2 + (dataPoint.Y - searchPosY) ^ 2)
             End If
 
-            If distance < closestDistance Then
-                closesetDataPoint = dataPoint
-                closesetDataPointIndex = dataPointIndex
-                closestDistance = distance
+            If distance < searchResult.DistanceFromSearchCoords Then
+                searchResult.MatchedDataPoint = dataPoint
+                searchResult.DataPointIndex = dataPointIndex
+                searchResult.DistanceFromSearchCoords = distance
             End If
 
             dataPointIndex += 1
         Next
 
-        Return closesetDataPoint
+        Return searchResult
 
     End Function
 
@@ -542,26 +574,22 @@ Public Class ctlOxyPlotControl
     End Sub
 
     ''' <summary>
-    ''' Find the data point closes to searchPosX,searchPosY
+    ''' Find the data point closest to searchPosX,searchPosY
+    ''' Set limitToGivenSeriesNumber to true to only search series seriesNumber
+    ''' Set limitToGivenSeriesNumber to false to search all series
     ''' </summary>
     ''' <param name="searchPosX"></param>
     ''' <param name="searchPosY"></param>
     ''' <param name="xAxisOnly">When true, only compare locationX to X axis values in the data</param>
-    ''' <param name="seriesNumber">Either the series to search if limitToGivenSeriesNumber is true, or the matched series number of limitToGivenSeriesNumber is false</param>
-    ''' <param name="distanceToClosestSeriesNumberDataPoint">Output: distance from the search point to the matched point</param>
+    ''' <param name="seriesNumber">The series to search if limitToGivenSeriesNumber is true, otherwise ignored</param>
     ''' <param name="limitToGivenSeriesNumber">When true, only examine data for series seriesNumber</param>
-    ''' <returns>Data point index in series seriesNumber</returns>
-    ''' <remarks>
-    ''' Data for the series is accessible via GetDataXvsY
-    ''' Set xAxisOnly to only find the data point whose x-axis value is closest to locationX
-    ''' </remarks>
+    ''' <returns>Structure describing the closest data point</returns>
     Public Function LookupNearestPointNumber(
       searchPosX As Double,
       searchPosY As Double,
       xAxisOnly As Boolean,
-      ByRef seriesNumber As Integer,
-      <Out()> ByRef distanceToClosestSeriesNumberDataPoint As Double,
-      limitToGivenSeriesNumber As Boolean) As Integer
+      seriesNumber As Integer,
+      limitToGivenSeriesNumber As Boolean) As udtDataPointSearchResult
 
         Dim startSeriesNumber As Integer
         Dim endSeriesNumber As Integer
@@ -575,27 +603,29 @@ Public Class ctlOxyPlotControl
             endSeriesNumber = ctlOxyPlot.Model.Series.Count
         End If
 
-        Dim closestSeriesNumber = 1
-        Dim closesetDataPointIndex = 0
-        distanceToClosestSeriesNumberDataPoint = Double.MaxValue
+        Dim searchResult = New udtDataPointSearchResult() With {
+            .SeriesNumber = 0,
+            .DistanceFromSearchCoords = Double.MaxValue,
+            .SearchX = searchPosX,
+            .SearchY = searchPosY
+        }
 
         For seriesNumberToCheck = startSeriesNumber To endSeriesNumber
             Dim seriesIndex = seriesNumberToCheck - 1
 
-            Dim candidateDataPointIndex As Integer
-            Dim candidateDistance As Double
-            Dim matchedDataPoint = FindNearestDataPoint(seriesIndex, searchPosX, searchPosY, xAxisOnly, candidateDataPointIndex, candidateDistance)
+            Dim candidateResult = FindNearestDataPoint(seriesIndex, searchPosX, searchPosY, xAxisOnly)
 
-            If candidateDistance < distanceToClosestSeriesNumberDataPoint Then
-                closestSeriesNumber = seriesNumberToCheck
-                closesetDataPointIndex = candidateDataPointIndex
-                distanceToClosestSeriesNumberDataPoint = candidateDistance
+            If candidateResult.DistanceFromSearchCoords < searchResult.DistanceFromSearchCoords Then
+
+                searchResult.SeriesNumber = seriesNumberToCheck
+                searchResult.DataPointIndex = candidateResult.DataPointIndex
+                searchResult.DistanceFromSearchCoords = candidateResult.DistanceFromSearchCoords
+                searchResult.MatchedDataPoint = candidateResult.MatchedDataPoint
+
             End If
         Next
 
-        seriesNumber = closestSeriesNumber
-
-        Return closesetDataPointIndex
+        Return searchResult
 
     End Function
 
