@@ -3,6 +3,7 @@ Option Explicit On
 
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
+Imports OxyDataPlotter.ctlOxyPlotControl
 Imports OxyPlot
 
 ' -------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ Imports OxyPlot
 ' Converted to use OxyPlot in 2017
 ' Copyright 2005, Battelle Memorial Institute.  All Rights Reserved.
 
-' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
+' E-mail: matthew.monroe@pnnl.gov or matt@alchemistmatt.com
 ' Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
 '
@@ -29,14 +30,6 @@ Imports OxyPlot
 ' this computer software.
 
 Public Class Spectrum
-
-    Private Const SPECTRUM_DLL_DATE As String = "March 31, 2017"
-
-    ''Public Enum asmAnnotationSnapModeConstants
-    ''	asmFixedToAnyPoint = 0
-    ''	asmFixedToSingleDataPoint = 1
-    ''	asmFloating = 2
-    ''End Enum
 
 #Region "Structures"
 
@@ -71,7 +64,7 @@ Public Class Spectrum
     End Sub
 
 
-    Public Sub AutoLabelPeaks(seriesNumber As Integer, blnShowXPos As Boolean, blnShowYPos As Boolean, Optional ByVal lngCaptionAngle As Integer = 0, Optional ByVal blnIncludeArrow As Boolean = False, Optional ByVal blnHideInDenseRegions As Boolean = True, Optional ByVal lngMaxPeakCount As Integer = 100, Optional ByVal blnForceAsContinuousData As Boolean = False, Optional ByVal blnForceAsDiscreteData As Boolean = False)
+    Public Sub AutoLabelPeaks(seriesNumber As Integer, blnShowXPos As Boolean, blnShowYPos As Boolean, Optional lngCaptionAngle As Integer = 0, Optional blnIncludeArrow As Boolean = False, Optional blnHideInDenseRegions As Boolean = True, Optional lngMaxPeakCount As Integer = 100, Optional blnForceAsContinuousData As Boolean = False, Optional blnForceAsDiscreteData As Boolean = False)
         Throw New NotImplementedException("Not implemented: AutoLabelPeaks")
         ' ToDo: SpectrumForm.ctlOxyPlot.AutoLabelPeaks(seriesNumber, blnShowXPos, blnShowYPos, lngCaptionAngle, blnIncludeArrow, blnHideInDenseRegions, lngMaxPeakCount, blnForceAsContinuousData, blnForceAsDiscreteData)
     End Sub
@@ -95,7 +88,7 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.AutoScaleYNow()
     End Sub
 
-    Public Sub CenterCursors(Optional ByVal intCursorNumber As Integer = 1, Optional ByVal blncenterAll As Boolean = True)
+    Public Sub CenterCursors(Optional intCursorNumber As Integer = 1, Optional blncenterAll As Boolean = True)
         Throw New NotImplementedException("Not implemented: CenterCursors")
         ' ToDo: SpectrumForm.ctlOxyPlot.CenterCursor(intCursorNumber, blncenterAll)
     End Sub
@@ -110,7 +103,7 @@ Public Class Spectrum
         SpectrumForm.DeleteDataForAllSeries(False)
     End Sub
 
-    Public Sub CopyDataPointsToClipboardOrToString(seriesNumber As Integer, Optional ByRef strDataToCopy As String = "", Optional ByVal strDelim As String = vbTab, Optional ByVal blnCopyToClipboard As Boolean = True)
+    Public Sub CopyDataPointsToClipboardOrToString(seriesNumber As Integer, Optional ByRef strDataToCopy As String = "", Optional strDelim As String = vbTab, Optional blnCopyToClipboard As Boolean = True)
         ' If blnCopyToClipboard = False, then simply populates strDataToCopy
 
         Throw New NotImplementedException("Not implemented: CopyDataPointsToClipboardOrToString")
@@ -144,11 +137,11 @@ Public Class Spectrum
         End Set
     End Property
 
-    Public Sub DeleteDataActiveSeries(Optional ByVal blnConfirmDeletion As Boolean = True)
+    Public Sub DeleteDataActiveSeries(Optional blnConfirmDeletion As Boolean = True)
         SpectrumForm.DeleteDataActiveSeries(blnConfirmDeletion)
     End Sub
 
-    Public Sub DeleteDataForAllSeries(Optional ByVal blnConfirmDeletion As Boolean = True)
+    Public Sub DeleteDataForAllSeries(Optional blnConfirmDeletion As Boolean = True)
         SpectrumForm.DeleteDataForAllSeries(blnConfirmDeletion)
     End Sub
 
@@ -167,12 +160,12 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.EnableTrackModeAllEvents()
     End Sub
 
-    Public Sub EnableTrackModePan(Optional ByVal blnPanXOnly As Boolean = False, Optional ByVal blnPanYOnly As Boolean = False)
+    Public Sub EnableTrackModePan(Optional blnPanXOnly As Boolean = False, Optional blnPanYOnly As Boolean = False)
         Throw New NotImplementedException("Not implemented: EnableTrackModePan")
         ' ToDo: SpectrumForm.ctlOxyPlot.EnableTrackModePan(blnPanXOnly, blnPanYOnly)
     End Sub
 
-    Public Sub EnableTrackModeZoom(Optional ByVal blnZoomXOnly As Boolean = False, Optional ByVal blnZoomYOnly As Boolean = False)
+    Public Sub EnableTrackModeZoom(Optional blnZoomXOnly As Boolean = False, Optional blnZoomYOnly As Boolean = False)
         Throw New NotImplementedException("Not implemented: EnableTrackModeZoom")
         ' ToDo: SpectrumForm.ctlOxyPlot.EnableTrackModeZoom(blnZoomXOnly, blnZoomYOnly)
     End Sub
@@ -285,17 +278,17 @@ Public Class Spectrum
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetCursorSnapToDataPointModeEnabled()
     End Function
 
-    Public Function GetCursorColor(Optional ByVal intCursorNumber As Integer = 1) As Color
+    Public Function GetCursorColor(Optional intCursorNumber As Integer = 1) As Color
         Throw New NotImplementedException("Not implemented: GetCursorColor")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetCursorColor(intCursorNumber)
     End Function
 
-    Public Sub GetCursorPosition(ByRef XPos As Double, ByRef YPos As Double, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub GetCursorPosition(ByRef XPos As Double, ByRef YPos As Double, Optional intCursorNumber As Integer = 1)
         Throw New NotImplementedException("Not implemented: GetCursorPosition")
         ' ToDo: SpectrumForm.ctlOxyPlot.GetCursorPosition(XPos, YPos, intCursorNumber)
     End Sub
 
-    Public Function GetCursorVisibility(Optional ByVal intCursorNumber As Integer = 1) As Boolean
+    Public Function GetCursorVisibility(Optional intCursorNumber As Integer = 1) As Boolean
         Throw New NotImplementedException("Not implemented: GetCursorVisibility")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetCursorVisibility(intCursorNumber)
     End Function
@@ -343,22 +336,22 @@ Public Class Spectrum
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetLabelFontSize()
     End Function
 
-    Public Function GetGridLinesXVisible(Optional ByVal blnMajorGridLines As Boolean = True) As Boolean
+    Public Function GetGridLinesXVisible(Optional blnMajorGridLines As Boolean = True) As Boolean
         Throw New NotImplementedException("Not implemented: GetGridLinesXVisible")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetGridLinesXVisible(blnMajorGridLines)
     End Function
 
-    Public Function GetGridlinesYVisible(Optional ByVal blnMajorGridLines As Boolean = True) As Boolean
+    Public Function GetGridlinesYVisible(Optional blnMajorGridLines As Boolean = True) As Boolean
         Throw New NotImplementedException("Not implemented: GetGridlinesYVisible")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetGridlinesYVisible(blnMajorGridLines)
     End Function
 
-    Public Function GetGridLinesXColor(Optional ByVal blnMajorGridLines As Boolean = True) As Color
+    Public Function GetGridLinesXColor(Optional blnMajorGridLines As Boolean = True) As Color
         Throw New NotImplementedException("Not implemented: GetGridLinesXColor")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetGridLinesXColor(blnMajorGridLines)
     End Function
 
-    Public Function GetGridLinesYColor(Optional ByVal blnMajorGridLines As Boolean = True) As Color
+    Public Function GetGridLinesYColor(Optional blnMajorGridLines As Boolean = True) As Color
         Throw New NotImplementedException("Not implemented: GetGridLinesYColor")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetGridLinesYColor(blnMajorGridLines)
     End Function
@@ -450,7 +443,7 @@ Public Class Spectrum
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetSeriesOriginalIntensityMaximum(seriesNumber)
     End Function
 
-    Public Function GetSeriesPlotMode(seriesNumber As Integer) As ctlOxyPlotControl.pmPlotModeConstants
+    Public Function GetSeriesPlotMode(seriesNumber As Integer) As SeriesPlotMode
         Throw New NotImplementedException("Not implemented: GetSeriesPlotMode")
         ' ToDo: Return SpectrumForm.ctlOxyPlot.GetSeriesPlotMode(seriesNumber)
     End Function
@@ -483,38 +476,39 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.GetWindowPos(Top, intLeft, Height, Width)
     End Sub
 
-    Public Sub LoadDataFromDisk(Optional ByVal strInputFilePath As String = "", Optional ByVal blnShowMessages As Boolean = True, Optional ByVal blnLoadOptionsOnly As Boolean = False, Optional ByVal blnDelimeterComma As Boolean = True, Optional ByVal blnDelimeterTab As Boolean = True, Optional ByVal blnDelimeterSpace As Boolean = False, Optional ByVal blnLoadingDTAFile As Boolean = False)
+    Public Sub LoadDataFromDisk(Optional strInputFilePath As String = "", Optional blnShowMessages As Boolean = True, Optional blnLoadOptionsOnly As Boolean = False, Optional blnDelimeterComma As Boolean = True, Optional blnDelimeterTab As Boolean = True, Optional blnDelimeterSpace As Boolean = False, Optional blnLoadingDTAFile As Boolean = False)
         Throw New NotImplementedException("Not implemented: LoadDataFromDisk")
         ' ToDo: SpectrumForm.LoadDataFromDisk(strInputFilePath, blnShowMessages, blnLoadOptionsOnly, blnDelimeterComma, blnDelimeterTab, blnDelimeterSpace, blnLoadingDTAFile)
     End Sub
 
     ''' <summary>
-    ''' Find the data point closes to searchPosX,searchPosY
+    ''' Find the data point closest to searchPosX,searchPosY
+    ''' Set limitToGivenSeriesNumber to true to only search series seriesNumber
+    ''' Set limitToGivenSeriesNumber to false to search all series
     ''' </summary>
     ''' <param name="searchPosX"></param>
     ''' <param name="searchPosY"></param>
     ''' <param name="xAxisOnly">When true, only compare locationX to X axis values in the data</param>
-    ''' <param name="seriesNumber">Either the series to search if limitToGivenSeriesNumber is true, or the matched series number of limitToGivenSeriesNumber is false</param>
-    ''' <param name="distanceToClosestSeriesNumberDataPoint">Output: distance from the search point to the matched point</param>
+    ''' <param name="seriesNumber">The series to search if limitToGivenSeriesNumber is true, otherwise ignored</param>
     ''' <param name="limitToGivenSeriesNumber">When true, only examine data for series seriesNumber</param>
-    ''' <returns>Data point index in series seriesNumber</returns>
-    ''' <remarks>Data for the series is accessible via GetDataXvsY</remarks>
+    ''' <returns>Structure describing the closest data point</returns>
     Public Function LookupNearestPointNumber(
       searchPosX As Double,
       searchPosY As Double,
       xAxisOnly As Boolean,
-      ByRef seriesNumber As Integer,
-      <Out()> ByRef distanceToClosestSeriesNumberDataPoint As Double,
-      Optional limitToGivenSeriesNumber As Boolean = False) As Integer
-        Return SpectrumForm.ctlOxyPlot.LookupNearestPointNumber(searchPosX, searchPosY, xAxisOnly, seriesNumber, distanceToClosestSeriesNumberDataPoint, limitToGivenSeriesNumber)
+      seriesNumber As Integer,
+      limitToGivenSeriesNumber As Boolean) As udtDataPointSearchResult
+
+        Return SpectrumForm.ctlOxyPlot.LookupNearestPointNumber(searchPosX, searchPosY, xAxisOnly, seriesNumber, limitToGivenSeriesNumber)
+
     End Function
 
-    Public Sub PasteDataFromClipboard(Optional ByVal blnShowMessages As Boolean = True, Optional ByVal blnAllowCommaDelimeter As Boolean = True)
+    Public Sub PasteDataFromClipboard(Optional blnShowMessages As Boolean = True, Optional blnAllowCommaDelimeter As Boolean = True)
         Throw New NotImplementedException("Not implemented: PasteDataFromClipboard")
         ' ToDo: SpectrumForm.PasteDataFromClipboard(blnShowMessages, blnAllowCommaDelimeter)
     End Sub
 
-    Public Function RemoveAnnotationByCaption(strAnnotationText As String, Optional ByVal blnCaseSensitive As Boolean = False) As Boolean
+    Public Function RemoveAnnotationByCaption(strAnnotationText As String, Optional blnCaseSensitive As Boolean = False) As Boolean
         Throw New NotImplementedException("Not implemented: RemoveAnnotationByCaption")
         ' ToDo: RemoveAnnotationByCaption = SpectrumForm.ctlOxyPlot.RemoveAnnotationByCaption(strAnnotationText, blnCaseSensitive)
     End Function
@@ -531,23 +525,27 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.RemoveAnnotationsForSeries(seriesNumber)
     End Sub
 
-    Public Sub ResetOptionsToDefaults(Optional ByVal blnClearAllData As Boolean = False, Optional ByVal blnResetSeriesCount As Boolean = False, Optional ByVal intNewSeriesCount As Short = 2, Optional ByVal eDefaultPlotMode As ctlOxyPlotControl.pmPlotModeConstants = ctlOxyPlotControl.pmPlotModeConstants.pmLines)
+    Public Sub ResetOptionsToDefaults(Optional blnClearAllData As Boolean = False, Optional blnResetSeriesCount As Boolean = False, Optional intNewSeriesCount As Short = 2, Optional eDefaultPlotMode As SeriesPlotMode = SeriesPlotMode.Lines)
         ' This does not prompt the user
         Throw New NotImplementedException("Not implemented: ResetOptionsToDefaults")
         ' ToDo: SpectrumForm.ctlOxyPlot.ResetOptionsToDefaults(blnClearAllData, blnResetSeriesCount, intNewSeriesCount, eDefaultPlotMode)
     End Sub
 
-    Public Sub SaveDataToDisk(Optional ByVal strOutputFilePath As String = "", Optional ByVal blnOptionsOnly As Boolean = False, Optional ByVal strDelim As String = ",", Optional ByVal blnShowMessages As Boolean = True, Optional ByVal blnAppendOptionsToFile As Boolean = False)
+    Public Sub RemoveSeries(seriesNumber As Integer)
+        SpectrumForm.ctlOxyPlot.RemoveSeries(seriesNumber)
+    End Sub
+
+    Public Sub SaveDataToDisk(Optional strOutputFilePath As String = "", Optional blnOptionsOnly As Boolean = False, Optional strDelim As String = ",", Optional blnShowMessages As Boolean = True, Optional blnAppendOptionsToFile As Boolean = False)
         Throw New NotImplementedException("Not implemented: SaveDataToDisk")
         ' ToDo: SpectrumForm.SaveDataToDisk(strOutputFilePath, blnOptionsOnly, strDelim, blnShowMessages, blnAppendOptionsToFile)
     End Sub
 
-    Public Sub SaveToDiskAsWMF(Optional ByVal strOutputFilePath As String = "", Optional ByVal blnShowMessages As Boolean = True)
+    Public Sub SaveToDiskAsWMF(Optional strOutputFilePath As String = "", Optional blnShowMessages As Boolean = True)
         Throw New NotImplementedException("Not implemented: SaveToDiskAsWMF")
         ' ToDo: SpectrumForm.SaveToDiskAsPicture(strOutputFilePath, blnShowMessages)
     End Sub
 
-    'Public Function SetAnnotation(blnPromptForText As Boolean, CaptionXPos As Double, CaptionYPos As Double, Optional ByVal strCaptionText As String = "", Optional ByVal lngCaptionAngle As Integer = 0, Optional ByVal seriesNumber As Integer = 1, Optional ByVal eAnnotationSnapMode As CWGraphControl.asmAnnotationSnapModeConstants = CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional ByVal lngPointNumberToBind As Integer = -1, Optional ByVal blnAnnotationShowsNearestPointX As Boolean = False, Optional ByVal blnAnnotationShowsNearestPointY As Boolean = False, Optional ByVal blnIncludeArrow As Boolean = False, Optional ByVal blnHideInDenseRegions As Boolean = True, Optional ByVal annotationIndexForce As Integer = 0, Optional ByVal blnAutomaticCaptionPlacement As Boolean = False) As Integer
+    'Public Function SetAnnotation(blnPromptForText As Boolean, CaptionXPos As Double, CaptionYPos As Double, Optional strCaptionText As String = "", Optional lngCaptionAngle As Integer = 0, Optional seriesNumber As Integer = 1, Optional eAnnotationSnapMode As CWGraphControl.asmAnnotationSnapModeConstants = CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional lngPointNumberToBind As Integer = -1, Optional blnAnnotationShowsNearestPointX As Boolean = False, Optional blnAnnotationShowsNearestPointY As Boolean = False, Optional blnIncludeArrow As Boolean = False, Optional blnHideInDenseRegions As Boolean = True, Optional annotationIndexForce As Integer = 0, Optional blnAutomaticCaptionPlacement As Boolean = False) As Integer
     '    ' Adds a new annotation
     '    '  or updates an existing one of annotationIndexForce is > 0
     '    ' Returns the index of the annotation (.Annotations is 1-based)
@@ -558,52 +556,110 @@ Public Class Spectrum
     '    ' ToDo: SetAnnotation = SpectrumForm.ctlOxyPlot.SetAnnotation(blnPromptForText, CaptionXPos, CaptionYPos, strCaptionText, lngCaptionAngle, seriesNumber, eAnnotationSnapMode, lngPointNumberToBind, blnAnnotationShowsNearestPointX, blnAnnotationShowsNearestPointY, blnIncludeArrow, blnHideInDenseRegions, annotationIndexForce, blnAutomaticCaptionPlacement)
     'End Function
 
-    'Public Function SetAnnotationByIndex(annotationIndex As Integer, CaptionXPos As Double, CaptionYPos As Double, Optional ByVal strCaptionText As String = "", Optional ByVal lngCaptionAngle As Integer = 0, Optional ByVal seriesNumber As Integer = 1, Optional ByVal eAnnotationSnapMode As CWGraphControl.asmAnnotationSnapModeConstants = CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional ByVal lngPointNumberToBind As Integer = 0, Optional ByVal blnAnnotationShowsNearestPointX As Boolean = False, Optional ByVal blnAnnotationShowsNearestPointY As Boolean = False, Optional ByVal blnIncludeArrow As Boolean = False, Optional ByVal blnHideInDenseRegions As Boolean = True, Optional ByVal blnAutomaticCaptionPlacement As Boolean = False, Optional ByVal strReturnAnnotationName As String = "") As Boolean
+    'Public Function SetAnnotationByIndex(annotationIndex As Integer, CaptionXPos As Double, CaptionYPos As Double, Optional strCaptionText As String = "", Optional lngCaptionAngle As Integer = 0, Optional seriesNumber As Integer = 1, Optional eAnnotationSnapMode As CWGraphControl.asmAnnotationSnapModeConstants = CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToSingleDataPoint, Optional lngPointNumberToBind As Integer = 0, Optional blnAnnotationShowsNearestPointX As Boolean = False, Optional blnAnnotationShowsNearestPointY As Boolean = False, Optional blnIncludeArrow As Boolean = False, Optional blnHideInDenseRegions As Boolean = True, Optional blnAutomaticCaptionPlacement As Boolean = False, Optional strReturnAnnotationName As String = "") As Boolean
     '    Throw New NotImplementedException("Not implemented: SetAnnotationByIndex")
     '    ' ToDo: SetAnnotationByIndex = SpectrumForm.ctlOxyPlot.SetAnnotationByIndex(annotationIndex, CaptionXPos, CaptionYPos, strCaptionText, lngCaptionAngle, seriesNumber, eAnnotationSnapMode, lngPointNumberToBind, blnAnnotationShowsNearestPointX, blnAnnotationShowsNearestPointY, blnIncludeArrow, blnHideInDenseRegions, blnAutomaticCaptionPlacement, strReturnAnnotationName)
     'End Function
 
     ''' <summary>
-    ''' Add an annotation at the given X,Y coordinate
+    ''' Add an annotation at a specific position on the plot, optionally including an arrow
     ''' </summary>
-    ''' <param name="locationX"></param>
-    ''' <param name="locationY"></param>
-    ''' <param name="caption"></param>
-    ''' <param name="arrowLengthPixels"></param>
-    ''' <param name="eLineStyle"></param>
-    ''' <param name="lineWidth"></param>
-    ''' <param name="fontSize"></param>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="includeArrow">True to include an arrow</param>
+    ''' <param name="eLineStyle">Arrow line style if includeArrow is true; ignored if includeArrow is false</param>
+    ''' <param name="lineWidth">Arrow line width if includeArrow is true, otherwise rectangle border width</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    ''' <remarks>Searches all series to find the closest matching point</remarks>
     Public Sub SetAnnotationByXY(
-      locationX As Double, locationY As Double, caption As String,
-      Optional captionOffsetDirection As ctlOxyPlotControl.eCaptionOffsetDirection = ctlOxyPlotControl.eCaptionOffsetDirection.TopLeft,
-      Optional arrowLengthPixels As Integer = 15,
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional includeArrow As Boolean = True,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
       Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        SpectrumForm.ctlOxyPlot.SetAnnotationByXY(locationX, locationY, caption, captionOffsetDirection, arrowLengthPixels, eLineStyle, lineWidth, fontSize)
+        SpectrumForm.ctlOxyPlot.SetAnnotationByXY(locationX, locationY, caption, captionOffsetDirection, offsetPixels, includeArrow, eLineStyle, lineWidth, fontSize)
     End Sub
 
     ''' <summary>
-    ''' Add an annotation the closest data point on the given series
+    ''' Add an annotation for a data point, optionally including an arrow
     ''' </summary>
-    ''' <param name="seriesNumber"></param>
-    ''' <param name="locationX"></param>
-    ''' <param name="locationY"></param>
-    ''' <param name="caption"></param>
-    ''' <param name="arrowLengthPixels"></param>
-    ''' <param name="eLineStyle"></param>
-    ''' <param name="lineWidth"></param>
-    ''' <param name="fontSize"></param>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="seriesNumber">Series whose data should be searched; use 0 to search all series and use the closest matching point</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="includeArrow">True to include an arrow</param>
+    ''' <param name="eLineStyle">Arrow line style if includeArrow is true; ignored if includeArrow is false</param>
+    ''' <param name="lineWidth">Arrow line width if includeArrow is true, otherwise rectangle border width</param>
+    ''' <param name="fontSize">Annotation text size</param>
     Public Sub SetAnnotationForDataPoint(
-      seriesNumber As Integer, locationX As Double, locationY As Double, caption As String,
-      Optional captionOffsetDirection As ctlOxyPlotControl.eCaptionOffsetDirection = ctlOxyPlotControl.eCaptionOffsetDirection.TopLeft,
-      Optional arrowLengthPixels As Integer = 15,
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      Optional seriesNumber As Integer = 0,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional includeArrow As Boolean = True,
       Optional eLineStyle As LineStyle = LineStyle.Automatic,
       Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        SpectrumForm.ctlOxyPlot.SetAnnotationForDataPoint(seriesNumber, locationX, locationY, caption, captionOffsetDirection, arrowLengthPixels, eLineStyle, lineWidth, fontSize)
+        SpectrumForm.ctlOxyPlot.SetAnnotationForDataPoint(locationX, locationY, caption, seriesNumber,
+                                                          captionOffsetDirection, offsetPixels, includeArrow, eLineStyle, lineWidth, fontSize)
+
+    End Sub
+
+    ''' <summary>
+    ''' Add an annotation for a data point (no arrow)
+    ''' </summary>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="seriesNumber">Series whose data should be searched; use 0 to search all series and use the closest matching point</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    ''' <param name="lineWidth">Rectangle border width</param>
+    Public Sub SetTextAnnotationByDataPoint(
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      seriesNumber As Integer,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional fontSize As Integer = 12,
+      Optional lineWidth As Integer = 1)
+        SetAnnotationForDataPoint(locationX, locationY, caption, seriesNumber, captionOffsetDirection, offsetPixels, False, LineStyle.None, lineWidth, fontSize)
+    End Sub
+
+    ''' <summary>
+    ''' Add an annotation at a specific position on the plot (no arrow)
+    ''' </summary>
+    ''' <param name="locationX">X location of the coordinate to label</param>
+    ''' <param name="locationY">Y location of the coordinate to label</param>
+    ''' <param name="caption">Annotation text</param>
+    ''' <param name="captionOffsetDirection">Offset direction relative to X,Y</param>
+    ''' <param name="offsetPixels">Offset distance</param>
+    ''' <param name="fontSize">Annotation text size</param>
+    ''' <param name="lineWidth">Rectangle border width</param>
+    Public Sub SetTextAnnotationByXY(
+      locationX As Double,
+      locationY As Double,
+      caption As String,
+      Optional captionOffsetDirection As CaptionOffsetDirection = CaptionOffsetDirection.TopLeft,
+      Optional offsetPixels As Integer = 15,
+      Optional fontSize As Integer = 12,
+      Optional lineWidth As Integer = 1)
+        SetAnnotationByXY(locationX, locationY, caption, captionOffsetDirection, offsetPixels, False, LineStyle.None, lineWidth, fontSize)
     End Sub
 
     Public Sub SetAnnotationFontColor(seriesNumber As Integer, cNewColor As Color, blnMakeDefaultForAll As Boolean)
@@ -621,7 +677,7 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.SetAnnotationFontSize(seriesNumber, intNewSize, blnMakeDefaultForAll)
     End Sub
 
-    Public Sub SetAnnotationDensityAutoHideCaptions(blnEnableAutoHide As Boolean, Optional ByVal blnShowHiddenCaptionsIfDisabled As Boolean = True)
+    Public Sub SetAnnotationDensityAutoHideCaptions(blnEnableAutoHide As Boolean, Optional blnShowHiddenCaptionsIfDisabled As Boolean = True)
         Throw New NotImplementedException("Not implemented: SetAnnotationDensityAutoHideCaptions")
         ' ToDo: SpectrumForm.ctlOxyPlot.SetAnnotationDensityAutoHideCaptions(blnEnableAutoHide, blnShowHiddenCaptionsIfDisabled)
     End Sub
@@ -687,12 +743,12 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.SetAutoscaleVisibleY(blnEnableAutoscale, blnFixMinimumYAtZero)
     End Sub
 
-    Public Sub SetCursorColor(cNewColor As Color, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub SetCursorColor(cNewColor As Color, Optional intCursorNumber As Integer = 1)
         Throw New NotImplementedException("Not implemented: SetCursorColor")
         ' ToDo: SpectrumForm.ctlOxyPlot.SetCursorColor(cNewColor, intCursorNumber)
     End Sub
 
-    Public Sub SetCursorPosition(XPos As Double, YPos As Double, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub SetCursorPosition(XPos As Double, YPos As Double, Optional intCursorNumber As Integer = 1)
         Throw New NotImplementedException("Not implemented: SetCursorPosition")
         ' ToDo: SpectrumForm.ctlOxyPlot.SetCursorPosition(XPos, YPos, intCursorNumber)
     End Sub
@@ -702,17 +758,55 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.SetCursorSnapMode(blnSnapToData)
     End Sub
 
-    Public Sub SetCursorVisible(blnShowCursor As Boolean, Optional ByVal intCursorNumber As Integer = 1)
+    Public Sub SetCursorVisible(blnShowCursor As Boolean, Optional intCursorNumber As Integer = 1)
         Throw New NotImplementedException("Not implemented: SetCursorVisible")
         ' ToDo: SpectrumForm.ctlOxyPlot.SetCursorVisible(blnShowCursor, intCursorNumber)
     End Sub
 
-    Public Sub SetDataXvsY(seriesNumber As Integer, ByRef XDataZeroBased1DArray() As Double, ByRef YDataZeroBased1DArray() As Double, DataCount As Integer, Optional ByVal strSeriesTitle As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
-        SpectrumForm.ctlOxyPlot.SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, DataCount, strSeriesTitle)
+    ''' <summary>
+    ''' Add new X/Y Data, either replacing an existing series, or adding as a new series
+    ''' </summary>
+    ''' <param name="seriesNumber">
+    ''' Series number to use/replace (starting with 1)
+    ''' Set to higher than GetSeriesCount() to add a new series
+    ''' </param>
+    ''' <param name="XDataZeroBased1DArray"></param>
+    ''' <param name="YDataZeroBased1DArray"></param>
+    ''' <param name="dataCount"></param>
+    ''' <param name="ePlotMode">Plot mode for the series</param>
+    ''' <param name="seriesTitle">Title (for legend)</param>
+    Public Sub SetDataXvsY(
+      seriesNumber As Integer,
+      XDataZeroBased1DArray() As Double,
+      YDataZeroBased1DArray() As Double,
+      dataCount As Integer,
+      Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
+      Optional seriesTitle As String = "")
+        SpectrumForm.ctlOxyPlot.SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, dataCount, ePlotMode, seriesTitle)
     End Sub
 
-    Public Sub SetDataYOnly(seriesNumber As Integer, ByRef YDataZeroBased1DArray() As Double, YDataCount As Integer, Optional ByVal dblXFirst As Double = 0, Optional ByVal dblIncrement As Double = 1, Optional ByVal strSeriesTitle As String = "", Optional ByVal dblOriginalMaximumIntensity As Double = 0)
-        SpectrumForm.ctlOxyPlot.SetDataYOnly(seriesNumber, YDataZeroBased1DArray, YDataCount, dblXFirst, dblIncrement, strSeriesTitle)
+    ''' <summary>
+    ''' Add new data with auto generated X values based on xFirst and xIncrement, either replacing an existing series, or adding as a new series
+    ''' </summary>
+    ''' <param name="seriesNumber">
+    ''' Series number to use/replace (starting with 1)
+    ''' Set to higher than GetSeriesCount() to add a new series
+    ''' </param>
+    ''' <param name="YDataZeroBased1DArray"></param>
+    ''' <param name="YDataCount"></param>
+    ''' <param name="ePlotMode">Plot mode for the series</param>
+    ''' <param name="xFirst">Starting X value</param>
+    ''' <param name="xIncrement">Distance in X between each data point</param>
+    ''' <param name="seriesTitle">Title (for legend)</param>
+    Public Sub SetDataYOnly(
+      ByRef seriesNumber As Integer,
+      ByRef YDataZeroBased1DArray() As Double,
+      YDataCount As Integer,
+      Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
+      Optional xFirst As Double = 0,
+      Optional xIncrement As Double = 1,
+      Optional seriesTitle As String = "")
+        SpectrumForm.ctlOxyPlot.SetDataYOnly(seriesNumber, YDataZeroBased1DArray, YDataCount, ePlotMode, xFirst, xIncrement, seriesTitle)
     End Sub
 
     ''' <summary>
@@ -731,19 +825,19 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.SetDisplayPrecisionY(precision)
     End Sub
 
-    Public Sub SetGridLinesStyleX(majorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle)
+    Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleX(majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleX(majorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle, minorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle)
+    Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle, minorGridlineStyle As udtGridlineStyle)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleX(majorGridlineStyle, minorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleY(majorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle)
+    Public Sub SetGridLinesStyleY(majorGridlineStyle As udtGridlineStyle)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleY(majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleY(majorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle, minorGridlineStyle As ctlOxyPlotControl.udtGridlineStyle)
+    Public Sub SetGridLinesStyleY(majorGridlineStyle As udtGridlineStyle, minorGridlineStyle As udtGridlineStyle)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleY(majorGridlineStyle, minorGridlineStyle)
     End Sub
 
@@ -812,10 +906,6 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.SetSeriesColor(seriesNumber, cNewColor)
     End Sub
 
-    Public Sub SetSeriesCount(intCount As Short)
-        SpectrumForm.ctlOxyPlot.SetSeriesCount(intCount)
-    End Sub
-
     Public Sub SetSeriesLegendCaption(seriesNumber As Integer, strNewCaption As String)
         SpectrumForm.ctlOxyPlot.SetSeriesLegendCaption(seriesNumber, strNewCaption)
     End Sub
@@ -842,8 +932,9 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.SetSeriesOriginalIntensityMaximum(seriesNumber, dblNewOriginalMaximumIntensity)
     End Sub
 
-    Public Sub SetSeriesPlotMode(seriesNumber As Integer, ePlotMode As ctlOxyPlotControl.pmPlotModeConstants, blnMakeDefault As Boolean)
-        SpectrumForm.ctlOxyPlot.SetSeriesPlotMode(seriesNumber, ePlotMode, blnMakeDefault)
+    <Obsolete("This method should typically not be needed. Instead use SetDataXvsY or SetDataYOnly with parameter ePlotMode")>
+    Public Sub SetSeriesPlotMode(seriesNumber As Integer, ePlotMode As SeriesPlotMode)
+        SpectrumForm.ctlOxyPlot.SetSeriesPlotMode(seriesNumber, ePlotMode)
     End Sub
 
     Public Sub SetSeriesPointColor(seriesNumber As Integer, cNewColor As Color)
@@ -889,7 +980,7 @@ Public Class Spectrum
         SpectrumForm.SetWindowPos(topLeftX, topLeftY, windowHeight, windowWidth)
     End Sub
 
-    Public Sub ShowAutoLabelPeaksDialog(Optional ByVal blnShowModal As Boolean = True)
+    Public Sub ShowAutoLabelPeaksDialog(Optional blnShowModal As Boolean = True)
         Throw New NotImplementedException("Not implemented: ShowAutoLabelPeaksDialog")
         ' ToDo: SpectrumForm.ShowAutoLabelPeaksDialog(blnShowModal)
     End Sub
@@ -904,7 +995,7 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.ctlOxyPlot.ShowHideControls(blnHideControlsFrame)
     End Sub
 
-    Public Sub ShowHideAnnotations(Optional ByVal blnForceOperation As Boolean = False)
+    Public Sub ShowHideAnnotations(Optional blnForceOperation As Boolean = False)
         Throw New NotImplementedException("Not implemented: ShowHideAnnotations")
         ' ToDo: SpectrumForm.ctlOxyPlot.ShowHideAnnotations(blnForceOperation)
     End Sub
@@ -954,19 +1045,19 @@ Public Class Spectrum
 
     Public ReadOnly Property DllDate() As String
         Get
-            DllDate = SPECTRUM_DLL_DATE
+            DllDate = SpectrumForm.DllDate()
         End Get
     End Property
 
     Public ReadOnly Property DllVersion() As String
         Get
-            Return System.Reflection.Assembly.GetCallingAssembly.GetName.Version.ToString
+            Return SpectrumForm.DllVersion()
         End Get
     End Property
 
     Public ReadOnly Property AppDate() As String
         Get
-            AppDate = SPECTRUM_DLL_DATE
+            AppDate = SpectrumForm.DllDate()
         End Get
     End Property
 
