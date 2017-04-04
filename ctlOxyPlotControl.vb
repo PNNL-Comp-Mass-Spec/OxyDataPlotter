@@ -80,9 +80,31 @@ Public Class ctlOxyPlotControl
 #End Region
 
 #Region "Properties"
-    Public Property AutoscaleXAxis As Boolean = True
 
-    Public Property AutoscaleYAxis As Boolean = True
+    Public Property AutoscaleXAxis As Boolean
+        Get
+            Return mAutoscaleXAxis
+        End Get
+        Set(value As Boolean)
+            If mAutoscaleXAxis = False And value = True Then
+                SetRangeX(Double.NaN, Double.NaN)
+            End If
+
+            mAutoscaleXAxis = value
+        End Set
+    End Property
+
+    Public Property AutoscaleYAxis As Boolean
+        Get
+            Return mAutoscaleYAxis
+        End Get
+        Set(value As Boolean)
+            If mAutoscaleYAxis = False And value = True Then
+                SetRangeY(Double.NaN, Double.NaN)
+            End If
+            mAutoscaleYAxis = value
+        End Set
+    End Property
 
     Public Property LegendPlacement As LegendPlacement
         Get
@@ -201,6 +223,9 @@ Public Class ctlOxyPlotControl
     Private ReadOnly mYAxis As Axis
 
     Private ReadOnly mAnnotationsBySeries As Dictionary(Of Integer, List(Of Annotation))
+
+    Private mAutoscaleXAxis As Boolean = True
+    Private mAutoscaleYAxis As Boolean = True
 
 #End Region
 
