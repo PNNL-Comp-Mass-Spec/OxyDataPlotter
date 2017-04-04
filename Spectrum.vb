@@ -1,6 +1,3 @@
-Option Strict On
-Option Explicit On
-
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
 Imports OxyDataPlotter.ctlOxyPlotControl
@@ -156,7 +153,6 @@ Public Class Spectrum
         MyBase.New()
         InitializeSpectrum()
     End Sub
-
 
     Public Sub AutoLabelPeaks(seriesNumber As Integer, blnShowXPos As Boolean, blnShowYPos As Boolean, Optional lngCaptionAngle As Integer = 0, Optional blnIncludeArrow As Boolean = False, Optional blnHideInDenseRegions As Boolean = True, Optional lngMaxPeakCount As Integer = 100, Optional blnForceAsContinuousData As Boolean = False, Optional blnForceAsDiscreteData As Boolean = False)
         Throw New NotImplementedException("Not implemented: AutoLabelPeaks")

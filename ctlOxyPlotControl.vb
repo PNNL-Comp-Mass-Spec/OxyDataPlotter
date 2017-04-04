@@ -1,7 +1,4 @@
-﻿Option Strict On
-Option Explicit On
-
-Imports System.Collections.Generic
+﻿Imports System.Collections.Generic
 Imports System.IO
 Imports System.Runtime.InteropServices
 Imports OxyPlot
@@ -141,6 +138,10 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
+    ''' <summary>
+    ''' Padding fraction in the negative X direction; default 0.01
+    ''' </summary>
+    ''' <remarks>Larger values result in more whitespace to the left of the data</remarks>
     Public Property XAxisPaddingMinimum As Double
         Get
             Return mXAxis.MinimumPadding
@@ -150,6 +151,10 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
+    ''' <summary>
+    ''' Padding fraction in the positive X direction; default 0.01
+    ''' </summary>
+    ''' <remarks>Larger values result in more whitespace to the right of the data</remarks>
     Public Property XAxisPaddingMaximum As Double
         Get
             Return mXAxis.MaximumPadding
@@ -159,6 +164,10 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
+    ''' <summary>
+    ''' Padding fraction in the negative Y direction; default 0.01
+    ''' </summary>
+    ''' <remarks>Larger values result in more whitespace below the data</remarks>
     Public Property YAxisPaddingMinimum As Double
         Get
             Return mYAxis.MinimumPadding
@@ -168,6 +177,10 @@ Public Class ctlOxyPlotControl
         End Set
     End Property
 
+    ''' <summary>
+    ''' Padding fraction in the positive Y direction; default 0.01
+    ''' </summary>
+    ''' <remarks>Larger values result in more whitespace above the data</remarks>
     Public Property YAxisPaddingMaximum As Double
         Get
             Return mYAxis.MaximumPadding
@@ -844,7 +857,7 @@ Public Class ctlOxyPlotControl
         Dim doc = Svg.SvgDocument.Open(tempFilePath)
 
         Dim bitmap = doc.Draw()
-        bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png)
+        bitmap.Save(filePath, Imaging.ImageFormat.Png)
 
         Try
             File.Delete(tempFilePath)
