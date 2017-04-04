@@ -300,15 +300,29 @@ Public Class ctlOxyPlotControl
     End Sub
 
     ''' <summary>
-    ''' Clear data on the specified series
+    ''' Clear data on the specified series (but does not remove the series)
     ''' </summary>
-    ''' <param name="intSeriesToClear">Series number (series 1 is the first series)</param>
-    ''' <remarks></remarks>
-    Public Sub ClearData(intSeriesToClear As Integer)
+    ''' <param name="seriesNumber">Series number (series 1 is the first series)</param>
+    ''' <remarks>Use RemoveSeries to remove the series entirely</remarks>
+    Public Sub ClearData(seriesNumber As Integer)
 
-        If intSeriesToClear < 1 Or intSeriesToClear > ctlOxyPlot.Model.Series.Count Then Exit Sub
+        If seriesNumber < 1 Or seriesNumber > ctlOxyPlot.Model.Series.Count Then Exit Sub
 
-        CType(ctlOxyPlot.Model.Series(intSeriesToClear - 1), LineSeries).Points.Clear()
+        Dim seriesIndex = AssureValidSeriesNumber(seriesNumber)
+
+        ctlOxyPlot.Model.Series.RemoveAt(seriesIndex)
+        Select Case mSeriesPlotMode(seriesIndex)
+            Case SeriesPlotMode.SticksToZero
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), StemSeries)
+                oSeries.Points.Clear()
+
+            Case SeriesPlotMode.Lines, SeriesPlotMode.Points, SeriesPlotMode.PointsAndLines
+                Dim oSeries = CType(ctlOxyPlot.Model.Series(seriesIndex), LineSeries)
+                oSeries.Points.Clear()
+
+            Case Else
+                Throw New NotSupportedException("Unrecognized plot mode in ClearData")
+        End Select
 
     End Sub
 

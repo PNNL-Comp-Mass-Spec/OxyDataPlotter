@@ -190,7 +190,7 @@ Public Class Spectrum
 
     Public Sub ClearDataAllSeries()
         ' This does not prompt the user
-        SpectrumForm.DeleteDataForAllSeries(False)
+        SpectrumForm.DeleteDataForAllSeries(True, False)
     End Sub
 
     Public Sub CopyDataPointsToClipboardOrToString(seriesNumber As Integer, Optional ByRef strDataToCopy As String = "", Optional strDelim As String = vbTab, Optional blnCopyToClipboard As Boolean = True)
@@ -227,12 +227,22 @@ Public Class Spectrum
         End Set
     End Property
 
-    Public Sub DeleteDataActiveSeries(Optional blnConfirmDeletion As Boolean = True)
-        SpectrumForm.DeleteDataActiveSeries(blnConfirmDeletion)
+    ''' <summary>
+    ''' Clear data for the active series, optionally removing the series entirely
+    ''' </summary>
+    ''' <param name="removeSeries">If false, removes the data points for the series, but does not remove the series</param>
+    ''' <param name="confirmDeletion"></param>
+    Public Sub DeleteDataActiveSeries(removeSeries As Boolean, Optional confirmDeletion As Boolean = False)
+        SpectrumForm.DeleteDataActiveSeries(removeSeries, confirmDeletion)
     End Sub
 
-    Public Sub DeleteDataForAllSeries(Optional blnConfirmDeletion As Boolean = True)
-        SpectrumForm.DeleteDataForAllSeries(blnConfirmDeletion)
+    ''' <summary>
+    ''' Clear data for all series, optionally removing the series entirely
+    ''' </summary>
+    ''' <param name="removeSeries">If false, removes the data points for the series, but does not remove the series</param>
+    ''' <param name="confirmDeletion"></param>
+    Public Sub DeleteDataForAllSeries(removeSeries As Boolean, Optional confirmDeletion As Boolean = False)
+        SpectrumForm.DeleteDataForAllSeries(removeSeries, confirmDeletion)
     End Sub
 
     Public Sub EnableTrackAnnotationPlacement()

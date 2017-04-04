@@ -79,7 +79,7 @@ Public Class frmOxySpectrum
 
         Dim objRandom As New Random
 
-        DeleteDataForAllSeries(False)
+        DeleteDataForAllSeries(True)
 
         ctlOxyPlot.GenerateSineWave(1, True)
         ctlOxyPlot.SetSeriesColor(1, ctlOxyPlot.GetDefaultSeriesColor(1))
@@ -260,37 +260,50 @@ Public Class frmOxySpectrum
 
     End Sub
 
-    Public Sub DeleteDataActiveSeries(Optional blnConfirmDeletion As Boolean = True)
-        Dim eResponse As DialogResult
-        Dim intDataCount As Integer
+    ''' <summary>
+    ''' Clear data for the active series, optionally removing the series entirely
+    ''' </summary>
+    ''' <param name="removeSeries">If false, removes the data points for the series, but does not remove the series</param>
+    ''' <param name="confirmDeletion"></param>
+    Public Sub DeleteDataActiveSeries(removeSeries As Boolean, Optional confirmDeletion As Boolean = False)
 
-        intDataCount = ctlOxyPlot.GetDataCount(mActiveSeriesNumber)
+        Dim dataCount = ctlOxyPlot.GetDataCount(mActiveSeriesNumber)
 
-        If intDataCount > 0 And blnConfirmDeletion Then
-            eResponse = MessageBox.Show("Are you sure you want to delete the data in series " & mActiveSeriesNumber & "?", "Delete Data", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3)
+        If dataCount > 0 And confirmDeletion Then
+            Dim eResponse = MessageBox.Show("Are you sure you want to delete the data in series " & mActiveSeriesNumber & "?", "Delete Data", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3)
             If eResponse <> DialogResult.Yes Then Exit Sub
         End If
 
-        ctlOxyPlot.ClearData(mActiveSeriesNumber)
+        If removeSeries Then
+            ctlOxyPlot.RemoveSeries(mActiveSeriesNumber)
+        Else
+            ctlOxyPlot.ClearData(mActiveSeriesNumber)
+        End If
 
         ShowHideSeriesNumberMenus()
 
     End Sub
 
-    Public Sub DeleteDataForAllSeries(Optional blnConfirmDeletion As Boolean = True)
-        Dim eResponse As DialogResult
-        Dim intSeriesIndex As Integer
+    ''' <summary>
+    ''' Clear data for all series, optionally removing the series entirely
+    ''' </summary>
+    ''' <param name="removeSeries">If false, removes the data points for the series, but does not remove the series</param>
+    ''' <param name="confirmDeletion"></param>
+    Public Sub DeleteDataForAllSeries(removeSeries As Boolean, Optional confirmDeletion As Boolean = False)
 
-        If blnConfirmDeletion Then
-            eResponse = MessageBox.Show("Are you sure you want to delete all the data in the graph?", "Delete Data", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3)
+        If confirmDeletion Then
+            Dim eResponse = MessageBox.Show("Are you sure you want to delete all the data in the graph?", "Delete Data", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3)
 
             If eResponse <> DialogResult.Yes Then Exit Sub
         End If
 
-        For intSeriesIndex = ctlOxyPlot.GetSeriesCount() To 1 Step -1
-            mActiveSeriesNumber = intSeriesIndex
-            DeleteDataActiveSeries(False)
-        Next intSeriesIndex
+        For seriesNumber = ctlOxyPlot.GetSeriesCount() To 1 Step -1
+            If removeSeries Then
+                ctlOxyPlot.RemoveSeries(seriesNumber)
+            Else
+                ctlOxyPlot.ClearData(seriesNumber)
+            End If
+        Next
 
         ctlOxyPlot.RemoveAllAnnotations()
 
