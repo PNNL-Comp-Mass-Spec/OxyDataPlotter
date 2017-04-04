@@ -519,16 +519,6 @@ Public Class ctlOxyPlotControl
     End Function
 
     ''' <summary>
-    ''' Creates a new line series (no data points)
-    ''' </summary>
-    ''' <param name="strTitle"></param>
-    ''' <returns></returns>
-    ''' <remarks>Will be an empty series without any data points</remarks>
-    Private Function GetNewLineSeries(strTitle As String) As LineSeries
-        Return GetNewLineSeries(strTitle, New List(Of DataPoint))
-    End Function
-
-    ''' <summary>
     ''' Creates a new line series
     ''' </summary>
     ''' <param name="strTitle"></param>
@@ -547,18 +537,6 @@ Public Class ctlOxyPlotControl
         Next
 
         Return oSeries
-
-    End Function
-
-    ''' <summary>
-    ''' Creates a new stem series (no data points)
-    ''' </summary>
-    ''' <param name="strTitle"></param>
-    ''' <returns></returns>
-    ''' <remarks>Will be an empty series without any data points</remarks>
-    Private Function GetNewStemSeries(strTitle As String) As StemSeries
-
-        Return GetNewStemSeries(strTitle, New List(Of DataPoint))
 
     End Function
 
