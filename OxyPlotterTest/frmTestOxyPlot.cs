@@ -7,11 +7,20 @@ namespace OxyPlotterTest
     {
         private OxyDataPlotter.frmOxySpectrum mOxyPlot;
 
+        private Timer mSetFocusTimer;
+
         public frmTestOxyPlot()
         {
             InitializeComponent();
 
             InitializeOxySpectrum();
+
+            mSetFocusTimer = new Timer {
+                Interval = 250
+            };
+
+            mSetFocusTimer.Tick += SetFocusTimer_Tick;
+            mSetFocusTimer.Enabled = true;
         }
 
         private void InitializeOxySpectrum()
@@ -49,5 +58,12 @@ namespace OxyPlotterTest
                 System.Windows.Forms.MessageBox.Show("Exception in cmdExit_Click: " + ex.Message);
             }
         }
+
+        private void SetFocusTimer_Tick(object sender, EventArgs e)
+        {
+            mOxyPlot.BringToFront();
+            mSetFocusTimer.Enabled = false;
+        }
+
     }
 }
