@@ -1104,7 +1104,16 @@ Public Class ctlOxyPlotControl
         Dim minimumYValue As Double = Double.MaxValue
         Dim maximumYValue As Double = Double.MinValue
 
+        If dataCount > XDataZeroBased1DArray.Length Then
+            dataCount = XDataZeroBased1DArray.Length
+        End If
+
+        If dataCount > YDataZeroBased1DArray.Length Then
+            dataCount = YDataZeroBased1DArray.Length
+        End If
+
         For index = 0 To dataCount - 1
+
             lstData.Add(New DataPoint(XDataZeroBased1DArray(index), YDataZeroBased1DArray(index)))
 
             ' Keep track of the minima and maxima
