@@ -32,6 +32,8 @@ Public Class ctlOxyPlotControl
         BottomLeft = 3
         BottomCenter = 4
         BottomRight = 5
+        MiddleLeft = 6
+        MiddleRight = 7
     End Enum
 #End Region
 
@@ -548,6 +550,11 @@ Public Class ctlOxyPlotControl
             Case CaptionOffsetDirection.BottomRight
                 Return New ScreenVector(-offsetPixels, -offsetPixels)
 
+            Case CaptionOffsetDirection.MiddleLeft
+                Return New ScreenVector(offsetPixels, 0)
+
+            Case CaptionOffsetDirection.MiddleRight
+                Return New ScreenVector(-offsetPixels, 0)
             Case Else
                 ' Same as CaptionOffsetDirection.TopLeft
                 Return New ScreenVector(offsetPixels, offsetPixels)
