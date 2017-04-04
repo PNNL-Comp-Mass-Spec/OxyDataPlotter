@@ -1,5 +1,9 @@
 OxyDataPlotter Change Log
 
+Version 3.0.6303; April 4, 2017
+	- Add properties LegendPlacement and LegendPosition
+	- Update FindNearestDataPoint to consider searchPosY by scaling Y values to the same range as X values
+
 Version 3.0.6299; March 31, 2017
 	- Replaced CWUIControlsLib with OxyPlot
 		- Renamed to OxyDataPlotter
