@@ -312,14 +312,63 @@ Public Class ctlOxyPlotControl
             .SearchY = searchPosY
         }
 
+        If oSeries.Points.Count = 0 Then
+            Return searchResult
+        End If
+
         Dim dataPointIndex = 0
+
+        Dim minimumX As Double = Double.MaxValue
+        Dim yScalingOffset As Double = 0
+        Dim yScalingDivisor As Double = 1
+
+        If Not xAxisOnly Then
+
+            ' Determine the scaling factors that will be used to scale Y values to the same range as the X values
+            Dim maximumX As Double = Double.MinValue
+
+            Dim minimumY As Double = Double.MaxValue
+            Dim maximumY As Double = Double.MinValue
+
+            For Each dataPoint In oSeries.Points
+                If dataPoint.X < minimumX Then minimumX = dataPoint.X
+                If dataPoint.X > maximumX Then maximumX = dataPoint.X
+
+                If dataPoint.Y < minimumY Then minimumY = dataPoint.Y
+                If dataPoint.Y > maximumY Then maximumY = dataPoint.Y
+            Next
+
+            If minimumX < maximumX AndAlso minimumY < maximumY Then
+                yScalingOffset = minimumY - minimumX
+                yScalingDivisor = (maximumY - minimumY) / (maximumX - minimumX)
+
+                If Math.Abs(yScalingDivisor) < Single.Epsilon Then
+                    xAxisOnly = True
+                End If
+            Else
+                ' X values and/or Y values are all the same; cannot scale
+                xAxisOnly = True
+            End If
+        End If
+
+        Dim scaledSearchPosX As Double
+        Dim scaledSearchPosY As Double
+
+        If xAxisOnly Then
+            scaledSearchPosX = searchPosX
+            scaledSearchPosY = searchPosY
+        Else
+            scaledSearchPosX = searchPosX - minimumX
+            scaledSearchPosY = (searchPosY - yScalingOffset) / yScalingDivisor
+        End If
 
         For Each dataPoint In oSeries.Points
             Dim distance As Double
             If xAxisOnly Then
                 distance = Math.Abs(dataPoint.X - searchPosX)
             Else
-                distance = Math.Sqrt((dataPoint.X - searchPosX) ^ 2 + (dataPoint.Y - searchPosY) ^ 2)
+                distance = Math.Sqrt(((dataPoint.X - minimumX) - scaledSearchPosX) ^ 2 +
+                                     ((dataPoint.Y - yScalingOffset) / yScalingDivisor - scaledSearchPosY) ^ 2)
             End If
 
             If distance < searchResult.DistanceFromSearchCoords Then
@@ -928,7 +977,7 @@ Public Class ctlOxyPlotControl
       Optional lineWidth As Integer = 1,
       Optional fontSize As Integer = 12)
 
-        Const xAxisOnly = True
+        Const xAxisOnly = False
 
         Dim searchResult As udtDataPointSearchResult
 
