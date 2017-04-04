@@ -37,6 +37,7 @@ Partial Class frmOxySpectrum
         Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAboutAddSampleData = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAboutAddSampleData2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -47,9 +48,13 @@ Partial Class frmOxySpectrum
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ctlOxyPlot.AutoscaleXAxis = True
         Me.ctlOxyPlot.AutoscaleYAxis = True
+        Me.ctlOxyPlot.LegendPlacement = OxyPlot.LegendPlacement.Inside
+        Me.ctlOxyPlot.LegendPosition = OxyPlot.LegendPosition.RightTop
         Me.ctlOxyPlot.Location = New System.Drawing.Point(0, 33)
         Me.ctlOxyPlot.Margin = New System.Windows.Forms.Padding(5)
         Me.ctlOxyPlot.Name = "ctlOxyPlot"
+        Me.ctlOxyPlot.Size = New System.Drawing.Size(1201, 603)
+        Me.ctlOxyPlot.TabIndex = 0
         Me.ctlOxyPlot.XAxisAbsoluteMaximum = 1.7976931348623157E+308R
         Me.ctlOxyPlot.XAxisAbsoluteMinimum = -1.7976931348623157E+308R
         Me.ctlOxyPlot.XAxisPaddingMaximum = 0.01R
@@ -58,8 +63,6 @@ Partial Class frmOxySpectrum
         Me.ctlOxyPlot.YAxisAbsoluteMinimum = 0R
         Me.ctlOxyPlot.YAxisPaddingMaximum = 0.05R
         Me.ctlOxyPlot.YAxisPaddingMinimum = 0.05R
-        Me.ctlOxyPlot.Size = New System.Drawing.Size(1201, 603)
-        Me.ctlOxyPlot.TabIndex = 0
         '
         'MenuStrip1
         '
@@ -136,7 +139,7 @@ Partial Class frmOxySpectrum
         '
         'mnuHelp
         '
-        Me.mnuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAbout, Me.mnuAboutAddSampleData})
+        Me.mnuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAbout, Me.mnuAboutAddSampleData, Me.mnuAboutAddSampleData2})
         Me.mnuHelp.Name = "mnuHelp"
         Me.mnuHelp.Size = New System.Drawing.Size(53, 24)
         Me.mnuHelp.Text = "&Help"
@@ -144,14 +147,20 @@ Partial Class frmOxySpectrum
         'mnuAbout
         '
         Me.mnuAbout.Name = "mnuAbout"
-        Me.mnuAbout.Size = New System.Drawing.Size(198, 26)
+        Me.mnuAbout.Size = New System.Drawing.Size(210, 26)
         Me.mnuAbout.Text = "&About"
         '
         'mnuAboutAddSampleData
         '
         Me.mnuAboutAddSampleData.Name = "mnuAboutAddSampleData"
-        Me.mnuAboutAddSampleData.Size = New System.Drawing.Size(198, 26)
-        Me.mnuAboutAddSampleData.Text = "Add &sample data"
+        Me.mnuAboutAddSampleData.Size = New System.Drawing.Size(210, 26)
+        Me.mnuAboutAddSampleData.Text = "Add &sample data 1"
+        '
+        'mnuAboutAddSampleData2
+        '
+        Me.mnuAboutAddSampleData2.Name = "mnuAboutAddSampleData2"
+        Me.mnuAboutAddSampleData2.Size = New System.Drawing.Size(210, 26)
+        Me.mnuAboutAddSampleData2.Text = "Add sample &data 2"
         '
         'frmOxySpectrum
         '
@@ -185,4 +194,5 @@ End Sub
     Friend WithEvents mnuFileSaveGraphAsPNG As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents mnuEditLegendIsVisible As ToolStripMenuItem
+    Friend WithEvents mnuAboutAddSampleData2 As ToolStripMenuItem
 End Class

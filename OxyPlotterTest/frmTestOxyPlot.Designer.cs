@@ -52,8 +52,7 @@
             this.txtInfo.ReadOnly = true;
             this.txtInfo.Size = new System.Drawing.Size(361, 48);
             this.txtInfo.TabIndex = 7;
-            this.txtInfo.Text = "Hold down the control key, then click the Edit menu.  Now choose \'Add Sample Data" +
-    "\'";
+            this.txtInfo.Text = "Add sample data using the Help menu.";
             // 
             // cmdExit
             // 

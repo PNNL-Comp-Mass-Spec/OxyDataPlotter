@@ -120,12 +120,190 @@ Public Class frmOxySpectrum
 
         AddAnnotationSearchAll(dblXVals(maxValueIndex), dblYVals(maxValueIndex), "m/z " + dblXVals(maxValueIndex).ToString("0.00"))
 
+        ctlOxyPlot.SetLabelXAxis("X")
+        ctlOxyPlot.SetLabelYAxis("Y")
+
+        ctlOxyPlot.XAxisPaddingMinimum = 0.01
+        ctlOxyPlot.XAxisPaddingMaximum = 0.01
+
+        ctlOxyPlot.YAxisPaddingMinimum = 0.01
         ctlOxyPlot.YAxisPaddingMaximum = 0.2
 
         ctlOxyPlot.LegendPlacement = LegendPlacement.Inside
         ctlOxyPlot.LegendPosition = LegendPosition.TopLeft
 
+        ctlOxyPlot.AutoscaleXAxis = True
+        ctlOxyPlot.AutoscaleYAxis = True
+
         ctlOxyPlot.ZoomOutFull()
+
+    End Sub
+
+    ''' <summary>
+    ''' Displays dummy data using formatting used by MASIC Browser
+    ''' </summary>
+    Private Sub AddSampleMASICBrowserData()
+
+        Dim intDataCountSeries1, intDataCountSeries2, intDataCountSeries3, intDataCountSeries4 As Integer
+        Dim dblXDataSeries1(), dblYDataSeries1() As Double          ' Holds the scans and SIC data for data <=0 (data not part of the peak)
+        Dim dblXDataSeries2(), dblYDataSeries2() As Double          ' Holds the scans and SIC data for data > 0 (data part of the peak)
+        Dim dblXDataSeries3(), dblYDataSeries3() As Double          ' Holds the scan numbers at which the given m/z was chosen for fragmentation
+        Dim dblXDataSeries4(), dblYDataSeries4() As Double          ' Holds the smoothed SIC data
+
+        Try
+
+            Me.Cursor = Cursors.WaitCursor
+
+            DeleteDataForAllSeries(True)
+
+            Const DATA_COUNT = 100
+
+            Const X_MIN = 1000
+            Const X_MAX = 2000
+
+            Const MAX_VALUE = 10000000
+
+            Const FRAG_SCAN_COUNT = 10
+
+            intDataCountSeries1 = 0
+            intDataCountSeries2 = 0
+            intDataCountSeries3 = FRAG_SCAN_COUNT
+            intDataCountSeries4 = 0
+
+            ReDim dblXDataSeries1(DATA_COUNT - 1)
+            ReDim dblYDataSeries1(DATA_COUNT - 1)
+            ReDim dblXDataSeries2(DATA_COUNT - 1)
+            ReDim dblYDataSeries2(DATA_COUNT - 1)
+
+            ReDim dblXDataSeries3(FRAG_SCAN_COUNT - 1)
+            ReDim dblYDataSeries3(FRAG_SCAN_COUNT - 1)
+
+            ReDim dblXDataSeries4(DATA_COUNT)
+            ReDim dblYDataSeries4(DATA_COUNT)
+
+            For intIndex = 0 To DATA_COUNT - 1
+
+                Dim xValue = X_MIN + (X_MAX - X_MIN) * (intIndex / (DATA_COUNT - 1))
+                Dim yValue1 = Math.Sin(intIndex / 10) * MAX_VALUE
+                Dim yValue2 = Math.Cos(intIndex / 10) * MAX_VALUE / 2 + MAX_VALUE / 10
+                Dim yValue3 = Math.Tan(intIndex / 10) * MAX_VALUE / 2 + MAX_VALUE / 10
+
+                If yValue3 > MAX_VALUE * 2 Then
+                    yValue3 = MAX_VALUE * 2
+                End If
+
+                If yValue3 < -MAX_VALUE * 2 Then
+                    yValue3 = -MAX_VALUE * 2
+                End If
+
+
+                dblXDataSeries1(intDataCountSeries1) = xValue
+                dblYDataSeries1(intDataCountSeries1) = yValue1
+                intDataCountSeries1 += 1
+
+                dblXDataSeries2(intDataCountSeries2) = xValue
+                dblYDataSeries2(intDataCountSeries2) = yValue2
+                intDataCountSeries2 += 1
+
+                dblXDataSeries4(intDataCountSeries4) = xValue
+                dblYDataSeries4(intDataCountSeries4) = yValue3
+                intDataCountSeries4 += 1
+
+            Next intIndex
+
+
+            ' Populate Series 3 with the similar frag scan values
+            For intIndex = 0 To FRAG_SCAN_COUNT - 1
+                Dim sourceIndex = CInt(Math.Floor(intDataCountSeries1 * (intIndex / (FRAG_SCAN_COUNT - 1))))
+                If sourceIndex > 0 Then sourceIndex -= 1
+
+                dblXDataSeries3(intIndex) = dblXDataSeries1(sourceIndex)
+                dblYDataSeries3(intIndex) = dblYDataSeries1(sourceIndex)
+            Next intIndex
+
+
+            ' Shrink the data arrays
+            ' SIC Data
+            ReDim Preserve dblXDataSeries1(intDataCountSeries1 - 1)
+            ReDim Preserve dblYDataSeries1(intDataCountSeries1 - 1)
+
+            ' SIC Peak
+            ReDim Preserve dblXDataSeries2(intDataCountSeries2 - 1)
+            ReDim Preserve dblYDataSeries2(intDataCountSeries2 - 1)
+
+            ' Smoothed Data
+            ReDim Preserve dblXDataSeries4(intDataCountSeries4 - 1)
+            ReDim Preserve dblYDataSeries4(intDataCountSeries4 - 1)
+
+            ctlOxyPlot.SetDataXvsY(1, dblXDataSeries1, dblYDataSeries1, intDataCountSeries1, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Series 1")
+            ctlOxyPlot.SetDataXvsY(2, dblXDataSeries2, dblYDataSeries2, intDataCountSeries2, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Series 2")
+            ctlOxyPlot.SetDataXvsY(3, dblXDataSeries3, dblYDataSeries3, intDataCountSeries3, ctlOxyPlotControl.SeriesPlotMode.Points, "Series 3")
+            ctlOxyPlot.SetDataXvsY(4, dblXDataSeries4, dblYDataSeries4, intDataCountSeries4, ctlOxyPlotControl.SeriesPlotMode.Lines, "Series 4")
+
+            ctlOxyPlot.SetSeriesLineStyle(1, OxyPlot.LineStyle.Automatic)
+            ctlOxyPlot.SetSeriesLineStyle(2, OxyPlot.LineStyle.Automatic)
+            ctlOxyPlot.SetSeriesLineStyle(4, OxyPlot.LineStyle.Automatic)
+
+            ctlOxyPlot.SetSeriesPointStyle(1, OxyPlot.MarkerType.Diamond)
+            ctlOxyPlot.SetSeriesPointStyle(2, OxyPlot.MarkerType.Square)
+            ctlOxyPlot.SetSeriesPointStyle(3, OxyPlot.MarkerType.Circle)
+            ctlOxyPlot.SetSeriesPointStyle(4, OxyPlot.MarkerType.None)
+
+            ctlOxyPlot.SetSeriesColor(1, System.Drawing.Color.Blue)
+            ctlOxyPlot.SetSeriesColor(2, System.Drawing.Color.Red)
+            ctlOxyPlot.SetSeriesColor(3, System.Drawing.Color.FromArgb(255, 20, 210, 20))
+            ctlOxyPlot.SetSeriesColor(4, System.Drawing.Color.Purple)
+
+            ctlOxyPlot.SetSeriesLineWidth(1, 1)
+            ctlOxyPlot.SetSeriesLineWidth(2, 2)
+            ctlOxyPlot.SetSeriesLineWidth(4, 2)
+
+            ctlOxyPlot.SetSeriesPointSize(3, 7)
+
+            Dim arrowLengthPixels = 15
+
+            Dim oRand = New Random()
+            Dim fragScanIndex = oRand.Next(0, dblXDataSeries3.Length)
+            Dim fragScanObserved = dblXDataSeries3(fragScanIndex)
+            Dim dblScanObservedIntensity = dblYDataSeries3(fragScanIndex)
+
+            Dim captionOffsetDirection As ctlOxyPlotControl.CaptionOffsetDirection
+
+            If dblScanObservedIntensity > 0 Then
+                captionOffsetDirection = ctlOxyPlotControl.CaptionOffsetDirection.TopLeft
+            Else
+                captionOffsetDirection = ctlOxyPlotControl.CaptionOffsetDirection.BottomRight
+            End If
+
+            Const seriesToUse = 0
+            ctlOxyPlot.SetAnnotationForDataPoint(fragScanObserved, dblScanObservedIntensity, "Data Point",
+                                                seriesToUse, captionOffsetDirection, arrowLengthPixels, )
+
+            ctlOxyPlot.SetLabelXAxis("Scan Number")
+            ctlOxyPlot.SetLabelYAxis("Intensity")
+
+            ' Update the axis padding
+            ctlOxyPlot.XAxisPaddingMinimum = 0.05
+            ctlOxyPlot.XAxisPaddingMaximum = 0.05
+
+            ctlOxyPlot.YAxisPaddingMinimum = 0.02
+            ctlOxyPlot.YAxisPaddingMaximum = 0.15
+
+            ctlOxyPlot.LegendPlacement = LegendPlacement.Inside
+            ctlOxyPlot.LegendPosition = LegendPosition.TopRight
+
+            ctlOxyPlot.AutoscaleXAxis = False
+            ctlOxyPlot.SetRangeX(X_MIN * 0.95, X_MAX * 1.05)
+
+            ctlOxyPlot.AutoscaleYAxis = True
+
+            ctlOxyPlot.ZoomOutFull()
+
+        Catch ex As Exception
+            MessageBox.Show("Error in PlotDataMasicBrowser: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
@@ -577,6 +755,10 @@ Public Class frmOxySpectrum
 
     Private Sub mnuAboutAddSampleData_Click_1(sender As Object, e As EventArgs) Handles mnuAboutAddSampleData.Click
         AddSampleData()
+    End Sub
+
+    Private Sub mnuAboutAddSampleData2_Click(sender As Object, e As EventArgs) Handles mnuAboutAddSampleData2.Click
+        AddSampleMASICBrowserData()
     End Sub
 
     Private Sub mnuFileSaveGraphAsSVG_Click(sender As Object, e As EventArgs) Handles mnuFileSaveGraphAsSVG.Click
