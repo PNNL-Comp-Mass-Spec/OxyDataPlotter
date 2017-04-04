@@ -85,6 +85,24 @@ Public Class ctlOxyPlotControl
 
     Public Property AutoscaleYAxis As Boolean = True
 
+    Public Property LegendPlacement As LegendPlacement
+        Get
+            Return ctlOxyPlot.Model.LegendPlacement
+        End Get
+        Set(value As LegendPlacement)
+            ctlOxyPlot.Model.LegendPlacement = value
+        End Set
+    End Property
+
+    Public Property LegendPosition As LegendPosition
+        Get
+            Return ctlOxyPlot.Model.LegendPosition
+        End Get
+        Set(value As LegendPosition)
+            ctlOxyPlot.Model.LegendPosition = value
+        End Set
+    End Property
+
     Public Property XAxisAbsoluteMinimum As Double
         Get
             Return mXAxis.AbsoluteMinimum
