@@ -173,7 +173,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(ProjectDir)Lib" /y /d</PostBuildEvent>
   </PropertyGroup>
 </Project>
