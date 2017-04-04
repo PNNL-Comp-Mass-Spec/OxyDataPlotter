@@ -7,7 +7,7 @@ Public Class frmOxySpectrum
 
 #Region "Constants"
 
-    Private Const OXYPLOTTER_DATE As String = "April 1, 2017"
+    Private Const OXYPLOTTER_DATE As String = "April 4, 2017"
 
 #End Region
 
@@ -34,6 +34,41 @@ Public Class frmOxySpectrum
 
 #End Region
 
+
+    Private Sub AddAnnotationAtMax(seriesNumber As Integer, dataPoints As IEnumerable(Of DataPoint))
+
+        Dim xForMaxY As Double = 0
+        Dim maximumY = Double.MinValue
+
+        For Each dataPoint In dataPoints
+            If dataPoint.Y > maximumY Then
+                maximumY = dataPoint.Y
+                xForMaxY = dataPoint.X
+            End If
+        Next
+
+        ctlOxyPlot.SetAnnotationForDataPoint(xForMaxY, maximumY, "Max", seriesNumber, ctlOxyPlotControl.CaptionOffsetDirection.TopLeft, 25)
+    End Sub
+
+    Private Sub AddAnnotationAtMin(seriesNumber As Integer, dataPoints As IEnumerable(Of DataPoint))
+
+        Dim xForMinY As Double = 0
+        Dim minimumY = Double.MaxValue
+
+        For Each dataPoint In dataPoints
+            If dataPoint.Y < minimumY Then
+                minimumY = dataPoint.Y
+                xForMinY = dataPoint.X
+            End If
+        Next
+
+        ctlOxyPlot.SetAnnotationForDataPoint(xForMinY, minimumY, "Min", seriesNumber, ctlOxyPlotControl.CaptionOffsetDirection.MiddleRight, 25)
+    End Sub
+
+    Private Sub AddAnnotationSearchAll(xPos As Double, yPos As Double, caption As String)
+        ctlOxyPlot.SetTextAnnotationByDataPoint(xPos, yPos, caption, 0)
+    End Sub
+
     Public Sub AddSampleData()
 
         Const DATA_COUNT As Short = 50
@@ -55,17 +90,40 @@ Public Class frmOxySpectrum
         ReDim dblXVals(DATA_COUNT - 1)
         ReDim dblYVals(DATA_COUNT - 1)
 
+        Dim maxValueIndex = 0
+        Dim maxMzIntensity = Double.MinValue
+
         For intIndex = 0 To DATA_COUNT - 1
             dblXVals(intIndex) = Math.Abs(22 - objRandom.Next(0, 15) * Math.Tan(intIndex / 100.0#) * 2)
             dblYVals(intIndex) = Math.Abs(objRandom.Next(0, 22) * Math.Sin(intIndex / 100.0#) * 15)
+
+            If dblYVals(intIndex) > maxMzIntensity Then
+                maxValueIndex = intIndex
+                maxMzIntensity = dblYVals(intIndex)
+            End If
         Next intIndex
 
         FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
 
-        ctlOxyPlot.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "")
+        ctlOxyPlot.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "Mass Spectrum")
         ctlOxyPlot.SetSeriesColor(3, ctlOxyPlot.GetDefaultSeriesColor(3))
 
         SetCurrentSeriesNumber(3)
+
+        Dim sineWaveDataLogBased = ctlOxyPlot.GetDataXvsY(1)
+        Dim sineWaveData = ctlOxyPlot.GetDataXvsY(2)
+        Dim mzData = ctlOxyPlot.GetDataXvsY(3)
+
+        AddAnnotationAtMax(1, sineWaveDataLogBased)
+
+        AddAnnotationAtMin(2, sineWaveData)
+
+        AddAnnotationSearchAll(dblXVals(maxValueIndex), dblYVals(maxValueIndex), "m/z " + dblXVals(maxValueIndex).ToString("0.00"))
+
+        ctlOxyPlot.YAxisPaddingMaximum = 0.2
+
+        ctlOxyPlot.LegendPlacement = LegendPlacement.Inside
+        ctlOxyPlot.LegendPosition = LegendPosition.TopLeft
 
         ctlOxyPlot.ZoomOutFull()
 
@@ -233,6 +291,8 @@ Public Class frmOxySpectrum
             mActiveSeriesNumber = intSeriesIndex
             DeleteDataActiveSeries(False)
         Next intSeriesIndex
+
+        ctlOxyPlot.RemoveAllAnnotations()
 
     End Sub
 
