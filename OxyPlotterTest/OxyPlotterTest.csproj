@@ -35,9 +35,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OxyDataPlotter">
-      <HintPath>..\lib\OxyDataPlotter.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -77,6 +74,12 @@
     <EmbeddedResource Include="frmTestOxyPlot.resx">
       <DependentUpon>frmTestOxyPlot.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyDataPlotter.vbproj">
+      <Project>{1dd7dfe2-07f6-46b5-8c76-e26d6597722d}</Project>
+      <Name>OxyDataPlotter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
