@@ -52,13 +52,14 @@ spectrum.SetSeriesLineWidth(3, 2);
 spectrum.ShowSpectrum();
 ```
 
--------------------------------------------------------------------------------
-Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA) \
-Copyright 2017, Battelle Memorial Institute.  All Rights Reserved.
+## Contacts
 
+Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA) \
+Copyright 2017, Battelle Memorial Institute.  All Rights Reserved. \
 E-mail: matthew.monroe@pnnl.gov or matt@alchemistmatt.com \
 Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/
--------------------------------------------------------------------------------
+
+## License
 
 Licensed under the Apache License, Version 2.0; you may not use this file except
 in compliance with the License.  You may obtain a copy of the License at
