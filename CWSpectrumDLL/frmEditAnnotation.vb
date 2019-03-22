@@ -1,6 +1,7 @@
 Option Strict Off
-Option Explicit On 
+Option Explicit On
 
+Imports PRISM.DataUtils
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
 ' Upgraded to VB.NET from VB6 in October 2003
@@ -9,16 +10,16 @@ Option Explicit On
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
 ' Website: http://ncrr.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
-' 
+'
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
-' in compliance with the License.  You may obtain a copy of the License at 
+' in compliance with the License.  You may obtain a copy of the License at
 ' http://www.apache.org/licenses/LICENSE-2.0
 
 Friend Class frmEditAnnotation
-	Inherits System.Windows.Forms.Form
+    Inherits Form
 #Region "Windows Form Designer generated code "
-	Public Sub New()
-		MyBase.New()
+    Public Sub New()
+        MyBase.New()
         'This call is required by the Windows Form Designer.
         InitializeComponent()
         mComponentsInitialized = True
@@ -488,7 +489,7 @@ Friend Class frmEditAnnotation
     End Sub
 #End Region
 
-    Private mComponentsInitialized As Boolean
+    Private ReadOnly mComponentsInitialized As Boolean
 
     Private Structure udtAnnotationDetailsType
         Dim AnnotationIndex As Integer
@@ -595,7 +596,7 @@ Friend Class frmEditAnnotation
         Exit Function
 
 InitializeFormErrorHandler:
-        MsgBox("Error in frmEditAnnotation.InitializeForm:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation + MsgBoxStyle.OKOnly, "Error")
+        MsgBox("Error in frmEditAnnotation.InitializeForm:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Error")
         InitializeForm = False
 
     End Function
@@ -685,7 +686,7 @@ InitializeFormErrorHandler:
         Exit Sub
 
 ShowCurrentOptionsErrorHandler:
-        System.Diagnostics.Debug.WriteLine("Error occurred in frmEditAnnotation.ShowCurrentOptions(): " & Err.Description)
+        Debug.WriteLine("Error occurred in frmEditAnnotation.ShowCurrentOptions(): " & Err.Description)
 
     End Sub
 
@@ -818,7 +819,7 @@ ShowCurrentOptionsErrorHandler:
         End If
     End Sub
 
-    Private Sub cboAnnotationSnapMode_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboAnnotationSnapMode.SelectedIndexChanged
+    Private Sub cboAnnotationSnapMode_SelectedIndexChanged(eventSender As Object, eventArgs As EventArgs) Handles cboAnnotationSnapMode.SelectedIndexChanged
         If cboAnnotationSnapMode.SelectedIndex = CWGraphControl.asmAnnotationSnapModeConstants.asmFloating Then
             ShowHidePointNumberControls(False)
         Else
@@ -829,29 +830,29 @@ ShowCurrentOptionsErrorHandler:
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cboSeriesNumber_SelectedIndexChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles cboSeriesNumber.SelectedIndexChanged
+    Private Sub cboSeriesNumber_SelectedIndexChanged(eventSender As Object, eventArgs As EventArgs) Handles cboSeriesNumber.SelectedIndexChanged
         InitializeScrollBar(0, mCWGraphControl.GetDataCount(cboSeriesNumber.SelectedIndex + 1) - 1)
 
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkAnnotationShowsNearestPointX_CheckStateChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkAnnotationShowsNearestPointX.CheckStateChanged
+    Private Sub chkAnnotationShowsNearestPointX_CheckStateChanged(eventSender As Object, eventArgs As EventArgs) Handles chkAnnotationShowsNearestPointX.CheckStateChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkAnnotationShowsNearestPointY_CheckStateChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkAnnotationShowsNearestPointY.CheckStateChanged
+    Private Sub chkAnnotationShowsNearestPointY_CheckStateChanged(eventSender As Object, eventArgs As EventArgs) Handles chkAnnotationShowsNearestPointY.CheckStateChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkHideInCrowdedRegions_CheckStateChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkHideInCrowdedRegions.CheckStateChanged
+    Private Sub chkHideInCrowdedRegions_CheckStateChanged(eventSender As Object, eventArgs As EventArgs) Handles chkHideInCrowdedRegions.CheckStateChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub chkShowArrow_CheckStateChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles chkShowArrow.CheckStateChanged
+    Private Sub chkShowArrow_CheckStateChanged(eventSender As Object, eventArgs As EventArgs) Handles chkShowArrow.CheckStateChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub cmdCancel_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdCancel.Click
+    Private Sub cmdCancel_Click(eventSender As Object, eventArgs As EventArgs) Handles cmdCancel.Click
         ' Restore the saved options, then call ApplyChanges
         udtAnnotationNew = udtAnnotationSaved
 
@@ -863,18 +864,18 @@ ShowCurrentOptionsErrorHandler:
         Me.Hide()
     End Sub
 
-    Private Sub cmdOK_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdOK.Click
+    Private Sub cmdOK_Click(eventSender As Object, eventArgs As EventArgs) Handles cmdOK.Click
         Me.DialogResult = DialogResult.OK
         Me.Hide()
     End Sub
 
-    Private Sub cmdRemove_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles cmdRemove.Click
+    Private Sub cmdRemove_Click(eventSender As Object, eventArgs As EventArgs) Handles cmdRemove.Click
         ' We're using .Retry to signify "Remove annotation"
         Me.DialogResult = DialogResult.Retry
         Me.Hide()
     End Sub
 
-    Private Sub frmEditAnnotation_Activated(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Activated
+    Private Sub frmEditAnnotation_Activated(eventSender As Object, eventArgs As EventArgs) Handles MyBase.Activated
         txtCaption.Focus()
     End Sub
 
@@ -882,92 +883,92 @@ ShowCurrentOptionsErrorHandler:
         SizeAndCenterWindow(Me, wpcWindowPosConstants.BottomCenter, 460, 350)
     End Sub
 
-    Private Sub frmEditAnnotation_Closed(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Closed
+    Private Sub frmEditAnnotation_Closed(eventSender As Object, eventArgs As EventArgs) Handles MyBase.Closed
         mCWGraphControl = Nothing
     End Sub
 
-    Private Sub txtCaption_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaption.TextChanged
+    Private Sub txtCaption_TextChanged(eventSender As Object, eventArgs As EventArgs) Handles txtCaption.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtCaption_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaption.Enter
+    Private Sub txtCaption_Enter(eventSender As Object, eventArgs As EventArgs) Handles txtCaption.Enter
         TextBoxGotFocusHandler(txtCaption)
     End Sub
 
-    Private Sub txtCaption_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaption.Leave
+    Private Sub txtCaption_Leave(eventSender As Object, eventArgs As EventArgs) Handles txtCaption.Leave
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtCaptionAngle_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaptionAngle.TextChanged
+    Private Sub txtCaptionAngle_TextChanged(eventSender As Object, eventArgs As EventArgs) Handles txtCaptionAngle.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtCaptionAngle_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaptionAngle.Enter
+    Private Sub txtCaptionAngle_Enter(eventSender As Object, eventArgs As EventArgs) Handles txtCaptionAngle.Enter
         TextBoxGotFocusHandler(txtCaptionAngle)
     End Sub
 
-    Private Sub txtCaptionAngle_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCaptionAngle.KeyPress
+    Private Sub txtCaptionAngle_KeyPress(eventSender As Object, eventArgs As KeyPressEventArgs) Handles txtCaptionAngle.KeyPress
         PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtCaptionAngle, eventArgs, True, False)
     End Sub
 
-    Private Sub txtCaptionAngle_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaptionAngle.Leave
+    Private Sub txtCaptionAngle_Leave(eventSender As Object, eventArgs As EventArgs) Handles txtCaptionAngle.Leave
         PRISMWin.TextBoxUtils.ValidateTextBoxInt(txtCaptionAngle, 0, 360, 0)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtPointToBindTo_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPointToBindTo.TextChanged
+    Private Sub txtPointToBindTo_TextChanged(eventSender As Object, eventArgs As EventArgs) Handles txtPointToBindTo.TextChanged
         SynchronizeDataPointNumberSelection(False)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtPointToBindTo_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPointToBindTo.Enter
+    Private Sub txtPointToBindTo_Enter(eventSender As Object, eventArgs As EventArgs) Handles txtPointToBindTo.Enter
         TextBoxGotFocusHandler(txtPointToBindTo)
     End Sub
 
-    Private Sub txtPointToBindTo_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPointToBindTo.KeyPress
+    Private Sub txtPointToBindTo_KeyPress(eventSender As Object, eventArgs As KeyPressEventArgs) Handles txtPointToBindTo.KeyPress
         PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtPointToBindTo, eventArgs, True, False)
     End Sub
 
-    Private Sub txtPointToBindTo_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPointToBindTo.Leave
+    Private Sub txtPointToBindTo_Leave(eventSender As Object, eventArgs As EventArgs) Handles txtPointToBindTo.Leave
         PRISMWin.TextBoxUtils.ValidateTextBoxFloat(txtPointToBindTo, 0, 100000000.0#, 0)
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtXPos_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXPos.TextChanged
+    Private Sub txtXPos_TextChanged(eventSender As Object, eventArgs As EventArgs) Handles txtXPos.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtXPos_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXPos.Enter
+    Private Sub txtXPos_Enter(eventSender As Object, eventArgs As EventArgs) Handles txtXPos.Enter
         TextBoxGotFocusHandler(txtXPos)
     End Sub
 
-    Private Sub txtXPos_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXPos.KeyPress
+    Private Sub txtXPos_KeyPress(eventSender As Object, eventArgs As KeyPressEventArgs) Handles txtXPos.KeyPress
         PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtXPos, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
-    Private Sub txtXPos_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXPos.Leave
+    Private Sub txtXPos_Leave(eventSender As Object, eventArgs As EventArgs) Handles txtXPos.Leave
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtYPos_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYPos.TextChanged
+    Private Sub txtYPos_TextChanged(eventSender As Object, eventArgs As EventArgs) Handles txtYPos.TextChanged
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub txtYPos_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYPos.Enter
+    Private Sub txtYPos_Enter(eventSender As Object, eventArgs As EventArgs) Handles txtYPos.Enter
         TextBoxGotFocusHandler(txtYPos)
     End Sub
 
-    Private Sub txtYPos_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYPos.KeyPress
+    Private Sub txtYPos_KeyPress(eventSender As Object, eventArgs As KeyPressEventArgs) Handles txtYPos.KeyPress
         PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtYPos, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
-    Private Sub txtYPos_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYPos.Leave
+    Private Sub txtYPos_Leave(eventSender As Object, eventArgs As EventArgs) Handles txtYPos.Leave
         UpdateCurrentOptions()
     End Sub
 
-    Private Sub scrDataPointSelection_Scroll(eventSender As System.Object, eventArgs As System.Windows.Forms.ScrollEventArgs) Handles scrDataPointSelection.Scroll
+    Private Sub scrDataPointSelection_Scroll(eventSender As Object, eventArgs As ScrollEventArgs) Handles scrDataPointSelection.Scroll
         Select Case eventArgs.Type
-            Case System.Windows.Forms.ScrollEventType.EndScroll
+            Case ScrollEventType.EndScroll
                 SynchronizeDataPointNumberSelection(True)
                 UpdateCurrentOptions()
             Case Else

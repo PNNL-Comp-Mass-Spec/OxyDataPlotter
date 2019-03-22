@@ -1,5 +1,5 @@
 Option Strict Off
-Option Explicit On 
+Option Explicit On
 
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
@@ -9,104 +9,104 @@ Option Explicit On
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
 ' Website: http://ncrr.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
-' 
+'
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
-' in compliance with the License.  You may obtain a copy of the License at 
+' in compliance with the License.  You may obtain a copy of the License at
 ' http://www.apache.org/licenses/LICENSE-2.0
 
 Friend Class frmCWSpectrumOptions
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 #Region "Windows Form Designer generated code "
-	Public Sub New()
-		MyBase.New()
+    Public Sub New()
+        MyBase.New()
         'This call is required by the Windows Form Designer.
-		InitializeComponent()
-	End Sub
-	'Form overrides dispose to clean up the component list.
-	Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
-		If Disposing Then
-			If Not components Is Nothing Then
-				components.Dispose()
-			End If
-		End If
-		MyBase.Dispose(Disposing)
-	End Sub
-	'Required by the Windows Form Designer
-	Private components As System.ComponentModel.IContainer
-	Public ToolTip1 As System.Windows.Forms.ToolTip
-	Public WithEvents txtNormalizationConstant As System.Windows.Forms.TextBox
-	Public WithEvents chkNormalizeOnLoadOrPaste As System.Windows.Forms.CheckBox
-	Public WithEvents cboAnnotationFontName As System.Windows.Forms.ComboBox
-	Public WithEvents cboAnnotationFontSize As System.Windows.Forms.ComboBox
-	Public WithEvents lblAnnotationColor As System.Windows.Forms.Label
-	Public WithEvents lblAnnotationColorSelection As System.Windows.Forms.Label
-	Public WithEvents lblAnnotationFontSize As System.Windows.Forms.Label
-	Public WithEvents lblAnnotationFontName As System.Windows.Forms.Label
-	Public WithEvents fraAnnotationOptions As System.Windows.Forms.GroupBox
-	Public WithEvents cmdResetToDefaults As System.Windows.Forms.Button
-	Public WithEvents cmdCopyToAllSeries As System.Windows.Forms.Button
-	Public WithEvents chkShowGridlinesMinorY As System.Windows.Forms.CheckBox
-	Public WithEvents chkShowGridlinesMajorY As System.Windows.Forms.CheckBox
-	Public WithEvents chkShowGridlinesMinorX As System.Windows.Forms.CheckBox
-	Public WithEvents chkShowGridlinesMajorX As System.Windows.Forms.CheckBox
-	Public WithEvents cboLabelFontSize As System.Windows.Forms.ComboBox
-	Public WithEvents cboLabelFontName As System.Windows.Forms.ComboBox
-	Public WithEvents txtYAxisLabel As System.Windows.Forms.TextBox
-	Public WithEvents txtXAxisLabel As System.Windows.Forms.TextBox
-	Public WithEvents txtPlotSubTitle As System.Windows.Forms.TextBox
-	Public WithEvents txtPlotTitle As System.Windows.Forms.TextBox
-	Public WithEvents lblGridlinesMinor As System.Windows.Forms.Label
-	Public WithEvents lblGridlinesMajor As System.Windows.Forms.Label
-	Public WithEvents _lblColor_6 As System.Windows.Forms.Label
-	Public WithEvents lblGridLinesMajorColorSelection As System.Windows.Forms.Label
-	Public WithEvents lblGridLinesMinorColorSelection As System.Windows.Forms.Label
-	Public WithEvents _lblColor_7 As System.Windows.Forms.Label
+        InitializeComponent()
+    End Sub
+    'Form overrides dispose to clean up the component list.
+    Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        If Disposing Then
+            If Not components Is Nothing Then
+                components.Dispose()
+            End If
+        End If
+        MyBase.Dispose(Disposing)
+    End Sub
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+    Public ToolTip1 As System.Windows.Forms.ToolTip
+    Public WithEvents txtNormalizationConstant As System.Windows.Forms.TextBox
+    Public WithEvents chkNormalizeOnLoadOrPaste As System.Windows.Forms.CheckBox
+    Public WithEvents cboAnnotationFontName As System.Windows.Forms.ComboBox
+    Public WithEvents cboAnnotationFontSize As System.Windows.Forms.ComboBox
+    Public WithEvents lblAnnotationColor As System.Windows.Forms.Label
+    Public WithEvents lblAnnotationColorSelection As System.Windows.Forms.Label
+    Public WithEvents lblAnnotationFontSize As System.Windows.Forms.Label
+    Public WithEvents lblAnnotationFontName As System.Windows.Forms.Label
+    Public WithEvents fraAnnotationOptions As System.Windows.Forms.GroupBox
+    Public WithEvents cmdResetToDefaults As System.Windows.Forms.Button
+    Public WithEvents cmdCopyToAllSeries As System.Windows.Forms.Button
+    Public WithEvents chkShowGridlinesMinorY As System.Windows.Forms.CheckBox
+    Public WithEvents chkShowGridlinesMajorY As System.Windows.Forms.CheckBox
+    Public WithEvents chkShowGridlinesMinorX As System.Windows.Forms.CheckBox
+    Public WithEvents chkShowGridlinesMajorX As System.Windows.Forms.CheckBox
+    Public WithEvents cboLabelFontSize As System.Windows.Forms.ComboBox
+    Public WithEvents cboLabelFontName As System.Windows.Forms.ComboBox
+    Public WithEvents txtYAxisLabel As System.Windows.Forms.TextBox
+    Public WithEvents txtXAxisLabel As System.Windows.Forms.TextBox
+    Public WithEvents txtPlotSubTitle As System.Windows.Forms.TextBox
+    Public WithEvents txtPlotTitle As System.Windows.Forms.TextBox
+    Public WithEvents lblGridlinesMinor As System.Windows.Forms.Label
+    Public WithEvents lblGridlinesMajor As System.Windows.Forms.Label
+    Public WithEvents _lblColor_6 As System.Windows.Forms.Label
+    Public WithEvents lblGridLinesMajorColorSelection As System.Windows.Forms.Label
+    Public WithEvents lblGridLinesMinorColorSelection As System.Windows.Forms.Label
+    Public WithEvents _lblColor_7 As System.Windows.Forms.Label
     Public WithEvents lblLabelFontColor As System.Windows.Forms.Label
-	Public WithEvents lblLabelFontColorSelection As System.Windows.Forms.Label
-	Public WithEvents lblLabelFontName As System.Windows.Forms.Label
-	Public WithEvents lblLabelFontSize As System.Windows.Forms.Label
-	Public WithEvents lblYAxisLabel As System.Windows.Forms.Label
-	Public WithEvents lblXAxisLabel As System.Windows.Forms.Label
-	Public WithEvents lblPlotSubTitle As System.Windows.Forms.Label
-	Public WithEvents lblPlotTitle As System.Windows.Forms.Label
-	Public WithEvents lblPlotBackgroundColorSelection As System.Windows.Forms.Label
-	Public WithEvents _lblColor_4 As System.Windows.Forms.Label
-	Public WithEvents fraPlotOptions As System.Windows.Forms.GroupBox
-	Public WithEvents txtLegendCaption As System.Windows.Forms.TextBox
-	Public WithEvents cboSeriesNumber As System.Windows.Forms.ComboBox
-	Public WithEvents cboPlotMode As System.Windows.Forms.ComboBox
-	Public WithEvents lblLegendCaption As System.Windows.Forms.Label
-	Public WithEvents lblSeriesNumber As System.Windows.Forms.Label
-	Public WithEvents lblPlotMode As System.Windows.Forms.Label
-	Public WithEvents fraSeriesOptions As System.Windows.Forms.GroupBox
-	Public WithEvents cmdStyleLoad As System.Windows.Forms.Button
-	Public WithEvents cmdSaveStyle As System.Windows.Forms.Button
-	Public WithEvents cmdApply As System.Windows.Forms.Button
-	Public WithEvents cmdCancel As System.Windows.Forms.Button
-	Public WithEvents cmdOK As System.Windows.Forms.Button
-	Public WithEvents fraControls As System.Windows.Forms.Panel
-	Public WithEvents chkLinkPointColorToLineColor As System.Windows.Forms.CheckBox
-	Public WithEvents cboPointStyle As System.Windows.Forms.ComboBox
-	Public WithEvents _lblStyle_1 As System.Windows.Forms.Label
-	Public WithEvents _lblColor_3 As System.Windows.Forms.Label
-	Public WithEvents lblPointColorSelection As System.Windows.Forms.Label
-	Public WithEvents fraPointOptions As System.Windows.Forms.GroupBox
-	Public WithEvents chkLinkLineColors As System.Windows.Forms.CheckBox
-	Public WithEvents txtLineWidth As System.Windows.Forms.TextBox
-	Public WithEvents cboLineStyle As System.Windows.Forms.ComboBox
-	Public WithEvents lblBarFillColorSelection As System.Windows.Forms.Label
-	Public WithEvents _lblColor_2 As System.Windows.Forms.Label
-	Public WithEvents _lblColor_1 As System.Windows.Forms.Label
-	Public WithEvents lblLineToBaseColorSelection As System.Windows.Forms.Label
-	Public WithEvents lblLineColorSelection As System.Windows.Forms.Label
-	Public WithEvents _lblColor_0 As System.Windows.Forms.Label
-	Public WithEvents _lblWidth_0 As System.Windows.Forms.Label
-	Public WithEvents _lblStyle_0 As System.Windows.Forms.Label
-	Public WithEvents fraLineOptions As System.Windows.Forms.GroupBox
-	Public WithEvents lblNormalizationConstant As System.Windows.Forms.Label
+    Public WithEvents lblLabelFontColorSelection As System.Windows.Forms.Label
+    Public WithEvents lblLabelFontName As System.Windows.Forms.Label
+    Public WithEvents lblLabelFontSize As System.Windows.Forms.Label
+    Public WithEvents lblYAxisLabel As System.Windows.Forms.Label
+    Public WithEvents lblXAxisLabel As System.Windows.Forms.Label
+    Public WithEvents lblPlotSubTitle As System.Windows.Forms.Label
+    Public WithEvents lblPlotTitle As System.Windows.Forms.Label
+    Public WithEvents lblPlotBackgroundColorSelection As System.Windows.Forms.Label
+    Public WithEvents _lblColor_4 As System.Windows.Forms.Label
+    Public WithEvents fraPlotOptions As System.Windows.Forms.GroupBox
+    Public WithEvents txtLegendCaption As System.Windows.Forms.TextBox
+    Public WithEvents cboSeriesNumber As System.Windows.Forms.ComboBox
+    Public WithEvents cboPlotMode As System.Windows.Forms.ComboBox
+    Public WithEvents lblLegendCaption As System.Windows.Forms.Label
+    Public WithEvents lblSeriesNumber As System.Windows.Forms.Label
+    Public WithEvents lblPlotMode As System.Windows.Forms.Label
+    Public WithEvents fraSeriesOptions As System.Windows.Forms.GroupBox
+    Public WithEvents cmdStyleLoad As System.Windows.Forms.Button
+    Public WithEvents cmdSaveStyle As System.Windows.Forms.Button
+    Public WithEvents cmdApply As System.Windows.Forms.Button
+    Public WithEvents cmdCancel As System.Windows.Forms.Button
+    Public WithEvents cmdOK As System.Windows.Forms.Button
+    Public WithEvents fraControls As System.Windows.Forms.Panel
+    Public WithEvents chkLinkPointColorToLineColor As System.Windows.Forms.CheckBox
+    Public WithEvents cboPointStyle As System.Windows.Forms.ComboBox
+    Public WithEvents _lblStyle_1 As System.Windows.Forms.Label
+    Public WithEvents _lblColor_3 As System.Windows.Forms.Label
+    Public WithEvents lblPointColorSelection As System.Windows.Forms.Label
+    Public WithEvents fraPointOptions As System.Windows.Forms.GroupBox
+    Public WithEvents chkLinkLineColors As System.Windows.Forms.CheckBox
+    Public WithEvents txtLineWidth As System.Windows.Forms.TextBox
+    Public WithEvents cboLineStyle As System.Windows.Forms.ComboBox
+    Public WithEvents lblBarFillColorSelection As System.Windows.Forms.Label
+    Public WithEvents _lblColor_2 As System.Windows.Forms.Label
+    Public WithEvents _lblColor_1 As System.Windows.Forms.Label
+    Public WithEvents lblLineToBaseColorSelection As System.Windows.Forms.Label
+    Public WithEvents lblLineColorSelection As System.Windows.Forms.Label
+    Public WithEvents _lblColor_0 As System.Windows.Forms.Label
+    Public WithEvents _lblWidth_0 As System.Windows.Forms.Label
+    Public WithEvents _lblStyle_0 As System.Windows.Forms.Label
+    Public WithEvents fraLineOptions As System.Windows.Forms.GroupBox
+    Public WithEvents lblNormalizationConstant As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
-	'It can be modified using the Windows Form Designer.
-	'Do not modify it using the code editor.
+    'It can be modified using the Windows Form Designer.
+    'Do not modify it using the code editor.
     Friend WithEvents dlgColor As System.Windows.Forms.ColorDialog
     Public WithEvents lblCursor1ColorSelection As System.Windows.Forms.Label
     Public WithEvents lblCursor2ColorSelection As System.Windows.Forms.Label

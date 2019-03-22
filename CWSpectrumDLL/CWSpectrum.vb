@@ -323,7 +323,7 @@ Module modCWSpectrum
     End Sub
 
     Public Sub TextBoxGotFocusHandler(ByRef txtThisTextBox As TextBox, Optional ByRef blnSelectAll As Boolean = True)
-        ' Selects the text in the given textbox if blnSelectAll = true
+        ' Selects the text in the given TextBox if blnSelectAll = true
 
         If blnSelectAll Then
             txtThisTextBox.SelectionStart = 0
@@ -334,10 +334,9 @@ Module modCWSpectrum
     Public Sub VerifyValidWindowPos(ByRef frmThisForm As Form, Optional ByVal lngMinWidth As Integer = 33, Optional ByVal lngMinHeight As Integer = 33, Optional ByVal MinVisibleFormArea As Integer = 33)
         ' Make sure the window isn't too small and is visible on the desktop
 
-        Dim lngReturn As Integer
         Dim lngScreenWidth, lngScreenHeight As Integer          ' In Pixels
 
-        lngReturn = GetDesktopSize(lngScreenHeight, lngScreenWidth)
+        Dim returnValue = GetDesktopSize(lngScreenHeight, lngScreenWidth)
 
         If lngScreenHeight < Screen.PrimaryScreen.Bounds.Height Then
             lngScreenHeight = Screen.PrimaryScreen.Bounds.Height

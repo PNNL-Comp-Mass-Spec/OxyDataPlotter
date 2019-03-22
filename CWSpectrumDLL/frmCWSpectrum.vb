@@ -1,6 +1,13 @@
 Option Strict On
 Option Explicit On
 
+Imports System.ComponentModel
+Imports System.Drawing.Imaging
+Imports System.IO
+Imports CWUIControlsLib
+Imports PRISM
+Imports PRISM.DataUtils
+Imports ProgressFormNET
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
 ' Upgraded to VB.NET from VB6 in October 2003
@@ -9,13 +16,13 @@ Option Explicit On
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
 ' Website: http://ncrr.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
-' 
+'
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
-' in compliance with the License.  You may obtain a copy of the License at 
+' in compliance with the License.  You may obtain a copy of the License at
 ' http://www.apache.org/licenses/LICENSE-2.0
 
 Friend Class frmCWSpectrum
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 #Region "Windows Form Designer generated code "
     Public Sub New()
         MyBase.New()
@@ -341,7 +348,6 @@ Friend Class frmCWSpectrum
     Private mNormalizationConstant As Double
 
     Private mSpectrumWindowPos As udtWindowPosType
-    '
 
     Private Sub AddSampleData()
 
@@ -367,8 +373,8 @@ Friend Class frmCWSpectrum
         ReDim dblYVals(DATA_COUNT - 1)
 
         For intIndex = 0 To DATA_COUNT - 1
-            dblXVals(intIndex) = System.Math.Abs(22 - objRandom.Next(0, 15) * System.Math.Tan(intIndex / 100.0#) * 2)
-            dblYVals(intIndex) = System.Math.Abs(objRandom.Next(0, 22) * System.Math.Sin(intIndex / 100.0#) * 15)
+            dblXVals(intIndex) = Math.Abs(22 - objRandom.Next(0, 15) * Math.Tan(intIndex / 100.0#) * 2)
+            dblYVals(intIndex) = Math.Abs(objRandom.Next(0, 22) * Math.Sin(intIndex / 100.0#) * 15)
         Next intIndex
 
         FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
@@ -421,7 +427,7 @@ Friend Class frmCWSpectrum
 
             ReDim strExport(intDataCount)
 
-            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+            Me.Cursor = Cursors.WaitCursor
 
             For intIndex = 0 To intDataCount - 1
                 strExport(intIndex) = dblXData(intIndex) & strDelim & dblYData(intIndex)
@@ -437,13 +443,13 @@ Friend Class frmCWSpectrum
                 End Try
             End If
 
-            Me.Cursor = System.Windows.Forms.Cursors.Default
+            Me.Cursor = Cursors.Default
         End If
     End Sub
 
     Public Sub CopyToClipboardAsPicture()
         'Dim objGraphPicture As CWUIControlsLib.IPictureDisp
-        Dim objGraphPicture As System.Drawing.Image
+        Dim objGraphPicture As Image
 
         Try
             objGraphPicture = ctlCWGraph.GetControlImage()
@@ -542,7 +548,7 @@ Friend Class frmCWSpectrum
         Dim FillStringArray() As String
         Dim FillStringCumulative As String = String.Empty
 
-        Dim objProgress As ProgressFormNET.frmProgress = Nothing
+        Dim objProgress As frmProgress = Nothing
 
         Try
             lngFillStringMaxIndex = -1
@@ -550,9 +556,9 @@ Friend Class frmCWSpectrum
             If intArrayCount > MIN_PROGRESS_COUNT And blnShowProgressFormOnLongOperation Then blnShowProgress = True
 
             If blnShowProgress Then
-                objProgress = New ProgressFormNET.frmProgress
+                objProgress = New frmProgress
                 objProgress.InitializeProgressForm("Copying data to clipboard", 0, intArrayCount, False, False, False)
-                System.Windows.Forms.Application.DoEvents()
+                Application.DoEvents()
             End If
 
             ReDim FillStringArray(CInt(intArrayCount / CUMULATIVE_CHUNK_SIZE) + 2)
@@ -566,7 +572,7 @@ Friend Class frmCWSpectrum
                     If blnShowProgress Then
                         objProgress?.UpdateProgressBar(lngSrcIndex)
                         If objProgress?.KeyPressAbortProcess Then Exit For
-                        System.Windows.Forms.Application.DoEvents()
+                        Application.DoEvents()
                     End If
                 End If
 
@@ -678,9 +684,9 @@ Friend Class frmCWSpectrum
 
         Dim blnMatched As Boolean
 
-        Dim objProgress As ProgressFormNET.frmProgress = Nothing
+        Dim objProgress As frmProgress = Nothing
 
-        Dim srInFile As System.IO.StreamReader
+        Dim srInFile As StreamReader
 
         Try
             If strInputFilePath Is Nothing OrElse strInputFilePath.Length = 0 Then
@@ -694,10 +700,10 @@ Friend Class frmCWSpectrum
 
             If Len(strInputFilePath) = 0 Then Exit Sub
 
-            mLastPath = System.IO.Path.GetDirectoryName(strInputFilePath)
-            mLastFileName = System.IO.Path.GetFileName(strInputFilePath)
+            mLastPath = Path.GetDirectoryName(strInputFilePath)
+            mLastFileName = Path.GetFileName(strInputFilePath)
 
-            If System.IO.Path.GetExtension(strInputFilePath).ToLower = ".dta" Then
+            If Path.GetExtension(strInputFilePath).ToLower = ".dta" Then
                 ' User chose a .Dta file
                 ' Turn on blnDelimeterSpace and ignore the first numeric line if it matches the format: 'Parent ion' 'Charge'
                 blnDelimeterSpace = True
@@ -707,7 +713,7 @@ Friend Class frmCWSpectrum
                 intFilterIndexDefault = 1
             End If
 
-            srInFile = New System.IO.StreamReader(strInputFilePath)
+            srInFile = New StreamReader(strInputFilePath)
 
             ' Initialize the delimeter list
             strDelimeterList = ""
@@ -745,7 +751,7 @@ Friend Class frmCWSpectrum
             lngInputFileLengthBytes = srInFile.BaseStream.Length
             If lngInputFileLengthBytes / 1024.0# >= FILE_SIZE_KBYTES_TO_SHOW_PROGRESS_FORM Then
                 blnShowProgressForm = True
-                objProgress = New ProgressFormNET.frmProgress
+                objProgress = New frmProgress
                 objProgress.InitializeProgressForm("Loading data", 0, lngInputFileLengthBytes, False, False, False)
                 objProgress.ToggleAlwaysOnTop(True)
                 objProgress.MoveToBottomCenter()
@@ -887,7 +893,7 @@ Friend Class frmCWSpectrum
                                 ' Options are: \A   Shows Arrow
                                 '              \FA0  The caption can be bound to any data point, and is initially bound to point 0
                                 '              \FS0  The caption is bound to a single data point, point 0
-                                '              \FL   The captoin is floating, and thus not bound to any data points
+                                '              \FL   The caption is floating, and thus not bound to any data points
                                 '              \H   Hides caption in crowded regions
                                 '              \X   Shows X of nearest Point
                                 '              \Y   Shows Y of nearest Point
@@ -984,7 +990,7 @@ Friend Class frmCWSpectrum
                             Else
                                 ' Misplaced number
                                 ' Ignore it
-                                System.Diagnostics.Debug.Assert(False, "")
+                                Debug.Assert(False, "")
                             End If
 
                         End If
@@ -1116,7 +1122,7 @@ Friend Class frmCWSpectrum
                                     Case "SERIESPLOTMODE"
                                         ctlCWGraph.SetSeriesPlotMode(intSeriesOptionsSeriesIndex, CType(strKeyValue, CWGraphControl.pmPlotModeConstants))
                                     Case "SERIESLINESTYLE"
-                                        ctlCWGraph.SetSeriesLineStyle(intSeriesOptionsSeriesIndex, CType(strKeyValue, CWUIControlsLib.CWLineStyles))
+                                        ctlCWGraph.SetSeriesLineStyle(intSeriesOptionsSeriesIndex, CType(strKeyValue, CWLineStyles))
                                     Case "SERIESLINEWIDTH"
                                         ctlCWGraph.SetSeriesLineWidth(intSeriesOptionsSeriesIndex, CShortSafe(strKeyValue))
                                     Case "SERIESLINECOLOR"
@@ -1126,7 +1132,7 @@ Friend Class frmCWSpectrum
                                     Case "SERIESBARFILLCOLOR"
                                         ctlCWGraph.SetSeriesBarFillColor(intSeriesOptionsSeriesIndex, ConvertColorNameToColorObject(strKeyValue))
                                     Case "SERIESPOINTSTYLE"
-                                        ctlCWGraph.SetSeriesPointStyle(intSeriesOptionsSeriesIndex, CType(strKeyValue, CWUIControlsLib.CWPointStyles))
+                                        ctlCWGraph.SetSeriesPointStyle(intSeriesOptionsSeriesIndex, CType(strKeyValue, CWPointStyles))
                                     Case "SERIESPOINTCOLOR"
                                         ctlCWGraph.SetSeriesPointColor(intSeriesOptionsSeriesIndex, ConvertColorNameToColorObject(strKeyValue))
                                     Case "SERIESLEGENDCAPTION"
@@ -1149,14 +1155,14 @@ Friend Class frmCWSpectrum
                             End If
                         Catch ex As Exception
                             ' Ignore the error
-                            System.Diagnostics.Debug.Assert(False, "Error parsing KeyString in frmCWSpectrum->LoadDataFromDisk")
+                            Debug.Assert(False, "Error parsing KeyString in frmCWSpectrum->LoadDataFromDisk")
                         End Try
                     Else
                         ' A line with an = was found, but eParsingDataMode is not equal to pfmOptions
                         ' Ignore it, but stop in the debugger
                         ' However, only stop if this function wasn't called by code from another file loading function
                         If Not blnInputFilePathPassedToSub Then
-                            System.Diagnostics.Debug.Assert(False, "")
+                            Debug.Assert(False, "")
                         End If
                     End If
                 Else
@@ -1197,7 +1203,7 @@ Friend Class frmCWSpectrum
             If blnShowMessages Then
                 MsgBox("Error saving data to disk:" & vbCrLf & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             Else
-                System.Diagnostics.Debug.WriteLine("Error saving data to disk (frmCWSpectrum.LoadDataToDisk):" & ex.Message)
+                Debug.WriteLine("Error saving data to disk (frmCWSpectrum.LoadDataToDisk):" & ex.Message)
             End If
         Finally
             If Not srInFile Is Nothing Then
@@ -1269,15 +1275,15 @@ Friend Class frmCWSpectrum
 
         On Error GoTo FindMaximumAndNormalizeDataErrorHandler
 
-        dblOriginalMaximumValue = System.Math.Abs(dblArray(lngLowIndex))
+        dblOriginalMaximumValue = Math.Abs(dblArray(lngLowIndex))
         For intIndex = lngLowIndex + 1 To lngHighIndex
-            If System.Math.Abs(dblArray(intIndex)) > dblOriginalMaximumValue Then
-                dblOriginalMaximumValue = System.Math.Abs(dblArray(intIndex))
+            If Math.Abs(dblArray(intIndex)) > dblOriginalMaximumValue Then
+                dblOriginalMaximumValue = Math.Abs(dblArray(intIndex))
             End If
         Next intIndex
 
         If dblNormalizationConstant = 0 Then dblNormalizationConstant = 100
-        dblNormalizationConstant = System.Math.Abs(dblNormalizationConstant)
+        dblNormalizationConstant = Math.Abs(dblNormalizationConstant)
 
         If blnPerformNormalization And dblOriginalMaximumValue > 0 Then
             If dblOriginalMaximumValue <> dblNormalizationConstant Then
@@ -1295,8 +1301,8 @@ Friend Class frmCWSpectrum
         Exit Function
 
 FindMaximumAndNormalizeDataErrorHandler:
-        System.Diagnostics.Debug.Assert(False, "")
-        System.Diagnostics.Debug.WriteLine("Error occurred in FindMaximumAndNormalizeData: " & Err.Description)
+        Debug.Assert(False, "")
+        Debug.WriteLine("Error occurred in FindMaximumAndNormalizeData: " & Err.Description)
         FindMaximumAndNormalizeData = False
 
     End Function
@@ -1436,7 +1442,7 @@ FindMaximumAndNormalizeDataErrorHandler:
         Dim dblParsedVals() As Double ' 1-based array
         Dim intParseValCount As Integer
 
-        Dim objProgress As ProgressFormNET.frmProgress
+        Dim objProgress As frmProgress
 
         Dim ClipboardData As IDataObject = Clipboard.GetDataObject
 
@@ -1462,7 +1468,7 @@ FindMaximumAndNormalizeDataErrorHandler:
             strDelimeterList = strDelimeterList & ","
         End If
 
-        objProgress = New ProgressFormNET.frmProgress
+        objProgress = New frmProgress
 
         objProgress.InitializeProgressForm("Pasting Data From Clipboard", 0, Len(strDataList))
         objProgress.UpdateCurrentSubTask("Determining number of data points")
@@ -1542,7 +1548,7 @@ FindMaximumAndNormalizeDataErrorHandler:
                                     lngPointsLoaded = lngPointsLoaded + 1
                                     If lngPointsLoaded > lngValuesToPopulate Then
                                         ' This shouldn't happen
-                                        System.Diagnostics.Debug.Assert(False, "")
+                                        Debug.Assert(False, "")
                                         Exit For
                                     End If
                                 End If
@@ -1582,7 +1588,7 @@ PasteDataFromClipboardErrorHandler:
         If blnShowMessages Then
             MsgBox("Error occurred while pasting the data: " & vbCrLf & Err.Description, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
         Else
-            System.Diagnostics.Debug.WriteLine("Error occurred in frmCWSpectrum.PasteDataFromClipboard(): " & Err.Description)
+            Debug.WriteLine("Error occurred in frmCWSpectrum.PasteDataFromClipboard(): " & Err.Description)
         End If
     End Sub
 
@@ -1635,7 +1641,7 @@ PasteDataFromClipboardErrorHandler:
         Dim lngDataPointCountToSave As Integer
         Dim blnShowProgressForm As Boolean
 
-        Dim objProgress As ProgressFormNET.frmProgress = Nothing
+        Dim objProgress As frmProgress = Nothing
 
         Try
             If ctlCWGraph.GetSeriesCount < 1 And blnShowMessages Then
@@ -1647,16 +1653,16 @@ PasteDataFromClipboardErrorHandler:
                 strOutputFilePath = SelectFile("Enter file name to save graph data to", mLastPath, True, mLastFileName, "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*")
 
                 If Len(strOutputFilePath) > 0 Then
-                    If Not System.IO.Path.HasExtension(strOutputFilePath) Then
-                        strOutputFilePath = System.IO.Path.ChangeExtension(strOutputFilePath, ".csv")
+                    If Not Path.HasExtension(strOutputFilePath) Then
+                        strOutputFilePath = Path.ChangeExtension(strOutputFilePath, ".csv")
                     End If
                 End If
             End If
 
             If strOutputFilePath.Length = 0 Then Exit Sub
 
-            mLastPath = System.IO.Path.GetDirectoryName(strOutputFilePath)
-            mLastFileName = System.IO.Path.GetFileName(strOutputFilePath)
+            mLastPath = Path.GetDirectoryName(strOutputFilePath)
+            mLastFileName = Path.GetFileName(strOutputFilePath)
 
             Dim appendToFile As Boolean
             If blnOptionsOnly And blnAppendOptionsToFile Then
@@ -1665,7 +1671,7 @@ PasteDataFromClipboardErrorHandler:
                 appendToFile = False
             End If
 
-            Using swOutFile = New System.IO.StreamWriter(strOutputFilePath, appendToFile)
+            Using swOutFile = New StreamWriter(strOutputFilePath, appendToFile)
 
                 If Not blnOptionsOnly Then
                     lngDataPointCountToSave = 0
@@ -1679,7 +1685,7 @@ PasteDataFromClipboardErrorHandler:
                 End If
 
                 If blnShowProgressForm Then
-                    objProgress = New ProgressFormNET.frmProgress
+                    objProgress = New frmProgress
                     objProgress.InitializeProgressForm("Saving data", 1, ctlCWGraph.GetSeriesCount(), False, True, True)
                     objProgress.ToggleAlwaysOnTop(True)
                     objProgress.MoveToBottomCenter()
@@ -1737,7 +1743,7 @@ PasteDataFromClipboardErrorHandler:
                                             strAnnotationOptionCodes = "\FL" & lngPointNumberToBind.ToString.Trim
                                         Case Else
                                             ' This shouldn't happen
-                                            System.Diagnostics.Debug.Assert(False, "")
+                                            Debug.Assert(False, "")
                                             strAnnotationOptionCodes = ""
                                     End Select
 
@@ -1813,7 +1819,7 @@ PasteDataFromClipboardErrorHandler:
             If blnShowMessages Then
                 MsgBox("Error saving data to disk:" & vbCrLf & Err.Description, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             Else
-                System.Diagnostics.Debug.WriteLine("Error saving data to disk (frmCWSpectrum.SaveDataToDisk):" & Err.Description)
+                Debug.WriteLine("Error saving data to disk (frmCWSpectrum.SaveDataToDisk):" & Err.Description)
             End If
 
         End Try
@@ -1829,9 +1835,9 @@ SaveDataToDiskExitSub:
 
     Public Sub SaveToDiskAsPicture(Optional ByRef strOutputFilePath As String = "", Optional ByRef blnShowMessages As Boolean = True)
 
-        Dim objGraphPicture As System.Drawing.Image
+        Dim objGraphPicture As Image
         Dim intFilterIndex As Short
-        Dim eImageFormat As System.Drawing.Imaging.ImageFormat
+        Dim eImageFormat As ImageFormat
 
         Try
             objGraphPicture = ctlCWGraph.GetControlImage()
@@ -1842,29 +1848,29 @@ SaveDataToDiskExitSub:
             End If
 
             If Len(strOutputFilePath) > 0 Then
-                eImageFormat = System.Drawing.Imaging.ImageFormat.Wmf
+                eImageFormat = ImageFormat.Wmf
                 Select Case intFilterIndex
                     Case 1
                         ' WMF
-                        eImageFormat = System.Drawing.Imaging.ImageFormat.Wmf
+                        eImageFormat = ImageFormat.Wmf
                     Case 2
                         ' GIF
-                        eImageFormat = System.Drawing.Imaging.ImageFormat.Gif
+                        eImageFormat = ImageFormat.Gif
                     Case 3
                         ' PNG
-                        eImageFormat = System.Drawing.Imaging.ImageFormat.Png
+                        eImageFormat = ImageFormat.Png
                     Case Else
                         ' Default to WMF
                 End Select
 
                 ' Make sure strOutputFilePath ends in the correct extension
                 Select Case eImageFormat.ToString
-                    Case System.Drawing.Imaging.ImageFormat.Wmf.ToString
-                        strOutputFilePath = System.IO.Path.ChangeExtension(strOutputFilePath, ".wmf")
-                    Case System.Drawing.Imaging.ImageFormat.Gif.ToString
-                        strOutputFilePath = System.IO.Path.ChangeExtension(strOutputFilePath, ".gif")
-                    Case System.Drawing.Imaging.ImageFormat.Png.ToString
-                        strOutputFilePath = System.IO.Path.ChangeExtension(strOutputFilePath, ".png")
+                    Case ImageFormat.Wmf.ToString
+                        strOutputFilePath = Path.ChangeExtension(strOutputFilePath, ".wmf")
+                    Case ImageFormat.Gif.ToString
+                        strOutputFilePath = Path.ChangeExtension(strOutputFilePath, ".gif")
+                    Case ImageFormat.Png.ToString
+                        strOutputFilePath = Path.ChangeExtension(strOutputFilePath, ".png")
                     Case Else
                         ' Don't check anything
                         Debug.Assert(False, "This code shouldn't be reached (SaveToDiskAsPicture)")
@@ -1877,7 +1883,7 @@ SaveDataToDiskExitSub:
             If blnShowMessages Then
                 MsgBox("Error while trying to save:" & vbCrLf & ex.Message, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
             Else
-                System.Diagnostics.Debug.WriteLine("Error occurred in frmCWSpectrum.SaveToDiskAsPicture:" & ex.Message)
+                Debug.WriteLine("Error occurred in frmCWSpectrum.SaveToDiskAsPicture:" & ex.Message)
             End If
         End Try
 
@@ -1889,12 +1895,12 @@ SaveDataToDiskExitSub:
 
     Private Function SelectFile(strDialogCaption As String, Optional ByRef strStartPath As String = "", Optional ByRef blnSaveFile As Boolean = False, Optional ByRef strDefaultFileName As String = "", Optional ByVal strFileFilterCodes As String = "All Files (*.*)|*.*|Text Files (*.txt)|*.txt", Optional ByRef intFilterIndexDefault As Short = 1, Optional ByRef blnFileMustExistOnOpen As Boolean = True) As String
 
-        Dim dlgSelectFile As System.Windows.Forms.FileDialog
+        Dim dlgSelectFile As FileDialog
 
         If blnSaveFile Then
-            dlgSelectFile = New System.Windows.Forms.SaveFileDialog
+            dlgSelectFile = New SaveFileDialog
         Else
-            dlgSelectFile = New System.Windows.Forms.OpenFileDialog
+            dlgSelectFile = New OpenFileDialog
         End If
 
         With dlgSelectFile
@@ -1943,7 +1949,7 @@ SaveDataToDiskExitSub:
         Exit Sub
 
 SetCurrentSeriesNumberErrorHandler:
-        System.Diagnostics.Debug.Assert(False, "")
+        Debug.Assert(False, "")
 
     End Sub
 
@@ -2006,7 +2012,7 @@ SetCurrentSeriesNumberErrorHandler:
         strMessage &= "SOFTWARE.  This notice including this sentence must appear on any copies of "
         strMessage &= "this computer software." & ControlChars.NewLine
 
-        Windows.Forms.MessageBox.Show(strMessage, "About", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        MessageBox.Show(strMessage, "About", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
     End Sub
 
@@ -2232,12 +2238,12 @@ ShowAutoLabelPeaksDialogErrorHandler:
                 ' Too many decimal points
                 intNumLength = 0 ' No number found
                 intErrorCode = -4
-                StringToNumber = 0
+                Return 0
             ElseIf Len(strFoundNum) = 0 Or strFoundNum = strDecimalPointSymbol Then
                 ' No number at all or (more likely) no number after decimal point
                 intNumLength = 0 ' No number found
                 intErrorCode = -3
-                StringToNumber = 0
+                Return 0
             Else
                 ' All is fine
                 intNumLength = strFoundNum.Length
@@ -2247,12 +2253,12 @@ ShowAutoLabelPeaksDialogErrorHandler:
         Else
             intNumLength = 0 ' No number found
             intErrorCode = -1
-            StringToNumber = 0
+            Return 0
         End If
 
     End Function
 
-    Private Sub frmCWSpectrum_Deactivate(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Deactivate
+    Private Sub frmCWSpectrum_Deactivate(eventSender As Object, eventArgs As EventArgs) Handles MyBase.Deactivate
         With mSpectrumWindowPos
             .PosTop = Me.Top
             .Height = Me.Height
@@ -2268,7 +2274,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
     ''' <param name="eventSender"></param>
     ''' <param name="eventArgs"></param>
     ''' <remarks></remarks>
-    Private Sub frmCWSpectrum_KeyDown(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
+    Private Sub frmCWSpectrum_KeyDown(eventSender As Object, eventArgs As KeyEventArgs) Handles MyBase.KeyDown
         Dim intSeriesNumber As Short
 
         If eventArgs.Modifiers = Keys.Control Then
@@ -2289,19 +2295,19 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End If
     End Sub
 
-    Private Sub frmCWSpectrum_KeyUp(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyUp
+    Private Sub frmCWSpectrum_KeyUp(eventSender As Object, eventArgs As KeyEventArgs) Handles MyBase.KeyUp
         If eventArgs.Modifiers = Keys.Control Then
             mnuEditAddSampleData.Visible = False
         End If
     End Sub
 
-    Private Sub frmCWSpectrum_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
+    Private Sub frmCWSpectrum_Load(eventSender As Object, eventArgs As EventArgs) Handles MyBase.Load
 
         mSeriesNumberMenuLoadedCount = 1
         mActiveSeriesNumber = 1
 
         With mAutoLabelPeaksOptions
-            .DataMode = modCWSpectrum.dmDataModeConstants.dmDiscrete
+            .DataMode = dmDataModeConstants.dmDiscrete
             .DisplayXPos = True
             .DisplayXPos = False
             .CaptionAngle = 90
@@ -2329,58 +2335,58 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
     End Sub
 
-    Private Sub frmCWSpectrum_Closing(eventSender As System.Object, eventArgs As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+    Private Sub frmCWSpectrum_Closing(eventSender As Object, eventArgs As CancelEventArgs) Handles MyBase.Closing
         If Not mAutoLabelPeaksForm Is Nothing Then
             mAutoLabelPeaksForm.Close()
         End If
     End Sub
 
-    Public Sub mnuAboutSoftware_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuAboutSoftware.Click
+    Public Sub mnuAboutSoftware_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuAboutSoftware.Click
         ShowAboutBox()
     End Sub
 
-    Public Sub mnuEdit_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEdit.Click
+    Public Sub mnuEdit_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEdit.Click
         ShowHideSeriesNumberMenus()
     End Sub
 
-    Public Sub mnuEditAddSampleData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditAddSampleData.Click
+    Public Sub mnuEditAddSampleData_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditAddSampleData.Click
         AddSampleData()
     End Sub
 
-    Public Sub mnuEditAutoLabelPoints_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditAutoLabelPoints.Click
+    Public Sub mnuEditAutoLabelPoints_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditAutoLabelPoints.Click
         ShowAutoLabelPeaksDialog()
     End Sub
 
-    Public Sub mnuEditCopyAsPicture_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditCopyAsPicture.Click
+    Public Sub mnuEditCopyAsPicture_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditCopyAsPicture.Click
         CopyToClipboardAsPicture()
     End Sub
 
-    Public Sub mnuEditCopyCurrentData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditCopyCurrentData.Click
+    Public Sub mnuEditCopyCurrentData_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditCopyCurrentData.Click
         CopyDataPointsToClipboardOrToString(mActiveSeriesNumber)
     End Sub
 
-    Public Sub mnuEditCurrentSeriesSelected_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditCurrentSeriesSelected.Click
-        Dim Index As Short = mnuEditCurrentSeriesSelected.GetIndex(CType(eventSender, System.Windows.Forms.MenuItem))
+    Public Sub mnuEditCurrentSeriesSelected_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditCurrentSeriesSelected.Click
+        Dim Index As Short = mnuEditCurrentSeriesSelected.GetIndex(CType(eventSender, MenuItem))
         SetCurrentSeriesNumber(Index)
     End Sub
 
-    Public Sub mnuEditDeleteData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditDeleteData.Click
+    Public Sub mnuEditDeleteData_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditDeleteData.Click
         DeleteDataActiveSeries(True)
     End Sub
 
-    Public Sub mnuEditPasteData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditPasteData.Click
+    Public Sub mnuEditPasteData_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditPasteData.Click
         PasteDataFromClipboard()
     End Sub
 
-    Public Sub mnuEditPlotStyles_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditPlotStyles.Click
+    Public Sub mnuEditPlotStyles_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditPlotStyles.Click
         EditPlotStyles()
     End Sub
 
-    Public Sub mnuEditRemoveAllData_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditRemoveAllData.Click
+    Public Sub mnuEditRemoveAllData_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditRemoveAllData.Click
         DeleteDataForAllSeries(True)
     End Sub
 
-    Public Sub mnuEditRemoveAnnotationsCurrentSeries_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditRemoveAnnotationsCurrentSeries.Click
+    Public Sub mnuEditRemoveAnnotationsCurrentSeries_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditRemoveAnnotationsCurrentSeries.Click
         Dim eResponse As MsgBoxResult
 
         eResponse = MsgBox("Do you really want to remove the annotations for series " & mActiveSeriesNumber.ToString.Trim & "?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel Or MsgBoxStyle.DefaultButton3, "Remove Annotations")
@@ -2389,7 +2395,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End If
     End Sub
 
-    Public Sub mnuEditSetSeriesCount_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuEditSetSeriesCount.Click
+    Public Sub mnuEditSetSeriesCount_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuEditSetSeriesCount.Click
         Dim strNewSeriesCount As String
         Dim intNewSeriesCount As Short
 
@@ -2402,24 +2408,24 @@ ShowAutoLabelPeaksDialogErrorHandler:
 
     End Sub
 
-    Public Sub mnuFileClose_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileClose.Click
+    Public Sub mnuFileClose_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuFileClose.Click
         ' Raising this event will prompt the SpectrumInitiator to raise a SpectrumFormRequestCloseEvent
         RaiseEvent SpectrumFormRequestClose()
     End Sub
 
-    Public Sub mnuFileOpen_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileOpen.Click
+    Public Sub mnuFileOpen_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuFileOpen.Click
         LoadDataFromDisk()
     End Sub
 
-    Public Sub mnuFileSave_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileSave.Click
+    Public Sub mnuFileSave_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuFileSave.Click
         SaveDataToDisk()
     End Sub
 
-    Public Sub mnuFileSaveToDiskAsPicture_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuFileSaveToDiskAsPicture.Click
+    Public Sub mnuFileSaveToDiskAsPicture_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuFileSaveToDiskAsPicture.Click
         SaveToDiskAsPicture()
     End Sub
 
-    Public Sub mnuRemoveAllAnnotations_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuRemoveAllAnnotations.Click
+    Public Sub mnuRemoveAllAnnotations_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuRemoveAllAnnotations.Click
         Dim eResponse As MsgBoxResult
 
         eResponse = MsgBox("Do you really want to remove all of the annotations (for all series)?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel Or MsgBoxStyle.DefaultButton3, "Remove Annotations")
@@ -2428,19 +2434,19 @@ ShowAutoLabelPeaksDialogErrorHandler:
         End If
     End Sub
 
-    Public Sub mnuResetGraphToDefaults_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuResetGraphToDefaults.Click
+    Public Sub mnuResetGraphToDefaults_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuResetGraphToDefaults.Click
         ResetGraphToDefaults()
     End Sub
 
-    Public Sub mnuSetZoomRange_Click(eventSender As System.Object, eventArgs As System.EventArgs) Handles mnuSetZoomRange.Click
+    Public Sub mnuSetZoomRange_Click(eventSender As Object, eventArgs As EventArgs) Handles mnuSetZoomRange.Click
         ShowZoomRangeDialog()
     End Sub
 
     ' The following is used to capture when the user clicks the X in the upper right of the window
-    Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+    Protected Overrides Sub WndProc(ByRef m As Message)
 
         Const SC_CLOSE As Long = &HF060
-        If m.WParam.ToString = SC_CLOSE.ToString Then 'clicked controlbox
+        If m.WParam.ToString = SC_CLOSE.ToString Then 'clicked ControlBox
             m.Result = New IntPtr(0) 'cancel close before raising Closing event
             RaiseEvent SpectrumFormRequestClose()
         Else

@@ -1,5 +1,5 @@
 Option Strict Off
-Option Explicit On 
+Option Explicit On
 
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
@@ -9,45 +9,45 @@ Option Explicit On
 ' E-mail: matthew.monroe@pnl.gov or matt@alchemistmatt.com
 ' Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/
 ' -------------------------------------------------------------------------------
-' 
+'
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
-' in compliance with the License.  You may obtain a copy of the License at 
+' in compliance with the License.  You may obtain a copy of the License at
 ' http://www.apache.org/licenses/LICENSE-2.0
 
 Friend Class frmSetZoomRange
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 #Region "Windows Form Designer generated code "
-	Public Sub New()
-		MyBase.New()
+    Public Sub New()
+        MyBase.New()
         'This call is required by the Windows Form Designer.
-		InitializeComponent()
-	End Sub
-	'Form overrides dispose to clean up the component list.
-	Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
-		If Disposing Then
-			If Not components Is Nothing Then
-				components.Dispose()
-			End If
-		End If
-		MyBase.Dispose(Disposing)
-	End Sub
-	'Required by the Windows Form Designer
-	Private components As System.ComponentModel.IContainer
-	Public ToolTip1 As System.Windows.Forms.ToolTip
-	Public WithEvents txtYStart As System.Windows.Forms.TextBox
-	Public WithEvents txtYEnd As System.Windows.Forms.TextBox
-	Public WithEvents txtXEnd As System.Windows.Forms.TextBox
-	Public WithEvents cmdCancel As System.Windows.Forms.Button
-	Public WithEvents cmdSet As System.Windows.Forms.Button
-	Public WithEvents txtXStart As System.Windows.Forms.TextBox
-	Public WithEvents lblYStart As System.Windows.Forms.Label
-	Public WithEvents lblYEnd As System.Windows.Forms.Label
+        InitializeComponent()
+    End Sub
+    'Form overrides dispose to clean up the component list.
+    Protected Overloads Overrides Sub Dispose(ByVal Disposing As Boolean)
+        If Disposing Then
+            If Not components Is Nothing Then
+                components.Dispose()
+            End If
+        End If
+        MyBase.Dispose(Disposing)
+    End Sub
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+    Public ToolTip1 As System.Windows.Forms.ToolTip
+    Public WithEvents txtYStart As System.Windows.Forms.TextBox
+    Public WithEvents txtYEnd As System.Windows.Forms.TextBox
+    Public WithEvents txtXEnd As System.Windows.Forms.TextBox
+    Public WithEvents cmdCancel As System.Windows.Forms.Button
+    Public WithEvents cmdSet As System.Windows.Forms.Button
+    Public WithEvents txtXStart As System.Windows.Forms.TextBox
+    Public WithEvents lblYStart As System.Windows.Forms.Label
+    Public WithEvents lblYEnd As System.Windows.Forms.Label
     Public WithEvents lblXEnd As System.Windows.Forms.Label
-	Public WithEvents lblXStart As System.Windows.Forms.Label
-	'NOTE: The following procedure is required by the Windows Form Designer
-	'It can be modified using the Windows Form Designer.
-	'Do not modify it using the code editor.
-	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    Public WithEvents lblXStart As System.Windows.Forms.Label
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.txtYStart = New System.Windows.Forms.TextBox()
