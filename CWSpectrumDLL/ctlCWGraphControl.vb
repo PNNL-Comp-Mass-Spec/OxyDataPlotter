@@ -3,6 +3,8 @@ Option Explicit On
 
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
+Imports PRISM.DataUtils
+Imports PRISMWin
 ' -------------------------------------------------------------------------------
 ' Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA)
 ' Upgraded to VB.NET from VB6 in October 2003
@@ -2570,8 +2572,8 @@ LookupArrowVisibilityForAnnotationErrorHandler:
             SetLabelFontName(strValue)
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontSize", DEFAULT_FONT_SIZE.ToString)
-            If Len(strValue) = 0 Then strValue = DEFAULT_FONT_SIZE.ToString.Trim
-            SetLabelFontSize(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+            If Len(strValue) = 0 Then strValue = DEFAULT_FONT_SIZE.ToString().Trim()
+            SetLabelFontSize(StringToValueUtils.CIntSafe(strValue, DEFAULT_FONT_SIZE))
 
             Try
                 strValue = Lookup2DArrayValueByName(strGraphOptions, "LabelFontColor", Color.Black.ToString)
@@ -2638,13 +2640,13 @@ LookupArrowVisibilityForAnnotationErrorHandler:
             End If
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectIntensityThresholdCounts", "10")
-            SetPeakDetectIntensityThresholdCounts(SharedVBNetRoutines.VBNetRoutines.CDblSafe(strValue))
+            SetPeakDetectIntensityThresholdCounts(StringToValueUtils.CDoubleSafe(strValue, 10))
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectIntensityThresholdPercentageOfMaximum", "0")
-            SetPeakDetectIntensityThresholdPercentageOfMaximum(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+            SetPeakDetectIntensityThresholdPercentageOfMaximum(StringToValueUtils.CIntSafe(strValue, 0))
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "PeakDetectWidthPointsMinimum", "5")
-            SetPeakDetectWidthPointsMinimum(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+            SetPeakDetectWidthPointsMinimum(StringToValueUtils.CIntSafe(strValue, 5))
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "AutoScaleVisibleY", "False")
             strValue2 = Lookup2DArrayValueByName(strGraphOptions, "FixMinimumYAtZero", "False")
@@ -2654,10 +2656,10 @@ LookupArrowVisibilityForAnnotationErrorHandler:
             SetAutoAdjustScalingToIncludeCaptions(CBoolSafe(strValue))
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "PrecisionX", "2")
-            SetDisplayPrecisionX(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+            SetDisplayPrecisionX(StringToValueUtils.CIntSafe(strValue, 2))
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "PrecisionY", "1")
-            SetDisplayPrecisionY(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+            SetDisplayPrecisionY(StringToValueUtils.CIntSafe(strValue, 1))
 
             strValue = Lookup2DArrayValueByName(strGraphOptions, "Cursor1Visible", "True")
             SetCursorVisible(CBoolSafe(strValue), 1)
@@ -2696,7 +2698,7 @@ LookupArrowVisibilityForAnnotationErrorHandler:
 
                 strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontSize" & intSeriesIndex.ToString.Trim, DEFAULT_ANNOTATION_FONT_SIZE.ToString.Trim)
                 If Len(strValue) = 0 Then strValue = DEFAULT_ANNOTATION_FONT_SIZE.ToString.Trim
-                SetAnnotationFontSize(intSeriesIndex, SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
+                SetAnnotationFontSize(intSeriesIndex, StringToValueUtils.CIntSafe(strValue, DEFAULT_ANNOTATION_FONT_SIZE))
 
                 Try
                     strValue = Lookup2DArrayValueByName(strGraphOptions, "AnnotationFontColor", Color.White.ToString)
@@ -4436,7 +4438,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
     End Sub
 
     Private Sub txtAnnotationDensityToleranceX_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtAnnotationDensityToleranceX.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtAnnotationDensityToleranceX, eventArgs, True, True)
+        TextBoxUtils.TextBoxKeyPressHandler(txtAnnotationDensityToleranceX, eventArgs, True, True)
     End Sub
 
     Private Sub txtAnnotationDensityToleranceX_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceX.Leave
@@ -4456,7 +4458,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
     End Sub
 
     Private Sub txtAnnotationDensityToleranceY_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtAnnotationDensityToleranceY.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtAnnotationDensityToleranceY, eventArgs, True, True)
+        TextBoxUtils.TextBoxKeyPressHandler(txtAnnotationDensityToleranceY, eventArgs, True, True)
     End Sub
 
     Private Sub txtAnnotationDensityToleranceY_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtAnnotationDensityToleranceY.Leave
@@ -4476,7 +4478,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
     End Sub
 
     Private Sub txtPrecisionX_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPrecisionX.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtPrecisionX, eventArgs, True, False)
+        TextBoxUtils.TextBoxKeyPressHandler(txtPrecisionX, eventArgs, True, False)
     End Sub
 
     Private Sub txtPrecisionX_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPrecisionX.Leave
@@ -4496,7 +4498,7 @@ UpdateAnnotationDensityTolerancesErrorHandler:
     End Sub
 
     Private Sub txtPrecisionY_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPrecisionY.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtPrecisionY, eventArgs, True, False)
+        TextBoxUtils.TextBoxKeyPressHandler(txtPrecisionY, eventArgs, True, False)
     End Sub
 
     Private Sub txtPrecisionY_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPrecisionY.Leave

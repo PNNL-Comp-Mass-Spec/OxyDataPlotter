@@ -103,19 +103,11 @@ Module modCWSpectrum
     End Sub
 
     Public Function CBoolSafe(strValue As String) As Boolean
-        Try
-            Return Boolean.Parse(strValue)
-        Catch ex As Exception
-            Return False
-        End Try
+        Return PRISM.DataUtils.StringToValueUtils.CBoolSafe(strValue, False)
     End Function
 
     Public Function CShortSafe(strValue As String) As Short
-        Try
-            Return CShort(SharedVBNetRoutines.VBNetRoutines.CIntSafe(strValue))
-        Catch ex As Exception
-            Return 0
-        End Try
+        Return PRISM.DataUtils.StringToValueUtils.CShortSafe(strValue, 0)
     End Function
 
     Public Function FormatNumberAsString(dblNumber As Double, Optional ByVal intMaxLength As Integer = 10, Optional ByVal intMaxDigitsOfPrecision As Integer = 8, Optional ByVal blnUseScientificWhenTooLong As Boolean = True) As String

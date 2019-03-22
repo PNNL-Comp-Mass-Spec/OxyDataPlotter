@@ -2029,7 +2029,7 @@ ShowOptionsForSeriesErrorHandler:
             .FrameStyle3D = chkFrameStyle3D.Checked
 
             .NormalizeOnLoadOrPaste = chkNormalizeOnLoadOrPaste.Checked
-            .NormalizationConstant = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtNormalizationConstant.Text)
+            .NormalizationConstant = PRISM.DataUtils.StringToValueUtils.CDoubleSafe(txtNormalizationConstant.Text, 100)
         End With
 
         With udtOptionsNew.SeriesOptions(cboSeriesNumber.SelectedIndex + 1)
@@ -2063,7 +2063,7 @@ ShowOptionsForSeriesErrorHandler:
             .LegendCaption = txtLegendCaption.Text
 
             .LineStyle = cboLineStyle.SelectedIndex
-            .LineWidth = SharedVBNetRoutines.VBNetRoutines.CIntSafe(txtLineWidth.Text)
+            .LineWidth = PRISM.DataUtils.StringToValueUtils.CIntSafe(txtLineWidth.Text, 1)
             .LineColor = lblLineColorSelection.BackColor
             .LineToBaseColor = lblLineToBaseColorSelection.BackColor
             .BarFillColor = lblBarFillColorSelection.BackColor
@@ -2293,11 +2293,11 @@ ShowOptionsForSeriesErrorHandler:
     End Sub
 
     Private Sub txtLineWidth_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtLineWidth.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtLineWidth, eventArgs, True, False)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtLineWidth, eventArgs, True, False)
     End Sub
 
     Private Sub txtLineWidth_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtLineWidth.Leave
-        SharedVBNetRoutines.VBNetRoutines.ValidateTextboxInt(txtLineWidth, 0, 5, 2)
+        PRISMWin.TextBoxUtils.ValidateTextBoxInt(txtLineWidth, 0, 5, 2)
         UpdateCurrentOptions()
     End Sub
 
@@ -2310,7 +2310,7 @@ ShowOptionsForSeriesErrorHandler:
     End Sub
 
     Private Sub txtNormalizationConstant_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtNormalizationConstant.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtNormalizationConstant, eventArgs, True, True, True, False, True, False, False, False, False, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtNormalizationConstant, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
     Private Sub txtPlotSubTitle_TextChanged(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPlotSubTitle.TextChanged

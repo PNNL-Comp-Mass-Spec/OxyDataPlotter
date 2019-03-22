@@ -727,7 +727,7 @@ ShowCurrentOptionsErrorHandler:
         If blnFavorScrollBar Then
             txtPointToBindTo.Text = CStr(scrDataPointSelection.Value)
         Else
-            lngDataPointNumber = SharedVBNetRoutines.VBNetRoutines.CIntSafe(txtPointToBindTo.Text)
+            lngDataPointNumber = StringToValueUtils.CIntSafe(txtPointToBindTo.Text, 0)
 
             With scrDataPointSelection
                 If lngDataPointNumber >= .Minimum And lngDataPointNumber <= (.Maximum - .LargeChange + 1) Then
@@ -761,7 +761,7 @@ ShowCurrentOptionsErrorHandler:
             .AnnotationShowsNearestPointX = chkAnnotationShowsNearestPointX.Checked
             .AnnotationShowsNearestPointY = chkAnnotationShowsNearestPointY.Checked
 
-            If .PointNumberToBind >= 0 Then .PointNumberToBind = SharedVBNetRoutines.VBNetRoutines.CIntSafe(txtPointToBindTo.Text)
+            If .PointNumberToBind >= 0 Then .PointNumberToBind = StringToValueUtils.CIntSafe(txtPointToBindTo.Text, 0)
 
             If (cboAnnotationSnapMode.SelectedIndex = CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToAnyPoint And .SnapMode <> CWGraphControl.asmAnnotationSnapModeConstants.asmFixedToAnyPoint) Or (cboAnnotationSnapMode.SelectedIndex <> CWGraphControl.asmAnnotationSnapModeConstants.asmFloating And .PointNumberToBind < 0) Then
                 .SnapMode = cboAnnotationSnapMode.SelectedIndex
@@ -791,9 +791,9 @@ ShowCurrentOptionsErrorHandler:
 
             txtCaption.Text = .CaptionText
 
-            .CaptionXPos = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtXPos.Text)
-            .CaptionYPos = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtYPos.Text)
-            .CaptionAngle = SharedVBNetRoutines.VBNetRoutines.CIntSafe(txtCaptionAngle.Text)
+            .CaptionXPos = StringToValueUtils.CDoubleSafe(txtXPos.Text, 0)
+            .CaptionYPos = StringToValueUtils.CDoubleSafe(txtYPos.Text, 0)
+            .CaptionAngle = StringToValueUtils.CIntSafe(txtCaptionAngle.Text, 0)
 
             .IncludeArrow = chkShowArrow.Checked
             .HideInDenseRegions = chkHideInCrowdedRegions.Checked
@@ -907,11 +907,11 @@ ShowCurrentOptionsErrorHandler:
     End Sub
 
     Private Sub txtCaptionAngle_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtCaptionAngle.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtCaptionAngle, eventArgs, True, False)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtCaptionAngle, eventArgs, True, False)
     End Sub
 
     Private Sub txtCaptionAngle_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtCaptionAngle.Leave
-        SharedVBNetRoutines.VBNetRoutines.ValidateTextboxInt(txtCaptionAngle, 0, 360, 0)
+        PRISMWin.TextBoxUtils.ValidateTextBoxInt(txtCaptionAngle, 0, 360, 0)
         UpdateCurrentOptions()
     End Sub
 
@@ -925,11 +925,11 @@ ShowCurrentOptionsErrorHandler:
     End Sub
 
     Private Sub txtPointToBindTo_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtPointToBindTo.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtPointToBindTo, eventArgs, True, False)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtPointToBindTo, eventArgs, True, False)
     End Sub
 
     Private Sub txtPointToBindTo_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtPointToBindTo.Leave
-        SharedVBNetRoutines.VBNetRoutines.ValidateTextboxSng(txtPointToBindTo, 0, 100000000.0#, 0)
+        PRISMWin.TextBoxUtils.ValidateTextBoxFloat(txtPointToBindTo, 0, 100000000.0#, 0)
         UpdateCurrentOptions()
     End Sub
 
@@ -942,7 +942,7 @@ ShowCurrentOptionsErrorHandler:
     End Sub
 
     Private Sub txtXPos_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXPos.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtXPos, eventArgs, True, True, True, False, True, False, False, False, False, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtXPos, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
     Private Sub txtXPos_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXPos.Leave
@@ -958,7 +958,7 @@ ShowCurrentOptionsErrorHandler:
     End Sub
 
     Private Sub txtYPos_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYPos.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtYPos, eventArgs, True, True, True, False, True, False, False, False, False, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtYPos, eventArgs, True, True, True, False, True, False, False, False, False, True)
     End Sub
 
     Private Sub txtYPos_Leave(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYPos.Leave

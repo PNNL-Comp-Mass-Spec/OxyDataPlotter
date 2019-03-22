@@ -898,7 +898,7 @@ Friend Class frmCWSpectrum
                                         dblCaptionYPos = CDbl(strParsedVals(1))
 
                                         If intParsedValsCount >= 5 Then
-                                            lngCaptionAngle = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strParsedVals(2))
+                                            lngCaptionAngle = StringToValueUtils.CIntSafe(strParsedVals(2), 0)
                                             strAnnotationOptions = strParsedVals(3)
                                             strCaption = strParsedVals(4)
 
@@ -920,7 +920,7 @@ Friend Class frmCWSpectrum
                                             ' The user either left out the angle or left out the annotation options
 
                                             If IsNumeric(strParsedVals(2)) Then
-                                                lngCaptionAngle = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strParsedVals(2))
+                                                lngCaptionAngle = StringToValueUtils.CIntSafe(strParsedVals(2), 0)
                                                 strAnnotationOptions = ""
                                             Else
                                                 lngCaptionAngle = 0
@@ -968,7 +968,7 @@ Friend Class frmCWSpectrum
                                             StringToNumber(strSubString, intNumLength)
 
                                             If intNumLength > 0 Then
-                                                lngAnnotationPointNumberToBind = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strSubString.Substring(0, intNumLength))
+                                                lngAnnotationPointNumberToBind = StringToValueUtils.CIntSafe(strSubString.Substring(0, intNumLength), -1)
                                             Else
                                                 lngAnnotationPointNumberToBind = -1
                                             End If
@@ -1043,16 +1043,16 @@ Friend Class frmCWSpectrum
                                 Case "NORMALIZEONLOADORPASTE"
                                     SetNormalizeOnLoadOrPaste(CBoolSafe(strKeyValue))
                                 Case "NORMALIZATIONCONSTANT"
-                                    SetNormalizationConstant(SharedVBNetRoutines.VBNetRoutines.CDblSafe(strKeyValue))
+                                    SetNormalizationConstant(StringToValueUtils.CDoubleSafe(strKeyValue, 100))
 
                                 Case "ANNOTATIONDENSITYAUTOHIDECAPTIONS"
                                     blnAutoHideCaptions = CBoolSafe(strKeyValue)
                                 Case "ANNOTATIONDENSITYTOLERANCEAUTOADJUST"
                                     ctlCWGraph.SetAnnotationDensityToleranceAutoAdjust(CBoolSafe(strKeyValue))
                                 Case "ANNOTATIONDENSITYTOLERANCEX"
-                                    ctlCWGraph.SetAnnotationDensityToleranceX(SharedVBNetRoutines.VBNetRoutines.CDblSafe(strKeyValue))
+                                    ctlCWGraph.SetAnnotationDensityToleranceX(StringToValueUtils.CDoubleSafe(strKeyValue, 1))
                                 Case "ANNOTATIONDENSITYTOLERANCEY"
-                                    ctlCWGraph.SetAnnotationDensityToleranceY(SharedVBNetRoutines.VBNetRoutines.CDblSafe(strKeyValue))
+                                    ctlCWGraph.SetAnnotationDensityToleranceY(StringToValueUtils.CDoubleSafe(strKeyValue, 1))
 
                                 Case "AUTOSCALEVISIBLEY"
                                     blnAutoScaleVisibleY = CBoolSafe(strKeyValue)
@@ -1078,10 +1078,10 @@ Friend Class frmCWSpectrum
                                 Case "CURSOR2COLOR"
                                     ctlCWGraph.SetCursorColor(ConvertColorNameToColorObject(strKeyValue), 2)
                                 Case "CURSORPOSITIONX"
-                                    dblCursorPosX = SharedVBNetRoutines.VBNetRoutines.CDblSafe(strKeyValue)
+                                    dblCursorPosX = StringToValueUtils.CDoubleSafe(strKeyValue, 0)
                                     blnUpdateCursorPosition = True
                                 Case "CURSORPOSITIONY"
-                                    dblCursorPosY = SharedVBNetRoutines.VBNetRoutines.CDblSafe(strKeyValue)
+                                    dblCursorPosY = StringToValueUtils.CDoubleSafe(strKeyValue, 0)
                                     blnUpdateCursorPosition = True
 
                                 Case "AUTOLABELPEAKSDISPLAYXPOSITION"
@@ -1093,15 +1093,15 @@ Friend Class frmCWSpectrum
                                 Case "AUTOLABELPEAKSHIDEINDENSEREGIONS"
                                     mAutoLabelPeaksOptions.HideInDenseRegions = CBoolSafe(strKeyValue)
                                 Case "AUTOLABELPEAKSCAPTIONANGLE"
-                                    mAutoLabelPeaksOptions.CaptionAngle = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strKeyValue)
+                                    mAutoLabelPeaksOptions.CaptionAngle = StringToValueUtils.CIntSafe(strKeyValue, 0)
                                 Case "AUTOLABELPEAKSINTENSITYTHRESHOLDMINIMUM"
-                                    mAutoLabelPeaksOptions.IntensityThresholdMinimum = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strKeyValue)
+                                    mAutoLabelPeaksOptions.IntensityThresholdMinimum = StringToValueUtils.CIntSafe(strKeyValue, 10)
                                 Case "AUTOLABELPEAKSMINIMUMINTENSITYPERCENTAGEOFMAXIMUM"
-                                    mAutoLabelPeaksOptions.MinimumIntensityPercentageOfMaximum = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strKeyValue)
+                                    mAutoLabelPeaksOptions.MinimumIntensityPercentageOfMaximum = StringToValueUtils.CIntSafe(strKeyValue, 10)
                                 Case "AUTOLABELPEAKSPEAKWIDTHMINIMUMPOINTS"
-                                    mAutoLabelPeaksOptions.PeakWidthMinimumPoints = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strKeyValue)
+                                    mAutoLabelPeaksOptions.PeakWidthMinimumPoints = StringToValueUtils.CIntSafe(strKeyValue, 5)
                                 Case "AUTOLABELPEAKSLABELCOUNTMAXIMUM"
-                                    mAutoLabelPeaksOptions.PeakLabelCountMaximum = SharedVBNetRoutines.VBNetRoutines.CIntSafe(strKeyValue)
+                                    mAutoLabelPeaksOptions.PeakLabelCountMaximum = StringToValueUtils.CIntSafe(strKeyValue, 100)
 
                                 Case Else
                                     blnMatched = False
@@ -1132,7 +1132,7 @@ Friend Class frmCWSpectrum
                                     Case "SERIESLEGENDCAPTION"
                                         ctlCWGraph.SetSeriesLegendCaption(intSeriesOptionsSeriesIndex, strKeyValue)
                                     Case "SERIESORIGINALINTENSITYMAXIMUM"
-                                        ctlCWGraph.SetSeriesOriginalIntensityMaximum(intSeriesOptionsSeriesIndex, SharedVBNetRoutines.VBNetRoutines.CDblSafe(strKeyValue))
+                                        ctlCWGraph.SetSeriesOriginalIntensityMaximum(intSeriesOptionsSeriesIndex, StringToValueUtils.CDoubleSafe(strKeyValue, 0))
                                     Case "ANNOTATIONFONTNAME"
                                         ctlCWGraph.SetAnnotationFontName(intSeriesOptionsSeriesIndex, strKeyValue)
                                     Case "ANNOTATIONFONTSIZE"
@@ -1188,7 +1188,7 @@ Friend Class frmCWSpectrum
 
             If blnLoadingDTAFile Then
                 ctlCWGraph.SetSeriesPlotMode(mActiveSeriesNumber, CWGraphControl.pmPlotModeConstants.pmSticksToZero)
-                ctlCWGraph.SetSeriesLegendCaption(mActiveSeriesNumber, SharedVBNetRoutines.VBNetRoutines.CompactPathString(System.IO.Path.GetFileName(strInputFilePath), 20) & ": " & strParentIonInfo)
+                ctlCWGraph.SetSeriesLegendCaption(mActiveSeriesNumber, PathUtils.CompactPathString(Path.GetFileName(strInputFilePath), 20) & ": " & strParentIonInfo)
             End If
 
             ctlCWGraph.ZoomOutFull()
@@ -2242,7 +2242,7 @@ ShowAutoLabelPeaksDialogErrorHandler:
                 ' All is fine
                 intNumLength = strFoundNum.Length
                 intErrorCode = 0
-                StringToNumber = SharedVBNetRoutines.VBNetRoutines.CDblSafe(strFoundNum)
+                Return StringToValueUtils.CDoubleSafe(strFoundNum, 0)
             End If
         Else
             intNumLength = 0 ' No number found

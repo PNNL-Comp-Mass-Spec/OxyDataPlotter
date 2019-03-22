@@ -95,10 +95,6 @@
     <Reference Include="ProgressFormNET">
       <HintPath>lib\ProgressFormNET.dll</HintPath>
     </Reference>
-    <Reference Include="SharedVBNetRoutines">
-      <Name>SharedVBNetRoutines</Name>
-      <HintPath>lib\SharedVBNetRoutines.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>

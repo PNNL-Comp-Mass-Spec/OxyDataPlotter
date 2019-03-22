@@ -240,12 +240,12 @@ Friend Class frmSetZoomRange
 #End Region
 
     Public Sub ReturnValues(ByRef dblXStart As Double, ByRef dblXEnd As Double, ByRef dblYStart As Double, ByRef dblYEnd As Double)
-        dblXStart = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtXStart.Text)
-        dblXEnd = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtXEnd.Text)
-		
-        dblYStart = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtYStart.Text)
-        dblYEnd = SharedVBNetRoutines.VBNetRoutines.CDblSafe(txtYEnd.Text)
-	End Sub
+        dblXStart = PRISM.DataUtils.StringToValueUtils.CDoubleSafe(txtXStart.Text, 0)
+        dblXEnd = PRISM.DataUtils.StringToValueUtils.CDoubleSafe(txtXEnd.Text, 10)
+
+        dblYStart = PRISM.DataUtils.StringToValueUtils.CDoubleSafe(txtYStart.Text, 0)
+        dblYEnd = PRISM.DataUtils.StringToValueUtils.CDoubleSafe(txtYEnd.Text, 10)
+    End Sub
 
     Public Sub SetValues(dblXStart As Double, dblXEnd As Double, dblYStart As Double, dblYEnd As Double)
         txtXStart.Text = FormatNumberAsString(dblXStart, 12)
@@ -274,7 +274,7 @@ Friend Class frmSetZoomRange
     End Sub
 
     Private Sub txtXEnd_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXEnd.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtXEnd, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtXEnd, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 
     Private Sub txtXStart_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXStart.Enter
@@ -282,7 +282,7 @@ Friend Class frmSetZoomRange
     End Sub
 
     Private Sub txtXStart_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtXStart.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtXStart, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtXStart, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 
     Private Sub txtYEnd_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYEnd.Enter
@@ -290,7 +290,7 @@ Friend Class frmSetZoomRange
     End Sub
 
     Private Sub txtYEnd_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYEnd.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtYEnd, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtYEnd, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 
     Private Sub txtYStart_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtYStart.Enter
@@ -298,6 +298,6 @@ Friend Class frmSetZoomRange
     End Sub
 
     Private Sub txtYStart_KeyPress(eventSender As System.Object, eventArgs As System.Windows.Forms.KeyPressEventArgs) Handles txtYStart.KeyPress
-        SharedVBNetRoutines.VBNetRoutines.TextBoxKeyPressHandler(txtYStart, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
+        PRISMWin.TextBoxUtils.TextBoxKeyPressHandler(txtYStart, eventArgs, True, True, True, False, False, False, False, False, False, True, True)
     End Sub
 End Class

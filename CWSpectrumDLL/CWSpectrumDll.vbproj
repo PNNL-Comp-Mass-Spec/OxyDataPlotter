@@ -84,9 +84,6 @@
     <Reference Include="ProgressFormNET">
       <HintPath>..\lib\ProgressFormNET.dll</HintPath>
     </Reference>
-    <Reference Include="SharedVBNetRoutines">
-      <HintPath>..\lib\SharedVBNetRoutines.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -230,6 +227,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PRISM-Library">
+      <Version>2.5.16</Version>
+    </PackageReference>
+    <PackageReference Include="PRISMWin-Library">
+      <Version>1.0.10</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
