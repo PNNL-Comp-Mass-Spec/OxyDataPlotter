@@ -730,8 +730,8 @@ InitializeFormErrorHandler:
         Me.Hide()
     End Sub
 
-    Private Sub frmAutoLabelPeaks_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
-        SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.UpperThird, 370, 440)
+    Private Sub frmAutoLabelPeaks_Load(eventSender As Object, eventArgs As EventArgs) Handles MyBase.Load
+        SizeAndCenterWindow(Me, wpcWindowPosConstants.UpperThird, 370, 440)
     End Sub
 
     Private Sub frmAutoLabelPeaks_Closed(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Closed

@@ -266,7 +266,7 @@ Friend Class frmSetZoomRange
     End Sub
 
     Private Sub frmSetZoomRange_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
-        SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.UpperThird, 300, 150)
+        SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosConstants.UpperThird, 300, 150)
     End Sub
 
     Private Sub txtXEnd_Enter(eventSender As System.Object, eventArgs As System.EventArgs) Handles txtXEnd.Enter

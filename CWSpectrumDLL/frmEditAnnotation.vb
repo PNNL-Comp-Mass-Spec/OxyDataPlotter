@@ -878,8 +878,8 @@ ShowCurrentOptionsErrorHandler:
         txtCaption.Focus()
     End Sub
 
-    Private Sub frmEditAnnotation_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
-        SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.BottomCenter, 460, 350)
+    Private Sub frmEditAnnotation_Load(eventSender As Object, eventArgs As EventArgs) Handles MyBase.Load
+        SizeAndCenterWindow(Me, wpcWindowPosConstants.BottomCenter, 460, 350)
     End Sub
 
     Private Sub frmEditAnnotation_Closed(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Closed

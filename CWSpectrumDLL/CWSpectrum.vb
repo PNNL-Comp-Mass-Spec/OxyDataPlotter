@@ -51,7 +51,7 @@ Module modCWSpectrum
     End Structure
 
     ' Constants for Centering Windows
-    Public Enum wpcWindowPosContants As Integer
+    Public Enum wpcWindowPosConstants As Integer
         ExactCenter = 0
         UpperThird = 1
         LowerThird = 2
@@ -162,7 +162,7 @@ Module modCWSpectrum
         Return lngWidth
     End Function
 
-    Public Sub SizeAndCenterWindow(ByRef frmThisForm As Form, Optional ByVal eCenterMode As wpcWindowPosContants = wpcWindowPosContants.ExactCenter, Optional ByVal lngWindowWidth As Integer = -1, Optional ByVal lngWindowHeight As Integer = -1, Optional ByVal blnSizeAndCenterOnlyOncePerProgramSession As Boolean = True, Optional ByVal intDualMonitorToUse As Short = -1)
+    Public Sub SizeAndCenterWindow(ByRef frmThisForm As Form, Optional ByVal eCenterMode As wpcWindowPosConstants = wpcWindowPosConstants.ExactCenter, Optional ByVal lngWindowWidth As Integer = -1, Optional ByVal lngWindowHeight As Integer = -1, Optional ByVal blnSizeAndCenterOnlyOncePerProgramSession As Boolean = True, Optional ByVal intDualMonitorToUse As Short = -1)
         ' Sub revision 1.3
 
         ' This sub routine properly recognizes dual monitors, centering the form to just one monitor
@@ -205,7 +205,7 @@ Module modCWSpectrum
             End If
         End If
 
-        ' If form called previously and blnSizeAndCenterOnlyOncePerProgramSessionis true, then exit sub
+        ' If form called previously and blnSizeAndCenterOnlyOncePerProgramSession is true, then exit sub
         If blnSizeAndCenterOnlyOncePerProgramSession And blnSubCalledPreviously Then
             Exit Sub
         End If
@@ -234,7 +234,7 @@ Module modCWSpectrum
         ' Normal Desktops have aspect ratios of 1.33 or 1.5
         ' HDTV desktops have an aspect ratio of 1.6 or 1.7
         ' Horizontal Dual Monitors have an aspect ratio of 2.66 or 2.5
-        ' Vertical Dual Monitors have an aspectr ratio of 0.67 or 0.62
+        ' Vertical Dual Monitors have an aspect ratio of 0.67 or 0.62
 
         ' Determine if using dual monitors
         If dblAspectRatio < 1 Or dblAspectRatio > 2 Then
@@ -277,34 +277,34 @@ Module modCWSpectrum
         With frmThisForm
             ' Position window
             Select Case eCenterMode
-                Case wpcWindowPosContants.UpperThird
+                Case wpcWindowPosConstants.UpperThird
                     lngWindowLeftToSet = (lngWorkingAreaWidth - .Width) \ 2
                     lngWindowTopToSet = (lngWorkingAreaHeight - .Height) \ 3
-                Case wpcWindowPosContants.LowerThird
+                Case wpcWindowPosConstants.LowerThird
                     lngWindowLeftToSet = (lngWorkingAreaWidth - .Width) \ 2
                     lngWindowTopToSet = (lngWorkingAreaHeight - .Height) * 2 \ 3
-                Case wpcWindowPosContants.MiddleLeft
+                Case wpcWindowPosConstants.MiddleLeft
                     lngWindowLeftToSet = 0
                     lngWindowTopToSet = (lngWorkingAreaHeight - .Height) \ 2
-                Case wpcWindowPosContants.MiddleRight
+                Case wpcWindowPosConstants.MiddleRight
                     lngWindowLeftToSet = lngWorkingAreaWidth - .Width
                     lngWindowTopToSet = (lngWorkingAreaHeight - .Height) \ 2
-                Case wpcWindowPosContants.TopCenter
+                Case wpcWindowPosConstants.TopCenter
                     lngWindowLeftToSet = (lngWorkingAreaWidth - .Width) \ 2
                     lngWindowTopToSet = 0
-                Case wpcWindowPosContants.BottomCenter
+                Case wpcWindowPosConstants.BottomCenter
                     lngWindowLeftToSet = (lngWorkingAreaWidth - .Width) \ 2
                     lngWindowTopToSet = lngWorkingAreaHeight - .Height - 33
-                Case wpcWindowPosContants.BottomRight
+                Case wpcWindowPosConstants.BottomRight
                     lngWindowLeftToSet = lngWorkingAreaWidth - .Width
                     lngWindowTopToSet = lngWorkingAreaHeight - .Height - 33
-                Case wpcWindowPosContants.BottomLeft
+                Case wpcWindowPosConstants.BottomLeft
                     lngWindowLeftToSet = 0
                     lngWindowTopToSet = lngWorkingAreaHeight - .Height - 33
-                Case wpcWindowPosContants.TopRight
+                Case wpcWindowPosConstants.TopRight
                     lngWindowLeftToSet = lngWorkingAreaWidth - .Width
                     lngWindowTopToSet = 0
-                Case wpcWindowPosContants.TopLeft
+                Case wpcWindowPosConstants.TopLeft
                     lngWindowLeftToSet = 0
                     lngWindowTopToSet = 0
                 Case Else ' Includes cWindowExactCenter = 0
@@ -365,7 +365,7 @@ Module modCWSpectrum
                 If .Height < lngMinHeight Then .Height = lngMinHeight
 
                 If .Left > lngScreenWidth - MinVisibleFormArea Or .Top > lngScreenHeight - MinVisibleFormArea Or .Left < 0 Or .Top < 0 Then
-                    SizeAndCenterWindow(frmThisForm, wpcWindowPosContants.UpperThird, .Width, .Height, False, -1)
+                    SizeAndCenterWindow(frmThisForm, wpcWindowPosConstants.UpperThird, .Width, .Height, False, -1)
                 End If
             End With
         Catch ex As Exception

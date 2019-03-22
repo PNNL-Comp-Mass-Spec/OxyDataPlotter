@@ -2202,7 +2202,7 @@ ShowOptionsForSeriesErrorHandler:
     End Sub
 
     Private Sub frmCWSpectrumOptions_Load(eventSender As System.Object, eventArgs As System.EventArgs) Handles MyBase.Load
-        SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosContants.UpperThird, 607, 560)
+        SizeAndCenterWindow(Me, modCWSpectrum.wpcWindowPosConstants.UpperThird, 607, 560)
 
         PopulateComboBoxes()
     End Sub
