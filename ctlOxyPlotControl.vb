@@ -36,7 +36,7 @@ Public Class ctlOxyPlotControl
 
 #Region "Structures"
 
-    Public Structure udtGridlineStyle
+    Public Structure GridlineStyleType
         Public GridlineStyle As LineStyle
         Public GridlineColor As Color
         Public GridlineThickness As Double
@@ -45,7 +45,7 @@ Public Class ctlOxyPlotControl
     ''' <summary>
     ''' Describes a data point found by FindNearestDataPoint or LookupNearestPointNumber
     ''' </summary>
-    Public Structure udtDataPointSearchResult
+    Public Structure DataPointSearchResultType
         ''' <summary>
         ''' DataPoint closest to coordinate SearchX, SearchY
         ''' </summary>
@@ -342,7 +342,7 @@ Public Class ctlOxyPlotControl
       seriesIndex As Integer,
       searchPosX As Double,
       searchPosY As Double,
-      xAxisOnly As Boolean) As udtDataPointSearchResult
+      xAxisOnly As Boolean) As DataPointSearchResultType
 
         Dim oSeries As LineSeries
 
@@ -357,7 +357,7 @@ Public Class ctlOxyPlotControl
                 Throw New NotSupportedException("Unrecognized plot mode in FindNearestDataPoint")
         End Select
 
-        Dim searchResult = New udtDataPointSearchResult() With {
+        Dim searchResult = New DataPointSearchResultType() With {
             .SeriesNumber = seriesIndex + 1,
             .DistanceFromSearchCoords = Double.MaxValue,
             .SearchX = searchPosX,
@@ -765,7 +765,7 @@ Public Class ctlOxyPlotControl
       searchPosY As Double,
       xAxisOnly As Boolean,
       seriesNumber As Integer,
-      limitToGivenSeriesNumber As Boolean) As udtDataPointSearchResult
+      limitToGivenSeriesNumber As Boolean) As DataPointSearchResultType
 
         Dim startSeriesNumber As Integer
         Dim endSeriesNumber As Integer
@@ -779,7 +779,7 @@ Public Class ctlOxyPlotControl
             endSeriesNumber = ctlOxyPlot.Model.Series.Count
         End If
 
-        Dim searchResult = New udtDataPointSearchResult() With {
+        Dim searchResult = New DataPointSearchResultType() With {
             .SeriesNumber = 0,
             .DistanceFromSearchCoords = Double.MaxValue,
             .SearchX = searchPosX,
@@ -1009,7 +1009,7 @@ Public Class ctlOxyPlotControl
 
         Const xAxisOnly = False
 
-        Dim searchResult As udtDataPointSearchResult
+        Dim searchResult As DataPointSearchResultType
 
         If seriesNumber = 0 Then
             searchResult = LookupNearestPointNumber(locationX, locationY, xAxisOnly, seriesNumber, limitToGivenSeriesNumber:=False)
@@ -1081,15 +1081,15 @@ Public Class ctlOxyPlotControl
     ''' Series number to use/replace (starting with 1)
     ''' Set to higher than GetSeriesCount() to add a new series
     ''' </param>
-    ''' <param name="XDataZeroBased1DArray"></param>
-    ''' <param name="YDataZeroBased1DArray"></param>
+    ''' <param name="xDataZeroBased1DArray"></param>
+    ''' <param name="yDataZeroBased1DArray"></param>
     ''' <param name="dataCount"></param>
     ''' <param name="ePlotMode">Plot mode for the series</param>
     ''' <param name="seriesTitle">Title (for legend)</param>
     Public Sub SetDataXvsY(
       seriesNumber As Integer,
-      XDataZeroBased1DArray() As Double,
-      YDataZeroBased1DArray() As Double,
+      xDataZeroBased1DArray() As Double,
+      yDataZeroBased1DArray() As Double,
       dataCount As Integer,
       Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
       Optional seriesTitle As String = "")
@@ -1104,31 +1104,31 @@ Public Class ctlOxyPlotControl
         Dim minimumYValue As Double = Double.MaxValue
         Dim maximumYValue As Double = Double.MinValue
 
-        If dataCount > XDataZeroBased1DArray.Length Then
-            dataCount = XDataZeroBased1DArray.Length
+        If dataCount > xDataZeroBased1DArray.Length Then
+            dataCount = xDataZeroBased1DArray.Length
         End If
 
-        If dataCount > YDataZeroBased1DArray.Length Then
-            dataCount = YDataZeroBased1DArray.Length
+        If dataCount > yDataZeroBased1DArray.Length Then
+            dataCount = yDataZeroBased1DArray.Length
         End If
 
         For index = 0 To dataCount - 1
 
-            lstData.Add(New DataPoint(XDataZeroBased1DArray(index), YDataZeroBased1DArray(index)))
+            lstData.Add(New DataPoint(xDataZeroBased1DArray(index), yDataZeroBased1DArray(index)))
 
             ' Keep track of the minima and maxima
-            If XDataZeroBased1DArray(index) < minimumXValue Then
-                minimumXValue = XDataZeroBased1DArray(index)
+            If xDataZeroBased1DArray(index) < minimumXValue Then
+                minimumXValue = xDataZeroBased1DArray(index)
             End If
-            If XDataZeroBased1DArray(index) > maximumXValue Then
-                maximumXValue = XDataZeroBased1DArray(index)
+            If xDataZeroBased1DArray(index) > maximumXValue Then
+                maximumXValue = xDataZeroBased1DArray(index)
             End If
 
-            If YDataZeroBased1DArray(index) < minimumYValue Then
-                minimumYValue = YDataZeroBased1DArray(index)
+            If yDataZeroBased1DArray(index) < minimumYValue Then
+                minimumYValue = yDataZeroBased1DArray(index)
             End If
-            If YDataZeroBased1DArray(index) > maximumYValue Then
-                maximumYValue = YDataZeroBased1DArray(index)
+            If yDataZeroBased1DArray(index) > maximumYValue Then
+                maximumYValue = yDataZeroBased1DArray(index)
             End If
         Next
 
@@ -1223,31 +1223,31 @@ Public Class ctlOxyPlotControl
     ''' Series number to use/replace (starting with 1)
     ''' Set to higher than GetSeriesCount() to add a new series
     ''' </param>
-    ''' <param name="YDataZeroBased1DArray"></param>
-    ''' <param name="YDataCount"></param>
+    ''' <param name="yDataZeroBased1DArray"></param>
+    ''' <param name="yDataCount"></param>
     ''' <param name="ePlotMode">Plot mode for the series</param>
     ''' <param name="xFirst">Starting X value</param>
     ''' <param name="xIncrement">Distance in X between each data point</param>
     ''' <param name="seriesTitle">Title (for legend)</param>
     Public Sub SetDataYOnly(
       ByRef seriesNumber As Integer,
-      ByRef YDataZeroBased1DArray() As Double,
-      YDataCount As Integer,
+      ByRef yDataZeroBased1DArray() As Double,
+      yDataCount As Integer,
       Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
       Optional xFirst As Double = 0,
       Optional xIncrement As Double = 1,
       Optional seriesTitle As String = "")
 
-        If YDataCount < 1 Then Exit Sub
+        If yDataCount < 1 Then Exit Sub
 
-        Dim XDataZeroBased1DArray() As Double
-        ReDim XDataZeroBased1DArray(YDataCount - 1)
+        Dim xDataZeroBased1DArray() As Double
+        ReDim xDataZeroBased1DArray(yDataCount - 1)
 
-        For index = 0 To YDataCount - 1
-            XDataZeroBased1DArray(index) = xFirst + xIncrement * index
+        For index = 0 To yDataCount - 1
+            xDataZeroBased1DArray(index) = xFirst + xIncrement * index
         Next
 
-        SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, YDataCount, ePlotMode, seriesTitle)
+        SetDataXvsY(seriesNumber, xDataZeroBased1DArray, yDataZeroBased1DArray, yDataCount, ePlotMode, seriesTitle)
 
     End Sub
 
@@ -1259,20 +1259,20 @@ Public Class ctlOxyPlotControl
         SetAxisDisplayPrecision(mYAxis, precision)
     End Sub
 
-    Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleX(majorGridlineStyle As GridlineStyleType)
         UpdateMajorGridlines(mXAxis, majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle, minorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleX(majorGridlineStyle As GridlineStyleType, minorGridlineStyle As GridlineStyleType)
         UpdateMajorGridlines(mXAxis, majorGridlineStyle)
         UpdateMinorGridlines(mXAxis, majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleY(majorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleY(majorGridlineStyle As GridlineStyleType)
         UpdateMajorGridlines(mYAxis, majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleY(majorGridlineStyle As udtGridlineStyle, minorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleY(majorGridlineStyle As GridlineStyleType, minorGridlineStyle As GridlineStyleType)
         UpdateMajorGridlines(mYAxis, majorGridlineStyle)
         UpdateMinorGridlines(mYAxis, majorGridlineStyle)
     End Sub
@@ -1582,7 +1582,7 @@ Public Class ctlOxyPlotControl
         End If
     End Sub
 
-    Private Sub UpdateMajorGridlines(oAxis As Axis, majorGridlineStyle As udtGridlineStyle)
+    Private Sub UpdateMajorGridlines(oAxis As Axis, majorGridlineStyle As GridlineStyleType)
         oAxis.MajorGridlineStyle = majorGridlineStyle.GridlineStyle
         oAxis.MajorGridlineColor = ColorToOxyColor(majorGridlineStyle.GridlineColor)
 
@@ -1591,7 +1591,7 @@ Public Class ctlOxyPlotControl
         End If
     End Sub
 
-    Private Sub UpdateMinorGridlines(oAxis As Axis, minorGridlineStyle As udtGridlineStyle)
+    Private Sub UpdateMinorGridlines(oAxis As Axis, minorGridlineStyle As GridlineStyleType)
         oAxis.MinorGridlineStyle = minorGridlineStyle.GridlineStyle
         oAxis.MinorGridlineColor = ColorToOxyColor(minorGridlineStyle.GridlineColor)
 

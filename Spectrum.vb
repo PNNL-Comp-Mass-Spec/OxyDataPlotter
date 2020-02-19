@@ -178,14 +178,14 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.AutoScaleYNow()
     End Sub
 
-    Public Sub CenterCursors(Optional intCursorNumber As Integer = 1, Optional blncenterAll As Boolean = True)
+    Public Sub CenterCursors(Optional cursorNumber As Integer = 1, Optional centerAll As Boolean = True)
         Throw New NotImplementedException("Not implemented: CenterCursors")
-        ' ToDo: SpectrumForm.ctlOxyPlot.CenterCursor(intCursorNumber, blncenterAll)
+        ' ToDo: SpectrumForm.ctlOxyPlot.CenterCursor(cursorNumber, centerAll)
     End Sub
 
-    Public Sub ClearData(intSeriesToClear As Short)
+    Public Sub ClearData(seriesToClear As Short)
         ' This does not prompt the user
-        SpectrumForm.ctlOxyPlot.ClearData(intSeriesToClear)
+        SpectrumForm.ctlOxyPlot.ClearData(seriesToClear)
     End Sub
 
     Public Sub ClearDataAllSeries()
@@ -193,11 +193,11 @@ Public Class Spectrum
         SpectrumForm.DeleteDataForAllSeries(True, False)
     End Sub
 
-    Public Sub CopyDataPointsToClipboardOrToString(seriesNumber As Integer, Optional ByRef strDataToCopy As String = "", Optional strDelim As String = vbTab, Optional blnCopyToClipboard As Boolean = True)
+    Public Sub CopyDataPointsToClipboardOrToString(seriesNumber As Integer, Optional ByRef dataToCopy As String = "", Optional delimiter As String = vbTab, Optional copyToClipboard As Boolean = True)
         ' If blnCopyToClipboard = False, then simply populates strDataToCopy
 
         Throw New NotImplementedException("Not implemented: CopyDataPointsToClipboardOrToString")
-        ' ToDo: SpectrumForm.CopyDataPointsToClipboardOrToString(seriesNumber, strDataToCopy, strDelim, blnCopyToClipboard)
+        ' ToDo: SpectrumForm.CopyDataPointsToClipboardOrToString(seriesNumber, dataToCopy, delimiter, copyToClipboard)
     End Sub
 
     Public Sub CopyToClipboardAsPicture()
@@ -576,9 +576,9 @@ Public Class Spectrum
         ' ToDo: SpectrumForm.GetWindowPos(Top, intLeft, Height, Width)
     End Sub
 
-    Public Sub LoadDataFromDisk(Optional strInputFilePath As String = "", Optional blnShowMessages As Boolean = True, Optional blnLoadOptionsOnly As Boolean = False, Optional blnDelimeterComma As Boolean = True, Optional blnDelimeterTab As Boolean = True, Optional blnDelimeterSpace As Boolean = False, Optional blnLoadingDTAFile As Boolean = False)
+    Public Sub LoadDataFromDisk(Optional strInputFilePath As String = "", Optional blnShowMessages As Boolean = True, Optional blnLoadOptionsOnly As Boolean = False, Optional blnDelimiterComma As Boolean = True, Optional blnDelimiterTab As Boolean = True, Optional blnDelimiterSpace As Boolean = False, Optional blnLoadingDTAFile As Boolean = False)
         Throw New NotImplementedException("Not implemented: LoadDataFromDisk")
-        ' ToDo: SpectrumForm.LoadDataFromDisk(strInputFilePath, blnShowMessages, blnLoadOptionsOnly, blnDelimeterComma, blnDelimeterTab, blnDelimeterSpace, blnLoadingDTAFile)
+        ' ToDo: SpectrumForm.LoadDataFromDisk(strInputFilePath, blnShowMessages, blnLoadOptionsOnly, blnDelimiterComma, blnDelimiterTab, blnDelimiterSpace, blnLoadingDTAFile)
     End Sub
 
     ''' <summary>
@@ -597,15 +597,15 @@ Public Class Spectrum
       searchPosY As Double,
       xAxisOnly As Boolean,
       seriesNumber As Integer,
-      limitToGivenSeriesNumber As Boolean) As udtDataPointSearchResult
+      limitToGivenSeriesNumber As Boolean) As DataPointSearchResultType
 
         Return SpectrumForm.ctlOxyPlot.LookupNearestPointNumber(searchPosX, searchPosY, xAxisOnly, seriesNumber, limitToGivenSeriesNumber)
 
     End Function
 
-    Public Sub PasteDataFromClipboard(Optional blnShowMessages As Boolean = True, Optional blnAllowCommaDelimeter As Boolean = True)
+    Public Sub PasteDataFromClipboard(Optional blnShowMessages As Boolean = True, Optional blnAllowCommaDelimiter As Boolean = True)
         Throw New NotImplementedException("Not implemented: PasteDataFromClipboard")
-        ' ToDo: SpectrumForm.PasteDataFromClipboard(blnShowMessages, blnAllowCommaDelimeter)
+        ' ToDo: SpectrumForm.PasteDataFromClipboard(blnShowMessages, blnAllowCommaDelimiter)
     End Sub
 
     Public Function RemoveAnnotationByCaption(strAnnotationText As String, Optional blnCaseSensitive As Boolean = False) As Boolean
@@ -635,9 +635,9 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.RemoveSeries(seriesNumber)
     End Sub
 
-    Public Sub SaveDataToDisk(Optional strOutputFilePath As String = "", Optional blnOptionsOnly As Boolean = False, Optional strDelim As String = ",", Optional blnShowMessages As Boolean = True, Optional blnAppendOptionsToFile As Boolean = False)
+    Public Sub SaveDataToDisk(Optional strOutputFilePath As String = "", Optional blnOptionsOnly As Boolean = False, Optional delimiter As String = ",", Optional blnShowMessages As Boolean = True, Optional blnAppendOptionsToFile As Boolean = False)
         Throw New NotImplementedException("Not implemented: SaveDataToDisk")
-        ' ToDo: SpectrumForm.SaveDataToDisk(strOutputFilePath, blnOptionsOnly, strDelim, blnShowMessages, blnAppendOptionsToFile)
+        ' ToDo: SpectrumForm.SaveDataToDisk(strOutputFilePath, blnOptionsOnly, delimiter, blnShowMessages, blnAppendOptionsToFile)
     End Sub
 
     Public Sub SaveToDiskAsWMF(Optional strOutputFilePath As String = "", Optional blnShowMessages As Boolean = True)
@@ -870,19 +870,19 @@ Public Class Spectrum
     ''' Series number to use/replace (starting with 1)
     ''' Set to higher than GetSeriesCount() to add a new series
     ''' </param>
-    ''' <param name="XDataZeroBased1DArray"></param>
-    ''' <param name="YDataZeroBased1DArray"></param>
+    ''' <param name="xDataZeroBased1DArray"></param>
+    ''' <param name="yDataZeroBased1DArray"></param>
     ''' <param name="dataCount"></param>
     ''' <param name="ePlotMode">Plot mode for the series</param>
     ''' <param name="seriesTitle">Title (for legend)</param>
     Public Sub SetDataXvsY(
       seriesNumber As Integer,
-      XDataZeroBased1DArray() As Double,
-      YDataZeroBased1DArray() As Double,
+      xDataZeroBased1DArray() As Double,
+      yDataZeroBased1DArray() As Double,
       dataCount As Integer,
       Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
       Optional seriesTitle As String = "")
-        SpectrumForm.ctlOxyPlot.SetDataXvsY(seriesNumber, XDataZeroBased1DArray, YDataZeroBased1DArray, dataCount, ePlotMode, seriesTitle)
+        SpectrumForm.ctlOxyPlot.SetDataXvsY(seriesNumber, xDataZeroBased1DArray, yDataZeroBased1DArray, dataCount, ePlotMode, seriesTitle)
     End Sub
 
     ''' <summary>
@@ -892,21 +892,21 @@ Public Class Spectrum
     ''' Series number to use/replace (starting with 1)
     ''' Set to higher than GetSeriesCount() to add a new series
     ''' </param>
-    ''' <param name="YDataZeroBased1DArray"></param>
-    ''' <param name="YDataCount"></param>
+    ''' <param name="yDataZeroBased1DArray"></param>
+    ''' <param name="yDataCount"></param>
     ''' <param name="ePlotMode">Plot mode for the series</param>
     ''' <param name="xFirst">Starting X value</param>
     ''' <param name="xIncrement">Distance in X between each data point</param>
     ''' <param name="seriesTitle">Title (for legend)</param>
     Public Sub SetDataYOnly(
       ByRef seriesNumber As Integer,
-      ByRef YDataZeroBased1DArray() As Double,
-      YDataCount As Integer,
+      ByRef yDataZeroBased1DArray() As Double,
+      yDataCount As Integer,
       Optional ePlotMode As SeriesPlotMode = SeriesPlotMode.PointsAndLines,
       Optional xFirst As Double = 0,
       Optional xIncrement As Double = 1,
       Optional seriesTitle As String = "")
-        SpectrumForm.ctlOxyPlot.SetDataYOnly(seriesNumber, YDataZeroBased1DArray, YDataCount, ePlotMode, xFirst, xIncrement, seriesTitle)
+        SpectrumForm.ctlOxyPlot.SetDataYOnly(seriesNumber, yDataZeroBased1DArray, yDataCount, ePlotMode, xFirst, xIncrement, seriesTitle)
     End Sub
 
     ''' <summary>
@@ -925,19 +925,19 @@ Public Class Spectrum
         SpectrumForm.ctlOxyPlot.SetDisplayPrecisionY(precision)
     End Sub
 
-    Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleX(majorGridlineStyle As GridlineStyleType)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleX(majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleX(majorGridlineStyle As udtGridlineStyle, minorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleX(majorGridlineStyle As GridlineStyleType, minorGridlineStyle As GridlineStyleType)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleX(majorGridlineStyle, minorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleY(majorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleY(majorGridlineStyle As GridlineStyleType)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleY(majorGridlineStyle)
     End Sub
 
-    Public Sub SetGridLinesStyleY(majorGridlineStyle As udtGridlineStyle, minorGridlineStyle As udtGridlineStyle)
+    Public Sub SetGridLinesStyleY(majorGridlineStyle As GridlineStyleType, minorGridlineStyle As GridlineStyleType)
         SpectrumForm.ctlOxyPlot.SetGridLinesStyleY(majorGridlineStyle, minorGridlineStyle)
     End Sub
 

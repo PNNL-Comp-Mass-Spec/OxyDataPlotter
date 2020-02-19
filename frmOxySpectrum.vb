@@ -72,10 +72,10 @@ Public Class frmOxySpectrum
     Public Sub AddSampleData()
 
         Const DATA_COUNT As Short = 50
-        Dim dblXVals() As Double
-        Dim dblYVals() As Double
+        Dim xVals() As Double
+        Dim yVals() As Double
         Dim intIndex As Integer
-        Dim dblOriginalMaximumValue As Double
+        Dim originalMaximumValue As Double
 
         Dim objRandom As New Random
 
@@ -87,25 +87,25 @@ Public Class frmOxySpectrum
         ctlOxyPlot.GenerateSineWave(2, False)
         ctlOxyPlot.SetSeriesColor(2, ctlOxyPlot.GetDefaultSeriesColor(2))
 
-        ReDim dblXVals(DATA_COUNT - 1)
-        ReDim dblYVals(DATA_COUNT - 1)
+        ReDim xVals(DATA_COUNT - 1)
+        ReDim yVals(DATA_COUNT - 1)
 
         Dim maxValueIndex = 0
         Dim maxMzIntensity = Double.MinValue
 
         For intIndex = 0 To DATA_COUNT - 1
-            dblXVals(intIndex) = Math.Abs(22 - objRandom.Next(0, 15) * Math.Tan(intIndex / 100.0#) * 2)
-            dblYVals(intIndex) = Math.Abs(objRandom.Next(0, 22) * Math.Sin(intIndex / 100.0#) * 15)
+            xVals(intIndex) = Math.Abs(22 - objRandom.Next(0, 15) * Math.Tan(intIndex / 100.0#) * 2)
+            yVals(intIndex) = Math.Abs(objRandom.Next(0, 22) * Math.Sin(intIndex / 100.0#) * 15)
 
-            If dblYVals(intIndex) > maxMzIntensity Then
+            If yVals(intIndex) > maxMzIntensity Then
                 maxValueIndex = intIndex
-                maxMzIntensity = dblYVals(intIndex)
+                maxMzIntensity = yVals(intIndex)
             End If
         Next intIndex
 
-        FindMaximumAndNormalizeData(dblYVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, dblOriginalMaximumValue)
+        FindMaximumAndNormalizeData(yVals, 0, DATA_COUNT - 1, mNormalizationConstant, mNormalizeOnLoadOrPaste, originalMaximumValue)
 
-        ctlOxyPlot.SetDataXvsY(3, dblXVals, dblYVals, DATA_COUNT, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "Mass Spectrum")
+        ctlOxyPlot.SetDataXvsY(3, xVals, yVals, DATA_COUNT, ctlOxyPlotControl.SeriesPlotMode.SticksToZero, "Mass Spectrum")
         ctlOxyPlot.SetSeriesColor(3, ctlOxyPlot.GetDefaultSeriesColor(3))
 
         SetCurrentSeriesNumber(3)
@@ -118,7 +118,7 @@ Public Class frmOxySpectrum
 
         AddAnnotationAtMin(2, sineWaveData)
 
-        AddAnnotationSearchAll(dblXVals(maxValueIndex), dblYVals(maxValueIndex), "m/z " + dblXVals(maxValueIndex).ToString("0.00"))
+        AddAnnotationSearchAll(xVals(maxValueIndex), yVals(maxValueIndex), "m/z " + xVals(maxValueIndex).ToString("0.00"))
 
         ctlOxyPlot.SetLabelXAxis("X")
         ctlOxyPlot.SetLabelYAxis("Y")
@@ -144,11 +144,11 @@ Public Class frmOxySpectrum
     ''' </summary>
     Private Sub AddSampleMASICBrowserData()
 
-        Dim intDataCountSeries1, intDataCountSeries2, intDataCountSeries3, intDataCountSeries4 As Integer
-        Dim dblXDataSeries1(), dblYDataSeries1() As Double          ' Holds the scans and SIC data for data <=0 (data not part of the peak)
-        Dim dblXDataSeries2(), dblYDataSeries2() As Double          ' Holds the scans and SIC data for data > 0 (data part of the peak)
-        Dim dblXDataSeries3(), dblYDataSeries3() As Double          ' Holds the scan numbers at which the given m/z was chosen for fragmentation
-        Dim dblXDataSeries4(), dblYDataSeries4() As Double          ' Holds the smoothed SIC data
+        Dim dataCountSeries1, dataCountSeries2, dataCountSeries3, dataCountSeries4 As Integer
+        Dim xDataSeries1(), yDataSeries1() As Double          ' Holds the scans and SIC data for data <=0 (data not part of the peak)
+        Dim xDataSeries2(), yDataSeries2() As Double          ' Holds the scans and SIC data for data > 0 (data part of the peak)
+        Dim xDataSeries3(), yDataSeries3() As Double          ' Holds the scan numbers at which the given m/z was chosen for fragmentation
+        Dim xDataSeries4(), yDataSeries4() As Double          ' Holds the smoothed SIC data
 
         Try
 
@@ -165,21 +165,21 @@ Public Class frmOxySpectrum
 
             Const FRAG_SCAN_COUNT = 10
 
-            intDataCountSeries1 = 0
-            intDataCountSeries2 = 0
-            intDataCountSeries3 = FRAG_SCAN_COUNT
-            intDataCountSeries4 = 0
+            dataCountSeries1 = 0
+            dataCountSeries2 = 0
+            dataCountSeries3 = FRAG_SCAN_COUNT
+            dataCountSeries4 = 0
 
-            ReDim dblXDataSeries1(DATA_COUNT - 1)
-            ReDim dblYDataSeries1(DATA_COUNT - 1)
-            ReDim dblXDataSeries2(DATA_COUNT - 1)
-            ReDim dblYDataSeries2(DATA_COUNT - 1)
+            ReDim xDataSeries1(DATA_COUNT - 1)
+            ReDim yDataSeries1(DATA_COUNT - 1)
+            ReDim xDataSeries2(DATA_COUNT - 1)
+            ReDim yDataSeries2(DATA_COUNT - 1)
 
-            ReDim dblXDataSeries3(FRAG_SCAN_COUNT - 1)
-            ReDim dblYDataSeries3(FRAG_SCAN_COUNT - 1)
+            ReDim xDataSeries3(FRAG_SCAN_COUNT - 1)
+            ReDim yDataSeries3(FRAG_SCAN_COUNT - 1)
 
-            ReDim dblXDataSeries4(DATA_COUNT)
-            ReDim dblYDataSeries4(DATA_COUNT)
+            ReDim xDataSeries4(DATA_COUNT)
+            ReDim yDataSeries4(DATA_COUNT)
 
             For intIndex = 0 To DATA_COUNT - 1
 
@@ -197,48 +197,48 @@ Public Class frmOxySpectrum
                 End If
 
 
-                dblXDataSeries1(intDataCountSeries1) = xValue
-                dblYDataSeries1(intDataCountSeries1) = yValue1
-                intDataCountSeries1 += 1
+                xDataSeries1(dataCountSeries1) = xValue
+                yDataSeries1(dataCountSeries1) = yValue1
+                dataCountSeries1 += 1
 
-                dblXDataSeries2(intDataCountSeries2) = xValue
-                dblYDataSeries2(intDataCountSeries2) = yValue2
-                intDataCountSeries2 += 1
+                xDataSeries2(dataCountSeries2) = xValue
+                yDataSeries2(dataCountSeries2) = yValue2
+                dataCountSeries2 += 1
 
-                dblXDataSeries4(intDataCountSeries4) = xValue
-                dblYDataSeries4(intDataCountSeries4) = yValue3
-                intDataCountSeries4 += 1
+                xDataSeries4(dataCountSeries4) = xValue
+                yDataSeries4(dataCountSeries4) = yValue3
+                dataCountSeries4 += 1
 
             Next intIndex
 
 
             ' Populate Series 3 with the similar frag scan values
             For intIndex = 0 To FRAG_SCAN_COUNT - 1
-                Dim sourceIndex = CInt(Math.Floor(intDataCountSeries1 * (intIndex / (FRAG_SCAN_COUNT - 1))))
+                Dim sourceIndex = CInt(Math.Floor(dataCountSeries1 * (intIndex / (FRAG_SCAN_COUNT - 1))))
                 If sourceIndex > 0 Then sourceIndex -= 1
 
-                dblXDataSeries3(intIndex) = dblXDataSeries1(sourceIndex)
-                dblYDataSeries3(intIndex) = dblYDataSeries1(sourceIndex)
+                xDataSeries3(intIndex) = xDataSeries1(sourceIndex)
+                yDataSeries3(intIndex) = yDataSeries1(sourceIndex)
             Next intIndex
 
 
             ' Shrink the data arrays
             ' SIC Data
-            ReDim Preserve dblXDataSeries1(intDataCountSeries1 - 1)
-            ReDim Preserve dblYDataSeries1(intDataCountSeries1 - 1)
+            ReDim Preserve xDataSeries1(dataCountSeries1 - 1)
+            ReDim Preserve yDataSeries1(dataCountSeries1 - 1)
 
             ' SIC Peak
-            ReDim Preserve dblXDataSeries2(intDataCountSeries2 - 1)
-            ReDim Preserve dblYDataSeries2(intDataCountSeries2 - 1)
+            ReDim Preserve xDataSeries2(dataCountSeries2 - 1)
+            ReDim Preserve yDataSeries2(dataCountSeries2 - 1)
 
             ' Smoothed Data
-            ReDim Preserve dblXDataSeries4(intDataCountSeries4 - 1)
-            ReDim Preserve dblYDataSeries4(intDataCountSeries4 - 1)
+            ReDim Preserve xDataSeries4(dataCountSeries4 - 1)
+            ReDim Preserve yDataSeries4(dataCountSeries4 - 1)
 
-            ctlOxyPlot.SetDataXvsY(1, dblXDataSeries1, dblYDataSeries1, intDataCountSeries1, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Series 1")
-            ctlOxyPlot.SetDataXvsY(2, dblXDataSeries2, dblYDataSeries2, intDataCountSeries2, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Series 2")
-            ctlOxyPlot.SetDataXvsY(3, dblXDataSeries3, dblYDataSeries3, intDataCountSeries3, ctlOxyPlotControl.SeriesPlotMode.Points, "Series 3")
-            ctlOxyPlot.SetDataXvsY(4, dblXDataSeries4, dblYDataSeries4, intDataCountSeries4, ctlOxyPlotControl.SeriesPlotMode.Lines, "Series 4")
+            ctlOxyPlot.SetDataXvsY(1, xDataSeries1, yDataSeries1, dataCountSeries1, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Series 1")
+            ctlOxyPlot.SetDataXvsY(2, xDataSeries2, yDataSeries2, dataCountSeries2, ctlOxyPlotControl.SeriesPlotMode.PointsAndLines, "Series 2")
+            ctlOxyPlot.SetDataXvsY(3, xDataSeries3, yDataSeries3, dataCountSeries3, ctlOxyPlotControl.SeriesPlotMode.Points, "Series 3")
+            ctlOxyPlot.SetDataXvsY(4, xDataSeries4, yDataSeries4, dataCountSeries4, ctlOxyPlotControl.SeriesPlotMode.Lines, "Series 4")
 
             ctlOxyPlot.SetSeriesLineStyle(1, OxyPlot.LineStyle.Automatic)
             ctlOxyPlot.SetSeriesLineStyle(2, OxyPlot.LineStyle.Automatic)
@@ -263,20 +263,20 @@ Public Class frmOxySpectrum
             Dim arrowLengthPixels = 15
 
             Dim oRand = New Random()
-            Dim fragScanIndex = oRand.Next(0, dblXDataSeries3.Length)
-            Dim fragScanObserved = dblXDataSeries3(fragScanIndex)
-            Dim dblScanObservedIntensity = dblYDataSeries3(fragScanIndex)
+            Dim fragScanIndex = oRand.Next(0, xDataSeries3.Length)
+            Dim fragScanObserved = xDataSeries3(fragScanIndex)
+            Dim scanObservedIntensity = yDataSeries3(fragScanIndex)
 
             Dim captionOffsetDirection As ctlOxyPlotControl.CaptionOffsetDirection
 
-            If dblScanObservedIntensity > 0 Then
+            If scanObservedIntensity > 0 Then
                 captionOffsetDirection = ctlOxyPlotControl.CaptionOffsetDirection.TopLeft
             Else
                 captionOffsetDirection = ctlOxyPlotControl.CaptionOffsetDirection.BottomRight
             End If
 
             Const seriesToUse = 0
-            ctlOxyPlot.SetAnnotationForDataPoint(fragScanObserved, dblScanObservedIntensity, "Data Point",
+            ctlOxyPlot.SetAnnotationForDataPoint(fragScanObserved, scanObservedIntensity, "Data Point",
                                                 seriesToUse, captionOffsetDirection, arrowLengthPixels, )
 
             ctlOxyPlot.SetLabelXAxis("Scan Number")
@@ -307,7 +307,7 @@ Public Class frmOxySpectrum
 
     End Sub
 
-    Public Sub CopyAllDataToClipboard(Optional strDelim As String = vbTab)
+    Public Sub CopyAllDataToClipboard(Optional delimiter As String = vbTab)
 
         Dim seriesCount = ctlOxyPlot.GetSeriesCount()
 
@@ -333,20 +333,20 @@ Public Class frmOxySpectrum
             Dim seriesData = ctlOxyPlot.GetDataXvsY(seriesNumber)
 
             If seriesNumber = 1 Then
-                strExport(0) = "Series " & seriesNumber & strDelim
-                strExport(1) = "X" & strDelim & "Y"
+                strExport(0) = "Series " & seriesNumber & delimiter
+                strExport(1) = "X" & delimiter & "Y"
             Else
-                strExport(0) &= strDelim & "Series " & seriesNumber & strDelim
-                strExport(1) &= strDelim & "X" & strDelim & "Y"
+                strExport(0) &= delimiter & "Series " & seriesNumber & delimiter
+                strExport(1) &= delimiter & "X" & delimiter & "Y"
             End If
 
             Dim rowIndex = 2
 
             For Each dataItem In seriesData
                 If seriesNumber = 1 Then
-                    strExport(rowIndex) = NumToString(dataItem.X) & strDelim & NumToString(dataItem.Y)
+                    strExport(rowIndex) = NumToString(dataItem.X) & delimiter & NumToString(dataItem.Y)
                 Else
-                    strExport(rowIndex) &= strDelim & NumToString(dataItem.X) & strDelim & NumToString(dataItem.Y)
+                    strExport(rowIndex) &= delimiter & NumToString(dataItem.X) & delimiter & NumToString(dataItem.Y)
                 End If
 
                 rowIndex += 1
@@ -354,9 +354,9 @@ Public Class frmOxySpectrum
 
             For extraRowIndex = seriesData.Count + 1 To maxDataCount
                 If seriesNumber = 1 Then
-                    strExport(rowIndex) = strDelim
+                    strExport(rowIndex) = delimiter
                 Else
-                    strExport(rowIndex) &= strDelim
+                    strExport(rowIndex) &= delimiter
                 End If
                 rowIndex += 1
             Next
@@ -409,7 +409,7 @@ Public Class frmOxySpectrum
 
     End Sub
 
-    Public Sub CopyOneSeriesClipboard(seriesNumber As Integer, Optional strDelim As String = vbTab)
+    Public Sub CopyOneSeriesClipboard(seriesNumber As Integer, Optional delimiter As String = vbTab)
 
         Me.Cursor = Cursors.WaitCursor
 
@@ -419,12 +419,12 @@ Public Class frmOxySpectrum
         ReDim strExport(seriesData.Count + 1)
 
         strExport(0) = "Series " & seriesNumber
-        strExport(1) = "X" & strDelim & "Y"
+        strExport(1) = "X" & delimiter & "Y"
 
         Dim rowIndex = 2
 
         For Each dataItem In seriesData
-            strExport(rowIndex) = NumToString(dataItem.X) & strDelim & NumToString(dataItem.Y)
+            strExport(rowIndex) = NumToString(dataItem.X) & delimiter & NumToString(dataItem.Y)
             rowIndex += 1
         Next
 
@@ -499,25 +499,25 @@ Public Class frmOxySpectrum
         End Get
     End Property
 
-    Public Function FindMaximumAndNormalizeData(ByRef dblArray() As Double, ByRef intLowIndex As Integer, ByRef intHighIndex As Integer, ByRef dblNormalizationConstant As Double, ByRef blnPerformNormalization As Boolean, ByRef dblOriginalMaximumValue As Double) As Boolean
-        ' Normalizes dblArray() to range from 0 dblNormalizationConstant
-        ' Treats negative data as if it were positive data when finding dblOriginalMaximumValue
-        ' Returns True if the data was successfully normalized, or if dblOriginalMaximumValue = dblNormalizationConstant
+    Public Function FindMaximumAndNormalizeData(ByRef dataArray() As Double, ByRef intLowIndex As Integer, ByRef intHighIndex As Integer, ByRef normalizationConstant As Double, ByRef blnPerformNormalization As Boolean, ByRef originalMaximumValue As Double) As Boolean
+        ' Normalizes dataArray() to range from 0 normalizationConstant
+        ' Treats negative data as if it were positive data when finding originalMaximumValue
+        ' Returns True if the data was successfully normalized, or if originalMaximumValue = normalizationConstant
         ' Returns False if an error, or if blnPerformNormalization = False
 
         Try
 
-            Dim query = From item In dblArray.ToList() Select Math.Abs(item)
+            Dim query = From item In dataArray.ToList() Select Math.Abs(item)
 
-            dblOriginalMaximumValue = query.Max()
+            originalMaximumValue = query.Max()
 
-            If Math.Abs(dblNormalizationConstant) < Single.Epsilon Then dblNormalizationConstant = 100
-            dblNormalizationConstant = Math.Abs(dblNormalizationConstant)
+            If Math.Abs(normalizationConstant) < Single.Epsilon Then normalizationConstant = 100
+            normalizationConstant = Math.Abs(normalizationConstant)
 
-            If blnPerformNormalization And dblOriginalMaximumValue > 0 Then
-                If Math.Abs(dblOriginalMaximumValue - dblNormalizationConstant) > Single.Epsilon Then
+            If blnPerformNormalization And originalMaximumValue > 0 Then
+                If Math.Abs(originalMaximumValue - normalizationConstant) > Single.Epsilon Then
                     For intIndex = intLowIndex To intHighIndex
-                        dblArray(intIndex) = dblArray(intIndex) / dblOriginalMaximumValue * dblNormalizationConstant
+                        dataArray(intIndex) = dataArray(intIndex) / originalMaximumValue * normalizationConstant
                     Next intIndex
                 Else
                     ' The data is already normalized
