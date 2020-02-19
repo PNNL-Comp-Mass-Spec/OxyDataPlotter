@@ -56,8 +56,8 @@ spectrum.ShowSpectrum();
 
 Written by Matthew Monroe for the Department of Energy (PNNL, Richland, WA) \
 Copyright 2017, Battelle Memorial Institute.  All Rights Reserved. \
-E-mail: matthew.monroe@pnnl.gov or matt@alchemistmatt.com \
-Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/
+E-mail: matthew.monroe@pnnl.gov or proteomics@pnnl.gov \
+Website: https://omics.pnl.gov/ or https://panomics.pnnl.gov/
 
 ## License
 

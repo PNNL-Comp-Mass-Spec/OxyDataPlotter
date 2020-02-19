@@ -7,7 +7,7 @@ Public Class frmOxySpectrum
 
 #Region "Constants"
 
-    Private Const OXYPLOTTER_DATE As String = "April 4, 2017"
+    Private Const OXYPLOTTER_DATE As String = "February 19, 2020"
 
 #End Region
 
@@ -640,7 +640,7 @@ Public Class frmOxySpectrum
             mActiveSeriesNumber = seriesNumber
 
             ' Make sure the correct series number menus are loaded and visible,
-            '  and the mActiveSeriesNumber'th one is checked
+            '  and the mActiveSeriesNumber one is checked
             ShowHideSeriesNumberMenus()
         Catch ex As Exception
             ShowError("Error in SetCurrentSeriesNumber: " & ex.Message)
@@ -714,7 +714,7 @@ Public Class frmOxySpectrum
 
         strMessage &= "This is version " & Me.DllVersion & " (" & Me.DllDate & ")" & ControlChars.NewLine & ControlChars.NewLine
 
-        strMessage &= "E-mail: matthew.monroe@pnnl.gov or matt@alchemistmatt.com" & ControlChars.NewLine
+        strMessage &= "E-mail: matthew.monroe@pnnl.gov or proteomics@pnnl.gov" & ControlChars.NewLine
         strMessage &= "Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/" & ControlChars.NewLine & ControlChars.NewLine
 
         strMessage &= "Licensed under the Apache License, Version 2.0; you may not use this file except in compliance with the License.  "
