@@ -1265,7 +1265,7 @@ Public Class ctlOxyPlotControl
 
     Public Sub SetGridLinesStyleX(majorGridlineStyle As GridlineStyleType, minorGridlineStyle As GridlineStyleType)
         UpdateMajorGridlines(mXAxis, majorGridlineStyle)
-        UpdateMinorGridlines(mXAxis, majorGridlineStyle)
+        UpdateMinorGridlines(mXAxis, minorGridlineStyle)
     End Sub
 
     Public Sub SetGridLinesStyleY(majorGridlineStyle As GridlineStyleType)
@@ -1274,7 +1274,7 @@ Public Class ctlOxyPlotControl
 
     Public Sub SetGridLinesStyleY(majorGridlineStyle As GridlineStyleType, minorGridlineStyle As GridlineStyleType)
         UpdateMajorGridlines(mYAxis, majorGridlineStyle)
-        UpdateMinorGridlines(mYAxis, majorGridlineStyle)
+        UpdateMinorGridlines(mYAxis, minorGridlineStyle)
     End Sub
 
     Public Sub SetGridLinesVisibleX(showGridLines As Boolean, includeMinorGridLines As Boolean)
