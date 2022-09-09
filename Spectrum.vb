@@ -10,7 +10,7 @@ Imports OxyPlot
 ' Copyright 2005, Battelle Memorial Institute.  All Rights Reserved.
 
 ' E-mail: matthew.monroe@pnnl.gov or proteomics@pnnl.gov
-' Website: http://panomics.pnl.gov/ or http://www.sysbio.org/resources/staff/
+' Website: https://github.com/PNNL-Comp-Mass-Spec/ or https://panomics.pnnl.gov/ or https://www.pnnl.gov/integrative-omics
 ' -------------------------------------------------------------------------------
 '
 ' Licensed under the Apache License, Version 2.0; you may not use this file except
