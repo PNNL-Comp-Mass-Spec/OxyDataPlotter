@@ -8,7 +8,7 @@ Public Class frmOxySpectrum
 
 #Region "Constants"
 
-    Private Const OXYPLOTTER_DATE As String = "February 19, 2020"
+    Private Const OXYPLOTTER_DATE As String = "September 8, 2022"
 
 #End Region
 
