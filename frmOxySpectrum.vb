@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Reflection
 Imports OxyPlot
+Imports OxyPlot.Legends
 
 Public Class frmOxySpectrum
 

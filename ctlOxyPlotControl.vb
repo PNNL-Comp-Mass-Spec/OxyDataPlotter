@@ -4,6 +4,7 @@ Imports System.Runtime.InteropServices
 Imports OxyPlot
 Imports OxyPlot.Annotations
 Imports OxyPlot.Axes
+Imports OxyPlot.Legends
 Imports OxyPlot.Series
 Imports OxyPlot.WindowsForms
 
@@ -108,19 +109,31 @@ Public Class ctlOxyPlotControl
 
     Public Property LegendPlacement As LegendPlacement
         Get
-            Return ctlOxyPlot.Model.LegendPlacement
+            If ctlOxyPlot.Model.Legends.Count = 0 Then
+                Return OxyPlot.Legends.LegendPlacement.Inside
+            Else
+                Return ctlOxyPlot.Model.Legends(0).LegendPlacement
+            End If
         End Get
         Set(value As LegendPlacement)
-            ctlOxyPlot.Model.LegendPlacement = value
+            If ctlOxyPlot.Model.Legends.Count > 0 Then
+                ctlOxyPlot.Model.Legends(0).LegendPlacement = value
+            End If
         End Set
     End Property
 
     Public Property LegendPosition As LegendPosition
         Get
-            Return ctlOxyPlot.Model.LegendPosition
+            If ctlOxyPlot.Model.Legends.Count = 0 Then
+                Return LegendPosition.RightTop
+            Else
+                Return ctlOxyPlot.Model.Legends(0).LegendPosition
+            End If
         End Get
         Set(value As LegendPosition)
-            ctlOxyPlot.Model.LegendPosition = value
+            If ctlOxyPlot.Model.Legends.Count > 0 Then
+                ctlOxyPlot.Model.Legends(0).LegendPosition = value
+            End If
         End Set
     End Property
 
@@ -1303,6 +1316,13 @@ Public Class ctlOxyPlotControl
 
     Public Sub SetLegendVisibility(isVisible As Boolean)
         ctlOxyPlot.Model.IsLegendVisible = isVisible
+
+        If isVisible And ctlOxyPlot.Model.Legends.Count = 0 Then
+            Dim newLegend As LegendBase
+            newLegend = New Legends.Legend
+
+            ctlOxyPlot.Model.Legends.Add(newLegend)
+        End If
         InvalidatePlot()
     End Sub
 

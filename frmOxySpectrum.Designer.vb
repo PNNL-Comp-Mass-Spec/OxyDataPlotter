@@ -48,8 +48,8 @@ Partial Class frmOxySpectrum
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ctlOxyPlot.AutoscaleXAxis = True
         Me.ctlOxyPlot.AutoscaleYAxis = True
-        Me.ctlOxyPlot.LegendPlacement = OxyPlot.LegendPlacement.Inside
-        Me.ctlOxyPlot.LegendPosition = OxyPlot.LegendPosition.RightTop
+        Me.ctlOxyPlot.LegendPlacement = OxyPlot.Legends.LegendPlacement.Inside
+        Me.ctlOxyPlot.LegendPosition = OxyPlot.Legends.LegendPosition.RightTop
         Me.ctlOxyPlot.Location = New System.Drawing.Point(0, 33)
         Me.ctlOxyPlot.Margin = New System.Windows.Forms.Padding(5)
         Me.ctlOxyPlot.Name = "ctlOxyPlot"
